@@ -21,9 +21,11 @@ Run the following command in an environment with Maven 3 and Java 8 to demonstra
 
     mvn clean install
 
-To generate Javadoc
+To generate Javadoc 
 
     mvn javadoc:javadoc
+    
+The javadoc is pre-generated and currently lives at https://common-workflow-language.github.io/cwlavro/
 
 ## Generate Avro Schema
 
