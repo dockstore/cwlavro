@@ -1,10 +1,11 @@
 [![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
 
-CWL Avro SDK
-============
+CWL Avro Project 
+================
 
-This projects demonstrates how to take advantage of the Avro schema for CWL in order to
-auto-generate classes to work in other languages like Java. 
+This project demonstrates how to take advantage of the Avro schema for CWL in order to
+auto-generate classes to work in other languages. Due to familiarity, we're starting with
+Java here, but other languages are encouraged.  
 
 All comments and recommendations are welcome.
 
