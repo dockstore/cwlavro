@@ -3,7 +3,7 @@
 
     <artifactId>project</artifactId>
     <name>CWL Java</name>
-    <groupId>org.myorg</groupId>
+    <groupId>io.cwl</groupId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
