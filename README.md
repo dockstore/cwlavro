@@ -23,7 +23,7 @@ Run the following command in an environment with Maven 3 and Java 8 to demonstra
 
 To generate Javadoc
 
-   mvn javadoc:javadoc
+    mvn javadoc:javadoc
 
 ## Generate Avro Schema
 
