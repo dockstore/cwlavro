@@ -5,11 +5,14 @@ package io.cwl.avro;
  * DO NOT EDIT DIRECTLY
  */
 @SuppressWarnings("all")
-/** Not a real type.  Indicates that a field must allow expressions.
+/** Not a real type.  Indicates that a field must allow runtime parameter
+references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)
+is declared and supported by the platform, the field must also allow
+Javascript expressions.
  */
 @org.apache.avro.specific.AvroGenerated
 public enum Expression { 
   ExpressionPlaceholder  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"Not a real type.  Indicates that a field must allow expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"Not a real type.  Indicates that a field must allow runtime parameter\\nreferences.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 }

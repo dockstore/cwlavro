@@ -26,7 +26,7 @@ import org.junit.Test;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 
-import io.cwl.CWL;
+import io.cwl.avro.CWL;
 import io.cwl.avro.CommandLineTool;
 
 import static org.junit.Assert.assertTrue;
