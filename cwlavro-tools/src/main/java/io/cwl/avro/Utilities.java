@@ -3,7 +3,7 @@
  *
  */
 
-package io.cwl;
+package io.cwl.avro;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

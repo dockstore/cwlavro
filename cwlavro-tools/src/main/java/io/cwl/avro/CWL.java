@@ -1,4 +1,4 @@
-package io.cwl;
+package io.cwl.avro;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -26,11 +26,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-
-import io.cwl.avro.Any;
-import io.cwl.avro.CommandInputParameter;
-import io.cwl.avro.CommandLineTool;
-import io.cwl.avro.CommandOutputParameter;
 
 /**
  * Helper class that performs utility functions relating to CWL parsing and manipulation.
