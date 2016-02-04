@@ -18,6 +18,7 @@
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.Test;
@@ -94,6 +95,21 @@ public class CWLClientTest {
         assertTrue(typeMap.size() == 3);
         assertTrue("int".equals(typeMap.get("mem_gb")));
         assertTrue("File".equals(typeMap.get("bam_input")));
+    }
+
+    /**
+     * This test demonstrates how to extract metadata from a CWL file.
+     * @throws Exception
+     */
+    @Test
+    public void extractMetadata() throws Exception {
+        final URL resource = Resources.getResource("cwl.json");
+        final CWL cwl = new CWL();
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile(), true);
+        final Map map = cwl.cwlJson2Map(output.getLeft());
+        assertTrue(map.size() == 1 && ((Map)map.get("http://purl.org/dc/terms/creator")).size() == 3);
+        String key = (String)((Map) map.get("http://purl.org/dc/terms/creator")).get("http://xmlns.com/foaf/0.1/name");
+        assertTrue(Objects.equals(key,"Brian O'Connor"));
     }
 
 }

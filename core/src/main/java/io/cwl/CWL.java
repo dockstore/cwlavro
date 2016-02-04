@@ -1,5 +1,6 @@
 package io.cwl;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,10 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.jsonldjava.core.JsonLdError;
+import com.github.jsonldjava.core.JsonLdOptions;
+import com.github.jsonldjava.core.JsonLdProcessor;
+import com.github.jsonldjava.utils.JsonUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.gson.Gson;
@@ -189,5 +194,23 @@ public class CWL {
         final String[] s = { "cwltool", "--non-strict", validate ? "--print-pre" : "--update", cwlFile };
         final ImmutablePair<String, String> execute = Utilities.executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
         return execute;
+    }
+
+    public Map cwlJson2Map(final String cwljson) {
+        Map jsonObject;
+        try {
+            jsonObject = (Map) JsonUtils.fromString(cwljson);
+            // Create a context JSON map containing prefixes and definitions
+            Map context = new HashMap();
+            // Customise context...
+            // Create an instance of JsonLdOptions with the standard JSON-LD options
+            JsonLdOptions options = new JsonLdOptions();
+            // Customise options...
+            // Call whichever JSONLD function you want! (e.g. compact)
+            Map compact = (Map) JsonLdProcessor.compact(jsonObject, context, options);
+            return compact;
+        } catch (IOException | JsonLdError e) {
+            throw new RuntimeException(e);
+        }
     }
 }
