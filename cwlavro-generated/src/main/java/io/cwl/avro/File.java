@@ -11,7 +11,7 @@ open(2) and read(2).
  */
 @org.apache.avro.specific.AvroGenerated
 public class File extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"File\",\"doc\":\"Represents a file (or group of files if `secondaryFiles` is specified) that\\nmust be accessible by tools using standard POSIX file system call API such as\\nopen(2) and read(2).\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"File_class\",\"symbols\":[\"File\"]},\"doc\":\"Must be `File` to indicate this object describes a file.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"path\",\"type\":\"string\",\"doc\":\"The path to the file.\",\"jsonldPredicate\":{\"_type\":\"@id\"}},{\"name\":\"checksum\",\"type\":[\"null\",\"string\"],\"doc\":\"Optional hash code for validating file integrity.  Currently must be in the form\\n\\\"sha1$ + hexidecimal string\\\" using the SHA-1 algorithm.\\n\"},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"doc\":\"Optional file size.\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"File\"}],\"doc\":\"A list of additional files that are associated with the primary file\\nand must be transferred alongside the primary file.  Examples include\\nindexes of the primary file, or external references which must be\\nincluded when loading primary document.  A file object listed in\\n`secondaryFiles` may itself include `secondaryFiles` for which the same\\nrules apply.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\"},{\"name\":\"format\",\"type\":[\"null\",\"string\"],\"doc\":\"The format of the file.  This must be a URI of a concept node that\\nrepresents the file format, preferrably defined within an ontology.\\nIf no ontology is available, file formats may be tested by exact match.\\n\\nReasoning about format compatability must be done by checking that an\\ninput file format is the same, `owl:equivalentClass` or\\n`rdfs:subClassOf` the format required by the input parameter.\\n`owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if\\n`<B> owl:equivalentClass <C>` and `<B> owl:subclassOf <A>` then infer\\n`<C> owl:subclassOf <A>`.\\n\\nFile format ontologies may be provided in the \\\"$schema\\\" metadata at the\\nroot of the document.  If no ontologies are specified in `$schema`, the\\nruntime may perform exact file format matches.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true}}],\"docParent\":\"https://w3id.org/cwl/cwl#CWLType\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"File\",\"doc\":\"Represents a file (or group of files if `secondaryFiles` is specified) that\\nmust be accessible by tools using standard POSIX file system call API such as\\nopen(2) and read(2).\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"File_class\",\"symbols\":[\"File\"]},\"doc\":\"Must be `File` to indicate this object describes a file.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"path\",\"type\":\"string\",\"doc\":\"The path to the file.\",\"jsonldPredicate\":{\"_type\":\"@id\"}},{\"name\":\"checksum\",\"type\":[\"null\",\"string\"],\"doc\":\"Optional hash code for validating file integrity.  Currently must be in the form\\n\\\"sha1$ + hexidecimal string\\\" using the SHA-1 algorithm.\\n\"},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"doc\":\"Optional file size.\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"File\"}],\"doc\":\"A list of additional files that are associated with the primary file\\nand must be transferred alongside the primary file.  Examples include\\nindexes of the primary file, or external references which must be\\nincluded when loading primary document.  A file object listed in\\n`secondaryFiles` may itself include `secondaryFiles` for which the same\\nrules apply.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\"},{\"name\":\"format\",\"type\":[\"null\",\"string\"],\"doc\":\"The format of the file.  This must be a URI of a concept node that\\nrepresents the file format, preferrably defined within an ontology.\\nIf no ontology is available, file formats may be tested by exact match.\\n\\nReasoning about format compatability must be done by checking that an\\ninput file format is the same, `owl:equivalentClass` or\\n`rdfs:subClassOf` the format required by the input parameter.\\n`owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if\\n`B owl:equivalentClass C` and `B owl:subclassOf A` then infer\\n`C owl:subclassOf A`.\\n\\nFile format ontologies may be provided in the \\\"$schema\\\" metadata at the\\nroot of the document.  If no ontologies are specified in `$schema`, the\\nruntime may perform exact file format matches.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true}}],\"docParent\":\"https://w3id.org/cwl/cwl#CWLType\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Must be `File` to indicate this object describes a file. */
   @Deprecated public File_class class$;
@@ -39,8 +39,8 @@ Reasoning about format compatability must be done by checking that an
 input file format is the same, `owl:equivalentClass` or
 `rdfs:subClassOf` the format required by the input parameter.
 `owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if
-`<B> owl:equivalentClass <C>` and `<B> owl:subclassOf <A>` then infer
-`<C> owl:subclassOf <A>`.
+`B owl:equivalentClass C` and `B owl:subclassOf A` then infer
+`C owl:subclassOf A`.
 
 File format ontologies may be provided in the "$schema" metadata at the
 root of the document.  If no ontologies are specified in `$schema`, the
@@ -195,8 +195,8 @@ Reasoning about format compatability must be done by checking that an
 input file format is the same, `owl:equivalentClass` or
 `rdfs:subClassOf` the format required by the input parameter.
 `owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if
-`<B> owl:equivalentClass <C>` and `<B> owl:subclassOf <A>` then infer
-`<C> owl:subclassOf <A>`.
+`B owl:equivalentClass C` and `B owl:subclassOf A` then infer
+`C owl:subclassOf A`.
 
 File format ontologies may be provided in the "$schema" metadata at the
 root of the document.  If no ontologies are specified in `$schema`, the
@@ -216,8 +216,8 @@ Reasoning about format compatability must be done by checking that an
 input file format is the same, `owl:equivalentClass` or
 `rdfs:subClassOf` the format required by the input parameter.
 `owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if
-`<B> owl:equivalentClass <C>` and `<B> owl:subclassOf <A>` then infer
-`<C> owl:subclassOf <A>`.
+`B owl:equivalentClass C` and `B owl:subclassOf A` then infer
+`C owl:subclassOf A`.
 
 File format ontologies may be provided in the "$schema" metadata at the
 root of the document.  If no ontologies are specified in `$schema`, the
