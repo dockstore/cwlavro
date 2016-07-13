@@ -1,20 +1,5 @@
 package io.cwl.avro;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
@@ -26,6 +11,20 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Helper class that performs utility functions relating to CWL parsing and manipulation.
@@ -149,7 +148,7 @@ public class CWL {
     public static Gson getTypeSafeCWLToolDocument() {
         final Type hintType = new TypeToken<List<Any>>() {}.getType();
         final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
-            (JsonDeserializer<CharSeqquence>) (json, typeOfT, context) -> json.getAsString()).create();
+            (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
 
         return new GsonBuilder().registerTypeAdapter(CharSequence.class,
             (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cwlavro</artifactId>
-    <name>CWL Java</name>
+    <name>CWL Avro</name>
     <groupId>io.cwl</groupId>
     <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
