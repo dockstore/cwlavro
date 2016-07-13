@@ -149,7 +149,7 @@ public class CWL {
     public static Gson getTypeSafeCWLToolDocument() {
         final Type hintType = new TypeToken<List<Any>>() {}.getType();
         final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
-            (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
+            (JsonDeserializer<CharSeqquence>) (json, typeOfT, context) -> json.getAsString()).create();
 
         return new GsonBuilder().registerTypeAdapter(CharSequence.class,
             (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())
