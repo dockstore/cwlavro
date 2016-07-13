@@ -6,8 +6,8 @@ package io.cwl.avro;
  */
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
-public enum Array_symbol {
-  array  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Array_symbol\",\"symbols\":[\"array\"]}");
+public enum Directory_class {
+  Directory  ;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Directory_class\",\"symbols\":[\"Directory\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 }

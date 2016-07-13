@@ -4,19 +4,23 @@ jdk:
 
 install:
    # install a specific version of the cwl dependencies to test with
-   - pip2.7 install --user cwl-runner cwltool==1.0.20160108200940 schema-salad==1.4.20160108200836
+   - pip2.7 install --user cwl-runner cwltool==1.0.20160712154127 schema-salad==1.14.20160708181155
    - git clone https://github.com/common-workflow-language/common-workflow-language 
    # convert CWL schema salad CWL to standard Avro json
-   - python -mschema_salad --print-avro common-workflow-language/draft-3/CommonWorkflowLanguage.yml  > cwl.avsc
+   - python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
    # get rid of invalid avro symbols
    - sed '/draft-3/d' cwl.avsc > cwl.edited.avsc
+   - sed -i '/draft-2/d' cwl.edited.avsc
+   - sed -i '/draft-4/d' cwl.edited.avsc
+   - sed -i '/dev4/d' cwl.edited.avsc
+   - sed -i '/v1.0/d' cwl.edited.avsc
    # get rid of symbols that screw up javadoc (not sure if invalid avro schema)
    - sed -i 's/<A>/A/g' cwl.edited.avsc
    - sed -i 's/<B>/B/g' cwl.edited.avsc
    - sed -i 's/<C>/C/g' cwl.edited.avsc
-   - wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.7.7/avro-tools-1.7.7.jar
+   - wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.8.1/avro-tools-1.8.1.jar
    # generate Java model classes
-   - java -jar avro-tools-1.7.7.jar compile schema cwl.edited.avsc cwl-temp
+   - java -jar avro-tools-1.8.1.jar compile schema cwl.edited.avsc cwl-temp
    # create packages for the classes
    - sed -i '1i package io.cwl.avro;' cwl-temp/*
    - rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
@@ -24,4 +28,8 @@ install:
    - echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
    - git diff 
 
-script: mvn -B clean install
+script: mvn -B clean install cobertura:cobertura
+
+after_success:
+- mvn -B coveralls:report
+- mvn -B versioneye:update
