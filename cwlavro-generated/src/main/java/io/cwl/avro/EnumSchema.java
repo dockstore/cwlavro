@@ -9,12 +9,12 @@ package io.cwl.avro;
  */
 @org.apache.avro.specific.AvroGenerated
 public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EnumSchema\",\"doc\":\"Define an enumerated type.\\n\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"}},{\"name\":\"symbols\",\"type\":[{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"identity\":true}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EnumSchema\",\"doc\":\"Define an enumerated type.\\n\",\"fields\":[{\"name\":\"symbols\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"identity\":true}},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+  /** Defines the set of valid symbols. */
+  @Deprecated public java.util.List<java.lang.CharSequence> symbols;
   /** Must be `enum` */
   @Deprecated public Enum_symbol type;
-  /** Defines the set of valid symbols. */
-  @Deprecated public java.lang.Object symbols;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -26,17 +26,17 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
   /**
    * All-args constructor.
    */
-  public EnumSchema(Enum_symbol type, java.lang.Object symbols) {
-    this.type = type;
+  public EnumSchema(java.util.List<java.lang.CharSequence> symbols, Enum_symbol type) {
     this.symbols = symbols;
+    this.type = type;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return type;
-    case 1: return symbols;
+    case 0: return symbols;
+    case 1: return type;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -44,10 +44,25 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: type = (Enum_symbol)value$; break;
-    case 1: symbols = (java.lang.Object)value$; break;
+    case 0: symbols = (java.util.List<java.lang.CharSequence>)value$; break;
+    case 1: type = (Enum_symbol)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
+  }
+
+  /**
+   * Gets the value of the 'symbols' field.
+   * Defines the set of valid symbols.   */
+  public java.util.List<java.lang.CharSequence> getSymbols() {
+    return symbols;
+  }
+
+  /**
+   * Sets the value of the 'symbols' field.
+   * Defines the set of valid symbols.   * @param value the value to set.
+   */
+  public void setSymbols(java.util.List<java.lang.CharSequence> value) {
+    this.symbols = value;
   }
 
   /**
@@ -63,21 +78,6 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
    */
   public void setType(Enum_symbol value) {
     this.type = value;
-  }
-
-  /**
-   * Gets the value of the 'symbols' field.
-   * Defines the set of valid symbols.   */
-  public java.lang.Object getSymbols() {
-    return symbols;
-  }
-
-  /**
-   * Sets the value of the 'symbols' field.
-   * Defines the set of valid symbols.   * @param value the value to set.
-   */
-  public void setSymbols(java.lang.Object value) {
-    this.symbols = value;
   }
 
   /** Creates a new EnumSchema RecordBuilder */
@@ -101,8 +101,8 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<EnumSchema>
     implements org.apache.avro.data.RecordBuilder<EnumSchema> {
 
+    private java.util.List<java.lang.CharSequence> symbols;
     private Enum_symbol type;
-    private java.lang.Object symbols;
 
     /** Creates a new Builder */
     private Builder() {
@@ -112,12 +112,12 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
     /** Creates a Builder by copying an existing Builder */
     private Builder(EnumSchema.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.type)) {
-        this.type = data().deepCopy(fields()[0].schema(), other.type);
+      if (isValidValue(fields()[0], other.symbols)) {
+        this.symbols = data().deepCopy(fields()[0].schema(), other.symbols);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.symbols)) {
-        this.symbols = data().deepCopy(fields()[1].schema(), other.symbols);
+      if (isValidValue(fields()[1], other.type)) {
+        this.type = data().deepCopy(fields()[1].schema(), other.type);
         fieldSetFlags()[1] = true;
       }
     }
@@ -125,14 +125,39 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
     /** Creates a Builder by copying an existing EnumSchema instance */
     private Builder(EnumSchema other) {
             super(EnumSchema.SCHEMA$);
-      if (isValidValue(fields()[0], other.type)) {
-        this.type = data().deepCopy(fields()[0].schema(), other.type);
+      if (isValidValue(fields()[0], other.symbols)) {
+        this.symbols = data().deepCopy(fields()[0].schema(), other.symbols);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.symbols)) {
-        this.symbols = data().deepCopy(fields()[1].schema(), other.symbols);
+      if (isValidValue(fields()[1], other.type)) {
+        this.type = data().deepCopy(fields()[1].schema(), other.type);
         fieldSetFlags()[1] = true;
       }
+    }
+
+    /** Gets the value of the 'symbols' field */
+    public java.util.List<java.lang.CharSequence> getSymbols() {
+      return symbols;
+    }
+    
+    /** Sets the value of the 'symbols' field */
+    public EnumSchema.Builder setSymbols(java.util.List<java.lang.CharSequence> value) {
+      validate(fields()[0], value);
+      this.symbols = value;
+      fieldSetFlags()[0] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'symbols' field has been set */
+    public boolean hasSymbols() {
+      return fieldSetFlags()[0];
+    }
+    
+    /** Clears the value of the 'symbols' field */
+    public EnumSchema.Builder clearSymbols() {
+      symbols = null;
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     /** Gets the value of the 'type' field */
@@ -142,45 +167,20 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
     
     /** Sets the value of the 'type' field */
     public EnumSchema.Builder setType(Enum_symbol value) {
-      validate(fields()[0], value);
+      validate(fields()[1], value);
       this.type = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[1] = true;
       return this; 
     }
     
     /** Checks whether the 'type' field has been set */
     public boolean hasType() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[1];
     }
     
     /** Clears the value of the 'type' field */
     public EnumSchema.Builder clearType() {
       type = null;
-      fieldSetFlags()[0] = false;
-      return this;
-    }
-
-    /** Gets the value of the 'symbols' field */
-    public java.lang.Object getSymbols() {
-      return symbols;
-    }
-    
-    /** Sets the value of the 'symbols' field */
-    public EnumSchema.Builder setSymbols(java.lang.Object value) {
-      validate(fields()[1], value);
-      this.symbols = value;
-      fieldSetFlags()[1] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'symbols' field has been set */
-    public boolean hasSymbols() {
-      return fieldSetFlags()[1];
-    }
-    
-    /** Clears the value of the 'symbols' field */
-    public EnumSchema.Builder clearSymbols() {
-      symbols = null;
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -189,8 +189,8 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
     public EnumSchema build() {
       try {
         EnumSchema record = new EnumSchema();
-        record.type = fieldSetFlags()[0] ? this.type : (Enum_symbol) defaultValue(fields()[0]);
-        record.symbols = fieldSetFlags()[1] ? this.symbols : (java.lang.Object) defaultValue(fields()[1]);
+        record.symbols = fieldSetFlags()[0] ? this.symbols : (java.util.List<java.lang.CharSequence>) defaultValue(fields()[0]);
+        record.type = fieldSetFlags()[1] ? this.type : (Enum_symbol) defaultValue(fields()[1]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

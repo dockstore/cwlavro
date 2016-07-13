@@ -7,12 +7,12 @@ package io.cwl.avro;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ArraySchema\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Array_symbol\",\"symbols\":[\"array\"]},\"doc\":\"Must be `array`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"}},{\"name\":\"items\",\"type\":[{\"type\":\"enum\",\"name\":\"PrimitiveType\",\"symbols\":[\"null\",\"boolean\",\"int\",\"long\",\"float\",\"double\",\"string\"]},{\"type\":\"record\",\"name\":\"RecordSchema\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Record_symbol\",\"symbols\":[\"record\"]},\"doc\":\"Must be `record`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"}},{\"name\":\"fields\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"RecordField\",\"doc\":\"A field of a record.\",\"fields\":[{\"name\":\"name\",\"type\":\"string\",\"doc\":\"The name of the field\\n\",\"jsonldPredicate\":\"@id\"},{\"name\":\"doc\",\"type\":[\"null\",\"string\"],\"doc\":\"A documentation string for this field\\n\",\"jsonldPredicate\":\"sld:doc\"},{\"name\":\"type\",\"type\":[\"PrimitiveType\",\"RecordSchema\",{\"type\":\"record\",\"name\":\"EnumSchema\",\"doc\":\"Define an enumerated type.\\n\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"}},{\"name\":\"symbols\",\"type\":[{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"identity\":true}}]},\"ArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\"]}],\"doc\":\"The field type\\n\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"}}]}}],\"doc\":\"Defines the fields of the record.\",\"jsonldPredicate\":\"sld:fields\"}]},\"EnumSchema\",\"ArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\"]}],\"doc\":\"Defines the type of the array elements.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#items\"}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ArraySchema\",\"fields\":[{\"name\":\"items\",\"type\":[{\"type\":\"enum\",\"name\":\"PrimitiveType\",\"symbols\":[\"null\",\"boolean\",\"int\",\"long\",\"float\",\"double\",\"string\"]},{\"type\":\"record\",\"name\":\"RecordSchema\",\"fields\":[{\"name\":\"fields\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"RecordField\",\"doc\":\"A field of a record.\",\"fields\":[{\"name\":\"name\",\"type\":\"string\",\"doc\":\"The name of the field\\n\",\"jsonldPredicate\":\"@id\"},{\"name\":\"doc\",\"type\":[\"null\",\"string\"],\"doc\":\"A documentation string for this field\\n\",\"jsonldPredicate\":\"rdfs:comment\"},{\"name\":\"type\",\"type\":[\"PrimitiveType\",\"RecordSchema\",{\"type\":\"record\",\"name\":\"EnumSchema\",\"doc\":\"Define an enumerated type.\\n\",\"fields\":[{\"name\":\"symbols\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"identity\":true}},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true}}]},\"ArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\"]}],\"doc\":\"The field type\\n\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true}}]}}],\"doc\":\"Defines the fields of the record.\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#fields\",\"mapSubject\":\"name\",\"mapPredicate\":\"type\"}},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Record_symbol\",\"symbols\":[\"record\"]},\"doc\":\"Must be `record`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true}}]},\"EnumSchema\",\"ArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\"]}],\"doc\":\"Defines the type of the array elements.\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#items\"}},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Array_symbol\",\"symbols\":[\"array\"]},\"doc\":\"Must be `array`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** Must be `array` */
-  @Deprecated public Array_symbol type;
   /** Defines the type of the array elements. */
   @Deprecated public java.lang.Object items;
+  /** Must be `array` */
+  @Deprecated public Array_symbol type;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -24,17 +24,17 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
   /**
    * All-args constructor.
    */
-  public ArraySchema(Array_symbol type, java.lang.Object items) {
-    this.type = type;
+  public ArraySchema(java.lang.Object items, Array_symbol type) {
     this.items = items;
+    this.type = type;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return type;
-    case 1: return items;
+    case 0: return items;
+    case 1: return type;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -42,25 +42,10 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: type = (Array_symbol)value$; break;
-    case 1: items = (java.lang.Object)value$; break;
+    case 0: items = (java.lang.Object)value$; break;
+    case 1: type = (Array_symbol)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
-  }
-
-  /**
-   * Gets the value of the 'type' field.
-   * Must be `array`   */
-  public Array_symbol getType() {
-    return type;
-  }
-
-  /**
-   * Sets the value of the 'type' field.
-   * Must be `array`   * @param value the value to set.
-   */
-  public void setType(Array_symbol value) {
-    this.type = value;
   }
 
   /**
@@ -76,6 +61,21 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
    */
   public void setItems(java.lang.Object value) {
     this.items = value;
+  }
+
+  /**
+   * Gets the value of the 'type' field.
+   * Must be `array`   */
+  public Array_symbol getType() {
+    return type;
+  }
+
+  /**
+   * Sets the value of the 'type' field.
+   * Must be `array`   * @param value the value to set.
+   */
+  public void setType(Array_symbol value) {
+    this.type = value;
   }
 
   /** Creates a new ArraySchema RecordBuilder */
@@ -99,8 +99,8 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<ArraySchema>
     implements org.apache.avro.data.RecordBuilder<ArraySchema> {
 
-    private Array_symbol type;
     private java.lang.Object items;
+    private Array_symbol type;
 
     /** Creates a new Builder */
     private Builder() {
@@ -110,12 +110,12 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
     /** Creates a Builder by copying an existing Builder */
     private Builder(ArraySchema.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.type)) {
-        this.type = data().deepCopy(fields()[0].schema(), other.type);
+      if (isValidValue(fields()[0], other.items)) {
+        this.items = data().deepCopy(fields()[0].schema(), other.items);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.items)) {
-        this.items = data().deepCopy(fields()[1].schema(), other.items);
+      if (isValidValue(fields()[1], other.type)) {
+        this.type = data().deepCopy(fields()[1].schema(), other.type);
         fieldSetFlags()[1] = true;
       }
     }
@@ -123,39 +123,14 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
     /** Creates a Builder by copying an existing ArraySchema instance */
     private Builder(ArraySchema other) {
             super(ArraySchema.SCHEMA$);
-      if (isValidValue(fields()[0], other.type)) {
-        this.type = data().deepCopy(fields()[0].schema(), other.type);
+      if (isValidValue(fields()[0], other.items)) {
+        this.items = data().deepCopy(fields()[0].schema(), other.items);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.items)) {
-        this.items = data().deepCopy(fields()[1].schema(), other.items);
+      if (isValidValue(fields()[1], other.type)) {
+        this.type = data().deepCopy(fields()[1].schema(), other.type);
         fieldSetFlags()[1] = true;
       }
-    }
-
-    /** Gets the value of the 'type' field */
-    public Array_symbol getType() {
-      return type;
-    }
-    
-    /** Sets the value of the 'type' field */
-    public ArraySchema.Builder setType(Array_symbol value) {
-      validate(fields()[0], value);
-      this.type = value;
-      fieldSetFlags()[0] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'type' field has been set */
-    public boolean hasType() {
-      return fieldSetFlags()[0];
-    }
-    
-    /** Clears the value of the 'type' field */
-    public ArraySchema.Builder clearType() {
-      type = null;
-      fieldSetFlags()[0] = false;
-      return this;
     }
 
     /** Gets the value of the 'items' field */
@@ -165,20 +140,45 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
     
     /** Sets the value of the 'items' field */
     public ArraySchema.Builder setItems(java.lang.Object value) {
-      validate(fields()[1], value);
+      validate(fields()[0], value);
       this.items = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[0] = true;
       return this; 
     }
     
     /** Checks whether the 'items' field has been set */
     public boolean hasItems() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[0];
     }
     
     /** Clears the value of the 'items' field */
     public ArraySchema.Builder clearItems() {
       items = null;
+      fieldSetFlags()[0] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'type' field */
+    public Array_symbol getType() {
+      return type;
+    }
+    
+    /** Sets the value of the 'type' field */
+    public ArraySchema.Builder setType(Array_symbol value) {
+      validate(fields()[1], value);
+      this.type = value;
+      fieldSetFlags()[1] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'type' field has been set */
+    public boolean hasType() {
+      return fieldSetFlags()[1];
+    }
+    
+    /** Clears the value of the 'type' field */
+    public ArraySchema.Builder clearType() {
+      type = null;
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -187,8 +187,8 @@ public class ArraySchema extends org.apache.avro.specific.SpecificRecordBase imp
     public ArraySchema build() {
       try {
         ArraySchema record = new ArraySchema();
-        record.type = fieldSetFlags()[0] ? this.type : (Array_symbol) defaultValue(fields()[0]);
-        record.items = fieldSetFlags()[1] ? this.items : (java.lang.Object) defaultValue(fields()[1]);
+        record.items = fieldSetFlags()[0] ? this.items : (java.lang.Object) defaultValue(fields()[0]);
+        record.type = fieldSetFlags()[1] ? this.type : (Array_symbol) defaultValue(fields()[1]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

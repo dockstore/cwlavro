@@ -11,17 +11,94 @@ open(2) and read(2).
  */
 @org.apache.avro.specific.AvroGenerated
 public class File extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"File\",\"doc\":\"Represents a file (or group of files if `secondaryFiles` is specified) that\\nmust be accessible by tools using standard POSIX file system call API such as\\nopen(2) and read(2).\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"File_class\",\"symbols\":[\"File\"]},\"doc\":\"Must be `File` to indicate this object describes a file.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"path\",\"type\":\"string\",\"doc\":\"The path to the file.\",\"jsonldPredicate\":{\"_type\":\"@id\"}},{\"name\":\"checksum\",\"type\":[\"null\",\"string\"],\"doc\":\"Optional hash code for validating file integrity.  Currently must be in the form\\n\\\"sha1$ + hexidecimal string\\\" using the SHA-1 algorithm.\\n\"},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"doc\":\"Optional file size.\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"File\"}],\"doc\":\"A list of additional files that are associated with the primary file\\nand must be transferred alongside the primary file.  Examples include\\nindexes of the primary file, or external references which must be\\nincluded when loading primary document.  A file object listed in\\n`secondaryFiles` may itself include `secondaryFiles` for which the same\\nrules apply.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\"},{\"name\":\"format\",\"type\":[\"null\",\"string\"],\"doc\":\"The format of the file.  This must be a URI of a concept node that\\nrepresents the file format, preferrably defined within an ontology.\\nIf no ontology is available, file formats may be tested by exact match.\\n\\nReasoning about format compatability must be done by checking that an\\ninput file format is the same, `owl:equivalentClass` or\\n`rdfs:subClassOf` the format required by the input parameter.\\n`owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if\\n`B owl:equivalentClass C` and `B owl:subclassOf A` then infer\\n`C owl:subclassOf A`.\\n\\nFile format ontologies may be provided in the \\\"$schema\\\" metadata at the\\nroot of the document.  If no ontologies are specified in `$schema`, the\\nruntime may perform exact file format matches.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true}}],\"docParent\":\"https://w3id.org/cwl/cwl#CWLType\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"File\",\"doc\":\"Represents a file (or group of files if `secondaryFiles` is specified) that\\nmust be accessible by tools using standard POSIX file system call API such as\\nopen(2) and read(2).\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"File_class\",\"symbols\":[\"File\"]},\"doc\":\"Must be `File` to indicate this object describes a file.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"location\",\"type\":[\"null\",\"string\"],\"doc\":\"An IRI that identifies the file resource.  This may be a relative\\nreference, in which case it must be resolved using the base IRI of the\\ndocument.  The location may refer to a local or remote resource; the\\nimplementation must use the IRI to retrieve file content.  If an\\nimplementation is unable to retrieve the file content stored at a\\nremote resource (due to unsupported protocol, access denied, or other\\nissue) it must signal an error.\\n\\nIf the `location` field is not provided, the `contents` field must be\\nprovided.  The implementation must assign a unique identifier for\\nthe `location` field.\\n\\nIf the `path` field is provided but the `location` field is not, an\\nimplementation may assign the value of the `path` field to `location`,\\nthen follow the rules above.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"@id\"}},{\"name\":\"path\",\"type\":[\"null\",\"string\"],\"doc\":\"The local host path where the File is available when a CommandLineTool is\\nexecuted.  This field must be set by the implementation.  The final\\npath component must match the value of `basename`.  This field\\nmust not be used in any other context.  The command line tool being\\nexecuted must be able to to access the file at `path` using the POSIX\\n`open(2)` syscall.\\n\\nAs a special case, if the `path` field is provided but the `location`\\nfield is not, an implementation may assign the value of the `path`\\nfield to `location`, and remove the `path` field.\\n\\nIf the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)\\n(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\\\\`, `\\\"`, `'`,\\n`<space>`, `<tab>`, and `<newline>`) or characters\\n[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)\\nfor [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)\\nthen implementations may terminate the process with a\\n`permanentFailure`.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#path\"}},{\"name\":\"basename\",\"type\":[\"null\",\"string\"],\"doc\":\"The base name of the file, that is, the name of the file without any\\nleading directory path.  The base name must not contain a slash `/`.\\n\\nIf not provided, the implementation must set this field based on the\\n`location` field by taking the final path component after parsing\\n`location` as an IRI.  If `basename` is provided, it is not required to\\nmatch the value from `location`.\\n\\nWhen this file is made available to a CommandLineTool, it must be named\\nwith `basename`, i.e. the final component of the `path` field must match\\n`basename`.\\n\",\"jsonldPredicate\":\"cwl:basename\"},{\"name\":\"dirname\",\"type\":[\"null\",\"string\"],\"doc\":\"The name of the directory containing file, that is, the path leading up\\nto the final slash in the path such that `dirname + '/' + basename ==\\npath`.\\n\\nThe implementation must set this field based on the value of `path`\\nprior to evaluating parameter references or expressions in a\\nCommandLineTool document.  This field must not be used in any other\\ncontext.\\n\"},{\"name\":\"nameroot\",\"type\":[\"null\",\"string\"],\"doc\":\"The basename root such that `nameroot + nameext == basename`, and\\n`nameext` is empty or begins with a period and contains at most one\\nperiod.  For the purposess of path splitting leading periods on the\\nbasename are ignored; a basename of `.cshrc` will have a nameroot of\\n`.cshrc`.\\n\\nThe implementation must set this field automatically based on the value\\nof `basename` prior to evaluating parameter references or expressions.\\n\"},{\"name\":\"nameext\",\"type\":[\"null\",\"string\"],\"doc\":\"The basename extension such that `nameroot + nameext == basename`, and\\n`nameext` is empty or begins with a period and contains at most one\\nperiod.  Leading periods on the basename are ignored; a basename of\\n`.cshrc` will have an empty `nameext`.\\n\\nThe implementation must set this field automatically based on the value\\nof `basename` prior to evaluating parameter references or expressions.\\n\"},{\"name\":\"checksum\",\"type\":[\"null\",\"string\"],\"doc\":\"Optional hash code for validating file integrity.  Currently must be in the form\\n\\\"sha1$ + hexadecimal string\\\" using the SHA-1 algorithm.\\n\"},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"doc\":\"Optional file size\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",{\"type\":\"array\",\"items\":[\"File\",{\"type\":\"record\",\"name\":\"Directory\",\"doc\":\"Represents a directory to present to a command line tool.\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"Directory_class\",\"symbols\":[\"Directory\"]},\"doc\":\"Must be `Directory` to indicate this object describes a Directory.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"location\",\"type\":[\"null\",\"string\"],\"doc\":\"An IRI that identifies the directory resource.  This may be a relative\\nreference, in which case it must be resolved using the base IRI of the\\ndocument.  The location may refer to a local or remote resource.  If\\nthe `listing` field is not set, the implementation must use the\\nlocation IRI to retrieve directory listing.  If an implementation is\\nunable to retrieve the directory listing stored at a remote resource (due to\\nunsupported protocol, access denied, or other issue) it must signal an\\nerror.\\n\\nIf the `location` field is not provided, the `listing` field must be\\nprovided.  The implementation must assign a unique identifier for\\nthe `location` field.\\n\\nIf the `path` field is provided but the `location` field is not, an\\nimplementation may assign the value of the `path` field to `location`,\\nthen follow the rules above.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"@id\"}},{\"name\":\"path\",\"type\":[\"null\",\"string\"],\"doc\":\"The local path where the Directory is made available prior to executing a\\nCommandLineTool.  This must be set by the implementation.  This field\\nmust not be used in any other context.  The command line tool being\\nexecuted must be able to to access the directory at `path` using the POSIX\\n`opendir(2)` syscall.\\n\\nIf the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)\\n(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\\\\`, `\\\"`, `'`,\\n`<space>`, `<tab>`, and `<newline>`) or characters\\n[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)\\nfor [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)\\nthen implementations may terminate the process with a\\n`permanentFailure`.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#path\"}},{\"name\":\"basename\",\"type\":[\"null\",\"string\"],\"doc\":\"The base name of the directory, that is, the name of the file without any\\nleading directory path.  The base name must not contain a slash `/`.\\n\\nIf not provided, the implementation must set this field based on the\\n`location` field by taking the final path component after parsing\\n`location` as an IRI.  If `basename` is provided, it is not required to\\nmatch the value from `location`.\\n\\nWhen this file is made available to a CommandLineTool, it must be named\\nwith `basename`, i.e. the final component of the `path` field must match\\n`basename`.\\n\",\"jsonldPredicate\":\"cwl:basename\"},{\"name\":\"listing\",\"type\":[\"null\",{\"type\":\"array\",\"items\":[\"File\",\"Directory\"]}],\"doc\":\"List of files or subdirectories contained in this directory.  The name\\nof each file or subdirectory is determined by the `basename` field of\\neach `File` or `Directory` object.  It is an error if a `File` shares a\\n`basename` with any other entry in `listing`.  If two or more\\n`Directory` object share the same `basename`, this must be treated as\\nequivalent to a single subdirectory with the listings recursively\\nmerg","ed.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#listing\"}}],\"docAfter\":\"https://w3id.org/cwl/cwl#File\"}]}],\"doc\":\"A list of additional files that are associated with the primary file\\nand must be transferred alongside the primary file.  Examples include\\nindexes of the primary file, or external references which must be\\nincluded when loading primary document.  A file object listed in\\n`secondaryFiles` may itself include `secondaryFiles` for which the same\\nrules apply.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\"},{\"name\":\"format\",\"type\":[\"null\",\"string\"],\"doc\":\"The format of the file: this must be an IRI of a concept node that\\nrepresents the file format, preferrably defined within an ontology.\\nIf no ontology is available, file formats may be tested by exact match.\\n\\nReasoning about format compatability must be done by checking that an\\ninput file format is the same, `owl:equivalentClass` or\\n`rdfs:subClassOf` the format required by the input parameter.\\n`owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if\\n`B owl:equivalentClass C` and `B owl:subclassOf A` then infer\\n`C owl:subclassOf A`.\\n\\nFile format ontologies may be provided in the \\\"$schema\\\" metadata at the\\nroot of the document.  If no ontologies are specified in `$schema`, the\\nruntime may perform exact file format matches.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true}},{\"name\":\"contents\",\"type\":[\"null\",\"string\"],\"doc\":\"File contents literal.  Maximum of 64 KiB.\\n\\nIf neither `location` nor `path` is provided, `contents` must be\\nnon-null.  The implementation must assign a unique identifier for the\\n`location` field.  When the file is staged as input to CommandLineTool,\\nthe value of `contents` must be written to a file.\\n\\nIf `loadContents` of `inputBinding` or `outputBinding` is true and\\n`location` is valid, the implementation must read up to the first 64\\nKiB of text from the file and place it in the \\\"contents\\\" field.\\n\"}],\"docParent\":\"https://w3id.org/cwl/cwl#CWLType\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Must be `File` to indicate this object describes a file. */
   @Deprecated public File_class class$;
-  /** The path to the file. */
+  /** An IRI that identifies the file resource.  This may be a relative
+reference, in which case it must be resolved using the base IRI of the
+document.  The location may refer to a local or remote resource; the
+implementation must use the IRI to retrieve file content.  If an
+implementation is unable to retrieve the file content stored at a
+remote resource (due to unsupported protocol, access denied, or other
+issue) it must signal an error.
+
+If the `location` field is not provided, the `contents` field must be
+provided.  The implementation must assign a unique identifier for
+the `location` field.
+
+If the `path` field is provided but the `location` field is not, an
+implementation may assign the value of the `path` field to `location`,
+then follow the rules above.
+ */
+  @Deprecated public java.lang.CharSequence location;
+  /** The local host path where the File is available when a CommandLineTool is
+executed.  This field must be set by the implementation.  The final
+path component must match the value of `basename`.  This field
+must not be used in any other context.  The command line tool being
+executed must be able to to access the file at `path` using the POSIX
+`open(2)` syscall.
+
+As a special case, if the `path` field is provided but the `location`
+field is not, an implementation may assign the value of the `path`
+field to `location`, and remove the `path` field.
+
+If the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)
+(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\`, `"`, `'`,
+`<space>`, `<tab>`, and `<newline>`) or characters
+[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)
+for [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)
+then implementations may terminate the process with a
+`permanentFailure`.
+ */
   @Deprecated public java.lang.CharSequence path;
+  /** The base name of the file, that is, the name of the file without any
+leading directory path.  The base name must not contain a slash `/`.
+
+If not provided, the implementation must set this field based on the
+`location` field by taking the final path component after parsing
+`location` as an IRI.  If `basename` is provided, it is not required to
+match the value from `location`.
+
+When this file is made available to a CommandLineTool, it must be named
+with `basename`, i.e. the final component of the `path` field must match
+`basename`.
+ */
+  @Deprecated public java.lang.CharSequence basename;
+  /** The name of the directory containing file, that is, the path leading up
+to the final slash in the path such that `dirname + '/' + basename ==
+path`.
+
+The implementation must set this field based on the value of `path`
+prior to evaluating parameter references or expressions in a
+CommandLineTool document.  This field must not be used in any other
+context.
+ */
+  @Deprecated public java.lang.CharSequence dirname;
+  /** The basename root such that `nameroot + nameext == basename`, and
+`nameext` is empty or begins with a period and contains at most one
+period.  For the purposess of path splitting leading periods on the
+basename are ignored; a basename of `.cshrc` will have a nameroot of
+`.cshrc`.
+
+The implementation must set this field automatically based on the value
+of `basename` prior to evaluating parameter references or expressions.
+ */
+  @Deprecated public java.lang.CharSequence nameroot;
+  /** The basename extension such that `nameroot + nameext == basename`, and
+`nameext` is empty or begins with a period and contains at most one
+period.  Leading periods on the basename are ignored; a basename of
+`.cshrc` will have an empty `nameext`.
+
+The implementation must set this field automatically based on the value
+of `basename` prior to evaluating parameter references or expressions.
+ */
+  @Deprecated public java.lang.CharSequence nameext;
   /** Optional hash code for validating file integrity.  Currently must be in the form
-"sha1$ + hexidecimal string" using the SHA-1 algorithm.
+"sha1$ + hexadecimal string" using the SHA-1 algorithm.
  */
   @Deprecated public java.lang.CharSequence checksum;
-  /** Optional file size. */
+  /** Optional file size */
   @Deprecated public java.lang.Long size;
   /** A list of additional files that are associated with the primary file
 and must be transferred alongside the primary file.  Examples include
@@ -30,8 +107,8 @@ included when loading primary document.  A file object listed in
 `secondaryFiles` may itself include `secondaryFiles` for which the same
 rules apply.
  */
-  @Deprecated public java.util.List<File> secondaryFiles;
-  /** The format of the file.  This must be a URI of a concept node that
+  @Deprecated public java.util.List<java.lang.Object> secondaryFiles;
+  /** The format of the file: this must be an IRI of a concept node that
 represents the file format, preferrably defined within an ontology.
 If no ontology is available, file formats may be tested by exact match.
 
@@ -47,6 +124,18 @@ root of the document.  If no ontologies are specified in `$schema`, the
 runtime may perform exact file format matches.
  */
   @Deprecated public java.lang.CharSequence format;
+  /** File contents literal.  Maximum of 64 KiB.
+
+If neither `location` nor `path` is provided, `contents` must be
+non-null.  The implementation must assign a unique identifier for the
+`location` field.  When the file is staged as input to CommandLineTool,
+the value of `contents` must be written to a file.
+
+If `loadContents` of `inputBinding` or `outputBinding` is true and
+`location` is valid, the implementation must read up to the first 64
+KiB of text from the file and place it in the "contents" field.
+ */
+  @Deprecated public java.lang.CharSequence contents;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -58,13 +147,19 @@ runtime may perform exact file format matches.
   /**
    * All-args constructor.
    */
-  public File(File_class class$, java.lang.CharSequence path, java.lang.CharSequence checksum, java.lang.Long size, java.util.List<File> secondaryFiles, java.lang.CharSequence format) {
+  public File(File_class class$, java.lang.CharSequence location, java.lang.CharSequence path, java.lang.CharSequence basename, java.lang.CharSequence dirname, java.lang.CharSequence nameroot, java.lang.CharSequence nameext, java.lang.CharSequence checksum, java.lang.Long size, java.util.List<java.lang.Object> secondaryFiles, java.lang.CharSequence format, java.lang.CharSequence contents) {
     this.class$ = class$;
+    this.location = location;
     this.path = path;
+    this.basename = basename;
+    this.dirname = dirname;
+    this.nameroot = nameroot;
+    this.nameext = nameext;
     this.checksum = checksum;
     this.size = size;
     this.secondaryFiles = secondaryFiles;
     this.format = format;
+    this.contents = contents;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -72,11 +167,17 @@ runtime may perform exact file format matches.
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
-    case 1: return path;
-    case 2: return checksum;
-    case 3: return size;
-    case 4: return secondaryFiles;
-    case 5: return format;
+    case 1: return location;
+    case 2: return path;
+    case 3: return basename;
+    case 4: return dirname;
+    case 5: return nameroot;
+    case 6: return nameext;
+    case 7: return checksum;
+    case 8: return size;
+    case 9: return secondaryFiles;
+    case 10: return format;
+    case 11: return contents;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -85,11 +186,17 @@ runtime may perform exact file format matches.
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: class$ = (File_class)value$; break;
-    case 1: path = (java.lang.CharSequence)value$; break;
-    case 2: checksum = (java.lang.CharSequence)value$; break;
-    case 3: size = (java.lang.Long)value$; break;
-    case 4: secondaryFiles = (java.util.List<File>)value$; break;
-    case 5: format = (java.lang.CharSequence)value$; break;
+    case 1: location = (java.lang.CharSequence)value$; break;
+    case 2: path = (java.lang.CharSequence)value$; break;
+    case 3: basename = (java.lang.CharSequence)value$; break;
+    case 4: dirname = (java.lang.CharSequence)value$; break;
+    case 5: nameroot = (java.lang.CharSequence)value$; break;
+    case 6: nameext = (java.lang.CharSequence)value$; break;
+    case 7: checksum = (java.lang.CharSequence)value$; break;
+    case 8: size = (java.lang.Long)value$; break;
+    case 9: secondaryFiles = (java.util.List<java.lang.Object>)value$; break;
+    case 10: format = (java.lang.CharSequence)value$; break;
+    case 11: contents = (java.lang.CharSequence)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -110,24 +217,233 @@ runtime may perform exact file format matches.
   }
 
   /**
+   * Gets the value of the 'location' field.
+   * An IRI that identifies the file resource.  This may be a relative
+reference, in which case it must be resolved using the base IRI of the
+document.  The location may refer to a local or remote resource; the
+implementation must use the IRI to retrieve file content.  If an
+implementation is unable to retrieve the file content stored at a
+remote resource (due to unsupported protocol, access denied, or other
+issue) it must signal an error.
+
+If the `location` field is not provided, the `contents` field must be
+provided.  The implementation must assign a unique identifier for
+the `location` field.
+
+If the `path` field is provided but the `location` field is not, an
+implementation may assign the value of the `path` field to `location`,
+then follow the rules above.
+   */
+  public java.lang.CharSequence getLocation() {
+    return location;
+  }
+
+  /**
+   * Sets the value of the 'location' field.
+   * An IRI that identifies the file resource.  This may be a relative
+reference, in which case it must be resolved using the base IRI of the
+document.  The location may refer to a local or remote resource; the
+implementation must use the IRI to retrieve file content.  If an
+implementation is unable to retrieve the file content stored at a
+remote resource (due to unsupported protocol, access denied, or other
+issue) it must signal an error.
+
+If the `location` field is not provided, the `contents` field must be
+provided.  The implementation must assign a unique identifier for
+the `location` field.
+
+If the `path` field is provided but the `location` field is not, an
+implementation may assign the value of the `path` field to `location`,
+then follow the rules above.
+   * @param value the value to set.
+   */
+  public void setLocation(java.lang.CharSequence value) {
+    this.location = value;
+  }
+
+  /**
    * Gets the value of the 'path' field.
-   * The path to the file.   */
+   * The local host path where the File is available when a CommandLineTool is
+executed.  This field must be set by the implementation.  The final
+path component must match the value of `basename`.  This field
+must not be used in any other context.  The command line tool being
+executed must be able to to access the file at `path` using the POSIX
+`open(2)` syscall.
+
+As a special case, if the `path` field is provided but the `location`
+field is not, an implementation may assign the value of the `path`
+field to `location`, and remove the `path` field.
+
+If the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)
+(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\`, `"`, `'`,
+`<space>`, `<tab>`, and `<newline>`) or characters
+[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)
+for [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)
+then implementations may terminate the process with a
+`permanentFailure`.
+   */
   public java.lang.CharSequence getPath() {
     return path;
   }
 
   /**
    * Sets the value of the 'path' field.
-   * The path to the file.   * @param value the value to set.
+   * The local host path where the File is available when a CommandLineTool is
+executed.  This field must be set by the implementation.  The final
+path component must match the value of `basename`.  This field
+must not be used in any other context.  The command line tool being
+executed must be able to to access the file at `path` using the POSIX
+`open(2)` syscall.
+
+As a special case, if the `path` field is provided but the `location`
+field is not, an implementation may assign the value of the `path`
+field to `location`, and remove the `path` field.
+
+If the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)
+(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\`, `"`, `'`,
+`<space>`, `<tab>`, and `<newline>`) or characters
+[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)
+for [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)
+then implementations may terminate the process with a
+`permanentFailure`.
+   * @param value the value to set.
    */
   public void setPath(java.lang.CharSequence value) {
     this.path = value;
   }
 
   /**
+   * Gets the value of the 'basename' field.
+   * The base name of the file, that is, the name of the file without any
+leading directory path.  The base name must not contain a slash `/`.
+
+If not provided, the implementation must set this field based on the
+`location` field by taking the final path component after parsing
+`location` as an IRI.  If `basename` is provided, it is not required to
+match the value from `location`.
+
+When this file is made available to a CommandLineTool, it must be named
+with `basename`, i.e. the final component of the `path` field must match
+`basename`.
+   */
+  public java.lang.CharSequence getBasename() {
+    return basename;
+  }
+
+  /**
+   * Sets the value of the 'basename' field.
+   * The base name of the file, that is, the name of the file without any
+leading directory path.  The base name must not contain a slash `/`.
+
+If not provided, the implementation must set this field based on the
+`location` field by taking the final path component after parsing
+`location` as an IRI.  If `basename` is provided, it is not required to
+match the value from `location`.
+
+When this file is made available to a CommandLineTool, it must be named
+with `basename`, i.e. the final component of the `path` field must match
+`basename`.
+   * @param value the value to set.
+   */
+  public void setBasename(java.lang.CharSequence value) {
+    this.basename = value;
+  }
+
+  /**
+   * Gets the value of the 'dirname' field.
+   * The name of the directory containing file, that is, the path leading up
+to the final slash in the path such that `dirname + '/' + basename ==
+path`.
+
+The implementation must set this field based on the value of `path`
+prior to evaluating parameter references or expressions in a
+CommandLineTool document.  This field must not be used in any other
+context.
+   */
+  public java.lang.CharSequence getDirname() {
+    return dirname;
+  }
+
+  /**
+   * Sets the value of the 'dirname' field.
+   * The name of the directory containing file, that is, the path leading up
+to the final slash in the path such that `dirname + '/' + basename ==
+path`.
+
+The implementation must set this field based on the value of `path`
+prior to evaluating parameter references or expressions in a
+CommandLineTool document.  This field must not be used in any other
+context.
+   * @param value the value to set.
+   */
+  public void setDirname(java.lang.CharSequence value) {
+    this.dirname = value;
+  }
+
+  /**
+   * Gets the value of the 'nameroot' field.
+   * The basename root such that `nameroot + nameext == basename`, and
+`nameext` is empty or begins with a period and contains at most one
+period.  For the purposess of path splitting leading periods on the
+basename are ignored; a basename of `.cshrc` will have a nameroot of
+`.cshrc`.
+
+The implementation must set this field automatically based on the value
+of `basename` prior to evaluating parameter references or expressions.
+   */
+  public java.lang.CharSequence getNameroot() {
+    return nameroot;
+  }
+
+  /**
+   * Sets the value of the 'nameroot' field.
+   * The basename root such that `nameroot + nameext == basename`, and
+`nameext` is empty or begins with a period and contains at most one
+period.  For the purposess of path splitting leading periods on the
+basename are ignored; a basename of `.cshrc` will have a nameroot of
+`.cshrc`.
+
+The implementation must set this field automatically based on the value
+of `basename` prior to evaluating parameter references or expressions.
+   * @param value the value to set.
+   */
+  public void setNameroot(java.lang.CharSequence value) {
+    this.nameroot = value;
+  }
+
+  /**
+   * Gets the value of the 'nameext' field.
+   * The basename extension such that `nameroot + nameext == basename`, and
+`nameext` is empty or begins with a period and contains at most one
+period.  Leading periods on the basename are ignored; a basename of
+`.cshrc` will have an empty `nameext`.
+
+The implementation must set this field automatically based on the value
+of `basename` prior to evaluating parameter references or expressions.
+   */
+  public java.lang.CharSequence getNameext() {
+    return nameext;
+  }
+
+  /**
+   * Sets the value of the 'nameext' field.
+   * The basename extension such that `nameroot + nameext == basename`, and
+`nameext` is empty or begins with a period and contains at most one
+period.  Leading periods on the basename are ignored; a basename of
+`.cshrc` will have an empty `nameext`.
+
+The implementation must set this field automatically based on the value
+of `basename` prior to evaluating parameter references or expressions.
+   * @param value the value to set.
+   */
+  public void setNameext(java.lang.CharSequence value) {
+    this.nameext = value;
+  }
+
+  /**
    * Gets the value of the 'checksum' field.
    * Optional hash code for validating file integrity.  Currently must be in the form
-"sha1$ + hexidecimal string" using the SHA-1 algorithm.
+"sha1$ + hexadecimal string" using the SHA-1 algorithm.
    */
   public java.lang.CharSequence getChecksum() {
     return checksum;
@@ -136,7 +452,7 @@ runtime may perform exact file format matches.
   /**
    * Sets the value of the 'checksum' field.
    * Optional hash code for validating file integrity.  Currently must be in the form
-"sha1$ + hexidecimal string" using the SHA-1 algorithm.
+"sha1$ + hexadecimal string" using the SHA-1 algorithm.
    * @param value the value to set.
    */
   public void setChecksum(java.lang.CharSequence value) {
@@ -145,14 +461,14 @@ runtime may perform exact file format matches.
 
   /**
    * Gets the value of the 'size' field.
-   * Optional file size.   */
+   * Optional file size   */
   public java.lang.Long getSize() {
     return size;
   }
 
   /**
    * Sets the value of the 'size' field.
-   * Optional file size.   * @param value the value to set.
+   * Optional file size   * @param value the value to set.
    */
   public void setSize(java.lang.Long value) {
     this.size = value;
@@ -167,7 +483,7 @@ included when loading primary document.  A file object listed in
 `secondaryFiles` may itself include `secondaryFiles` for which the same
 rules apply.
    */
-  public java.util.List<File> getSecondaryFiles() {
+  public java.util.List<java.lang.Object> getSecondaryFiles() {
     return secondaryFiles;
   }
 
@@ -181,13 +497,13 @@ included when loading primary document.  A file object listed in
 rules apply.
    * @param value the value to set.
    */
-  public void setSecondaryFiles(java.util.List<File> value) {
+  public void setSecondaryFiles(java.util.List<java.lang.Object> value) {
     this.secondaryFiles = value;
   }
 
   /**
    * Gets the value of the 'format' field.
-   * The format of the file.  This must be a URI of a concept node that
+   * The format of the file: this must be an IRI of a concept node that
 represents the file format, preferrably defined within an ontology.
 If no ontology is available, file formats may be tested by exact match.
 
@@ -208,7 +524,7 @@ runtime may perform exact file format matches.
 
   /**
    * Sets the value of the 'format' field.
-   * The format of the file.  This must be a URI of a concept node that
+   * The format of the file: this must be an IRI of a concept node that
 represents the file format, preferrably defined within an ontology.
 If no ontology is available, file formats may be tested by exact match.
 
@@ -226,6 +542,41 @@ runtime may perform exact file format matches.
    */
   public void setFormat(java.lang.CharSequence value) {
     this.format = value;
+  }
+
+  /**
+   * Gets the value of the 'contents' field.
+   * File contents literal.  Maximum of 64 KiB.
+
+If neither `location` nor `path` is provided, `contents` must be
+non-null.  The implementation must assign a unique identifier for the
+`location` field.  When the file is staged as input to CommandLineTool,
+the value of `contents` must be written to a file.
+
+If `loadContents` of `inputBinding` or `outputBinding` is true and
+`location` is valid, the implementation must read up to the first 64
+KiB of text from the file and place it in the "contents" field.
+   */
+  public java.lang.CharSequence getContents() {
+    return contents;
+  }
+
+  /**
+   * Sets the value of the 'contents' field.
+   * File contents literal.  Maximum of 64 KiB.
+
+If neither `location` nor `path` is provided, `contents` must be
+non-null.  The implementation must assign a unique identifier for the
+`location` field.  When the file is staged as input to CommandLineTool,
+the value of `contents` must be written to a file.
+
+If `loadContents` of `inputBinding` or `outputBinding` is true and
+`location` is valid, the implementation must read up to the first 64
+KiB of text from the file and place it in the "contents" field.
+   * @param value the value to set.
+   */
+  public void setContents(java.lang.CharSequence value) {
+    this.contents = value;
   }
 
   /** Creates a new File RecordBuilder */
@@ -250,11 +601,17 @@ runtime may perform exact file format matches.
     implements org.apache.avro.data.RecordBuilder<File> {
 
     private File_class class$;
+    private java.lang.CharSequence location;
     private java.lang.CharSequence path;
+    private java.lang.CharSequence basename;
+    private java.lang.CharSequence dirname;
+    private java.lang.CharSequence nameroot;
+    private java.lang.CharSequence nameext;
     private java.lang.CharSequence checksum;
     private java.lang.Long size;
-    private java.util.List<File> secondaryFiles;
+    private java.util.List<java.lang.Object> secondaryFiles;
     private java.lang.CharSequence format;
+    private java.lang.CharSequence contents;
 
     /** Creates a new Builder */
     private Builder() {
@@ -268,25 +625,49 @@ runtime may perform exact file format matches.
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.path)) {
-        this.path = data().deepCopy(fields()[1].schema(), other.path);
+      if (isValidValue(fields()[1], other.location)) {
+        this.location = data().deepCopy(fields()[1].schema(), other.location);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.checksum)) {
-        this.checksum = data().deepCopy(fields()[2].schema(), other.checksum);
+      if (isValidValue(fields()[2], other.path)) {
+        this.path = data().deepCopy(fields()[2].schema(), other.path);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.size)) {
-        this.size = data().deepCopy(fields()[3].schema(), other.size);
+      if (isValidValue(fields()[3], other.basename)) {
+        this.basename = data().deepCopy(fields()[3].schema(), other.basename);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.secondaryFiles)) {
-        this.secondaryFiles = data().deepCopy(fields()[4].schema(), other.secondaryFiles);
+      if (isValidValue(fields()[4], other.dirname)) {
+        this.dirname = data().deepCopy(fields()[4].schema(), other.dirname);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.format)) {
-        this.format = data().deepCopy(fields()[5].schema(), other.format);
+      if (isValidValue(fields()[5], other.nameroot)) {
+        this.nameroot = data().deepCopy(fields()[5].schema(), other.nameroot);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.nameext)) {
+        this.nameext = data().deepCopy(fields()[6].schema(), other.nameext);
+        fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.checksum)) {
+        this.checksum = data().deepCopy(fields()[7].schema(), other.checksum);
+        fieldSetFlags()[7] = true;
+      }
+      if (isValidValue(fields()[8], other.size)) {
+        this.size = data().deepCopy(fields()[8].schema(), other.size);
+        fieldSetFlags()[8] = true;
+      }
+      if (isValidValue(fields()[9], other.secondaryFiles)) {
+        this.secondaryFiles = data().deepCopy(fields()[9].schema(), other.secondaryFiles);
+        fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.format)) {
+        this.format = data().deepCopy(fields()[10].schema(), other.format);
+        fieldSetFlags()[10] = true;
+      }
+      if (isValidValue(fields()[11], other.contents)) {
+        this.contents = data().deepCopy(fields()[11].schema(), other.contents);
+        fieldSetFlags()[11] = true;
       }
     }
     
@@ -297,25 +678,49 @@ runtime may perform exact file format matches.
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.path)) {
-        this.path = data().deepCopy(fields()[1].schema(), other.path);
+      if (isValidValue(fields()[1], other.location)) {
+        this.location = data().deepCopy(fields()[1].schema(), other.location);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.checksum)) {
-        this.checksum = data().deepCopy(fields()[2].schema(), other.checksum);
+      if (isValidValue(fields()[2], other.path)) {
+        this.path = data().deepCopy(fields()[2].schema(), other.path);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.size)) {
-        this.size = data().deepCopy(fields()[3].schema(), other.size);
+      if (isValidValue(fields()[3], other.basename)) {
+        this.basename = data().deepCopy(fields()[3].schema(), other.basename);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.secondaryFiles)) {
-        this.secondaryFiles = data().deepCopy(fields()[4].schema(), other.secondaryFiles);
+      if (isValidValue(fields()[4], other.dirname)) {
+        this.dirname = data().deepCopy(fields()[4].schema(), other.dirname);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.format)) {
-        this.format = data().deepCopy(fields()[5].schema(), other.format);
+      if (isValidValue(fields()[5], other.nameroot)) {
+        this.nameroot = data().deepCopy(fields()[5].schema(), other.nameroot);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.nameext)) {
+        this.nameext = data().deepCopy(fields()[6].schema(), other.nameext);
+        fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.checksum)) {
+        this.checksum = data().deepCopy(fields()[7].schema(), other.checksum);
+        fieldSetFlags()[7] = true;
+      }
+      if (isValidValue(fields()[8], other.size)) {
+        this.size = data().deepCopy(fields()[8].schema(), other.size);
+        fieldSetFlags()[8] = true;
+      }
+      if (isValidValue(fields()[9], other.secondaryFiles)) {
+        this.secondaryFiles = data().deepCopy(fields()[9].schema(), other.secondaryFiles);
+        fieldSetFlags()[9] = true;
+      }
+      if (isValidValue(fields()[10], other.format)) {
+        this.format = data().deepCopy(fields()[10].schema(), other.format);
+        fieldSetFlags()[10] = true;
+      }
+      if (isValidValue(fields()[11], other.contents)) {
+        this.contents = data().deepCopy(fields()[11].schema(), other.contents);
+        fieldSetFlags()[11] = true;
       }
     }
 
@@ -344,6 +749,31 @@ runtime may perform exact file format matches.
       return this;
     }
 
+    /** Gets the value of the 'location' field */
+    public java.lang.CharSequence getLocation() {
+      return location;
+    }
+    
+    /** Sets the value of the 'location' field */
+    public File.Builder setLocation(java.lang.CharSequence value) {
+      validate(fields()[1], value);
+      this.location = value;
+      fieldSetFlags()[1] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'location' field has been set */
+    public boolean hasLocation() {
+      return fieldSetFlags()[1];
+    }
+    
+    /** Clears the value of the 'location' field */
+    public File.Builder clearLocation() {
+      location = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
     /** Gets the value of the 'path' field */
     public java.lang.CharSequence getPath() {
       return path;
@@ -351,21 +781,121 @@ runtime may perform exact file format matches.
     
     /** Sets the value of the 'path' field */
     public File.Builder setPath(java.lang.CharSequence value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.path = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this; 
     }
     
     /** Checks whether the 'path' field has been set */
     public boolean hasPath() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
     
     /** Clears the value of the 'path' field */
     public File.Builder clearPath() {
       path = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'basename' field */
+    public java.lang.CharSequence getBasename() {
+      return basename;
+    }
+    
+    /** Sets the value of the 'basename' field */
+    public File.Builder setBasename(java.lang.CharSequence value) {
+      validate(fields()[3], value);
+      this.basename = value;
+      fieldSetFlags()[3] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'basename' field has been set */
+    public boolean hasBasename() {
+      return fieldSetFlags()[3];
+    }
+    
+    /** Clears the value of the 'basename' field */
+    public File.Builder clearBasename() {
+      basename = null;
+      fieldSetFlags()[3] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'dirname' field */
+    public java.lang.CharSequence getDirname() {
+      return dirname;
+    }
+    
+    /** Sets the value of the 'dirname' field */
+    public File.Builder setDirname(java.lang.CharSequence value) {
+      validate(fields()[4], value);
+      this.dirname = value;
+      fieldSetFlags()[4] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'dirname' field has been set */
+    public boolean hasDirname() {
+      return fieldSetFlags()[4];
+    }
+    
+    /** Clears the value of the 'dirname' field */
+    public File.Builder clearDirname() {
+      dirname = null;
+      fieldSetFlags()[4] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'nameroot' field */
+    public java.lang.CharSequence getNameroot() {
+      return nameroot;
+    }
+    
+    /** Sets the value of the 'nameroot' field */
+    public File.Builder setNameroot(java.lang.CharSequence value) {
+      validate(fields()[5], value);
+      this.nameroot = value;
+      fieldSetFlags()[5] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'nameroot' field has been set */
+    public boolean hasNameroot() {
+      return fieldSetFlags()[5];
+    }
+    
+    /** Clears the value of the 'nameroot' field */
+    public File.Builder clearNameroot() {
+      nameroot = null;
+      fieldSetFlags()[5] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'nameext' field */
+    public java.lang.CharSequence getNameext() {
+      return nameext;
+    }
+    
+    /** Sets the value of the 'nameext' field */
+    public File.Builder setNameext(java.lang.CharSequence value) {
+      validate(fields()[6], value);
+      this.nameext = value;
+      fieldSetFlags()[6] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'nameext' field has been set */
+    public boolean hasNameext() {
+      return fieldSetFlags()[6];
+    }
+    
+    /** Clears the value of the 'nameext' field */
+    public File.Builder clearNameext() {
+      nameext = null;
+      fieldSetFlags()[6] = false;
       return this;
     }
 
@@ -376,21 +906,21 @@ runtime may perform exact file format matches.
     
     /** Sets the value of the 'checksum' field */
     public File.Builder setChecksum(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+      validate(fields()[7], value);
       this.checksum = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[7] = true;
       return this; 
     }
     
     /** Checks whether the 'checksum' field has been set */
     public boolean hasChecksum() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[7];
     }
     
     /** Clears the value of the 'checksum' field */
     public File.Builder clearChecksum() {
       checksum = null;
-      fieldSetFlags()[2] = false;
+      fieldSetFlags()[7] = false;
       return this;
     }
 
@@ -401,46 +931,46 @@ runtime may perform exact file format matches.
     
     /** Sets the value of the 'size' field */
     public File.Builder setSize(java.lang.Long value) {
-      validate(fields()[3], value);
+      validate(fields()[8], value);
       this.size = value;
-      fieldSetFlags()[3] = true;
+      fieldSetFlags()[8] = true;
       return this; 
     }
     
     /** Checks whether the 'size' field has been set */
     public boolean hasSize() {
-      return fieldSetFlags()[3];
+      return fieldSetFlags()[8];
     }
     
     /** Clears the value of the 'size' field */
     public File.Builder clearSize() {
       size = null;
-      fieldSetFlags()[3] = false;
+      fieldSetFlags()[8] = false;
       return this;
     }
 
     /** Gets the value of the 'secondaryFiles' field */
-    public java.util.List<File> getSecondaryFiles() {
+    public java.util.List<java.lang.Object> getSecondaryFiles() {
       return secondaryFiles;
     }
     
     /** Sets the value of the 'secondaryFiles' field */
-    public File.Builder setSecondaryFiles(java.util.List<File> value) {
-      validate(fields()[4], value);
+    public File.Builder setSecondaryFiles(java.util.List<java.lang.Object> value) {
+      validate(fields()[9], value);
       this.secondaryFiles = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[9] = true;
       return this; 
     }
     
     /** Checks whether the 'secondaryFiles' field has been set */
     public boolean hasSecondaryFiles() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[9];
     }
     
     /** Clears the value of the 'secondaryFiles' field */
     public File.Builder clearSecondaryFiles() {
       secondaryFiles = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[9] = false;
       return this;
     }
 
@@ -451,21 +981,46 @@ runtime may perform exact file format matches.
     
     /** Sets the value of the 'format' field */
     public File.Builder setFormat(java.lang.CharSequence value) {
-      validate(fields()[5], value);
+      validate(fields()[10], value);
       this.format = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[10] = true;
       return this; 
     }
     
     /** Checks whether the 'format' field has been set */
     public boolean hasFormat() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[10];
     }
     
     /** Clears the value of the 'format' field */
     public File.Builder clearFormat() {
       format = null;
-      fieldSetFlags()[5] = false;
+      fieldSetFlags()[10] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'contents' field */
+    public java.lang.CharSequence getContents() {
+      return contents;
+    }
+    
+    /** Sets the value of the 'contents' field */
+    public File.Builder setContents(java.lang.CharSequence value) {
+      validate(fields()[11], value);
+      this.contents = value;
+      fieldSetFlags()[11] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'contents' field has been set */
+    public boolean hasContents() {
+      return fieldSetFlags()[11];
+    }
+    
+    /** Clears the value of the 'contents' field */
+    public File.Builder clearContents() {
+      contents = null;
+      fieldSetFlags()[11] = false;
       return this;
     }
 
@@ -474,11 +1029,17 @@ runtime may perform exact file format matches.
       try {
         File record = new File();
         record.class$ = fieldSetFlags()[0] ? this.class$ : (File_class) defaultValue(fields()[0]);
-        record.path = fieldSetFlags()[1] ? this.path : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.checksum = fieldSetFlags()[2] ? this.checksum : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.size = fieldSetFlags()[3] ? this.size : (java.lang.Long) defaultValue(fields()[3]);
-        record.secondaryFiles = fieldSetFlags()[4] ? this.secondaryFiles : (java.util.List<File>) defaultValue(fields()[4]);
-        record.format = fieldSetFlags()[5] ? this.format : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.location = fieldSetFlags()[1] ? this.location : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.path = fieldSetFlags()[2] ? this.path : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.basename = fieldSetFlags()[3] ? this.basename : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.dirname = fieldSetFlags()[4] ? this.dirname : (java.lang.CharSequence) defaultValue(fields()[4]);
+        record.nameroot = fieldSetFlags()[5] ? this.nameroot : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.nameext = fieldSetFlags()[6] ? this.nameext : (java.lang.CharSequence) defaultValue(fields()[6]);
+        record.checksum = fieldSetFlags()[7] ? this.checksum : (java.lang.CharSequence) defaultValue(fields()[7]);
+        record.size = fieldSetFlags()[8] ? this.size : (java.lang.Long) defaultValue(fields()[8]);
+        record.secondaryFiles = fieldSetFlags()[9] ? this.secondaryFiles : (java.util.List<java.lang.Object>) defaultValue(fields()[9]);
+        record.format = fieldSetFlags()[10] ? this.format : (java.lang.CharSequence) defaultValue(fields()[10]);
+        record.contents = fieldSetFlags()[11] ? this.contents : (java.lang.CharSequence) defaultValue(fields()[11]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

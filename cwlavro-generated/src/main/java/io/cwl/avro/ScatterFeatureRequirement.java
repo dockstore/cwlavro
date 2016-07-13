@@ -10,9 +10,9 @@ package io.cwl.avro;
  */
 @org.apache.avro.specific.AvroGenerated
 public class ScatterFeatureRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ScatterFeatureRequirement\",\"doc\":\"Indicates that the workflow platform must support the `scatter` and\\n`scatterMethod` fields of [WorkflowStep](#WorkflowStep).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"The specific requirement type.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ScatterFeatureRequirement\",\"doc\":\"Indicates that the workflow platform must support the `scatter` and\\n`scatterMethod` fields of [WorkflowStep](#WorkflowStep).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'ScatterFeatureRequirement'\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The specific requirement type. */
+  /** Always 'ScatterFeatureRequirement' */
   @Deprecated public java.lang.CharSequence class$;
 
   /**
@@ -48,14 +48,14 @@ public class ScatterFeatureRequirement extends org.apache.avro.specific.Specific
 
   /**
    * Gets the value of the 'class$' field.
-   * The specific requirement type.   */
+   * Always 'ScatterFeatureRequirement'   */
   public java.lang.CharSequence getClass$() {
     return class$;
   }
 
   /**
    * Sets the value of the 'class$' field.
-   * The specific requirement type.   * @param value the value to set.
+   * Always 'ScatterFeatureRequirement'   * @param value the value to set.
    */
   public void setClass$(java.lang.CharSequence value) {
     this.class$ = value;

@@ -6,13 +6,13 @@ package io.cwl.avro;
  */
 @SuppressWarnings("all")
 /** Indicates that the workflow platform must support nested workflows in
-the `run` field of (WorkflowStep)(#WorkflowStep).
+the `run` field of [WorkflowStep](#WorkflowStep).
  */
 @org.apache.avro.specific.AvroGenerated
 public class SubworkflowFeatureRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SubworkflowFeatureRequirement\",\"doc\":\"Indicates that the workflow platform must support nested workflows in\\nthe `run` field of (WorkflowStep)(#WorkflowStep).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"The specific requirement type.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SubworkflowFeatureRequirement\",\"doc\":\"Indicates that the workflow platform must support nested workflows in\\nthe `run` field of [WorkflowStep](#WorkflowStep).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'SubworkflowFeatureRequirement'\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The specific requirement type. */
+  /** Always 'SubworkflowFeatureRequirement' */
   @Deprecated public java.lang.CharSequence class$;
 
   /**
@@ -48,14 +48,14 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
 
   /**
    * Gets the value of the 'class$' field.
-   * The specific requirement type.   */
+   * Always 'SubworkflowFeatureRequirement'   */
   public java.lang.CharSequence getClass$() {
     return class$;
   }
 
   /**
    * Sets the value of the 'class$' field.
-   * The specific requirement type.   * @param value the value to set.
+   * Always 'SubworkflowFeatureRequirement'   * @param value the value to set.
    */
   public void setClass$(java.lang.CharSequence value) {
     this.class$ = value;

@@ -11,9 +11,9 @@ interpolatation.
  */
 @org.apache.avro.specific.AvroGenerated
 public class InlineJavascriptRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InlineJavascriptRequirement\",\"doc\":\"Indicates that the workflow platform must support inline Javascript expressions.\\nIf this requirement is not present, the workflow platform must not perform expression\\ninterpolatation.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"The specific requirement type.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"},{\"name\":\"expressionLib\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Additional code fragments that will also be inserted\\nbefore executing the expression code.  Allows for function definitions that may\\nbe called from CWL expressions.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InlineJavascriptRequirement\",\"doc\":\"Indicates that the workflow platform must support inline Javascript expressions.\\nIf this requirement is not present, the workflow platform must not perform expression\\ninterpolatation.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'InlineJavascriptRequirement'\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"expressionLib\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Additional code fragments that will also be inserted\\nbefore executing the expression code.  Allows for function definitions that may\\nbe called from CWL expressions.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The specific requirement type. */
+  /** Always 'InlineJavascriptRequirement' */
   @Deprecated public java.lang.CharSequence class$;
   /** Additional code fragments that will also be inserted
 before executing the expression code.  Allows for function definitions that may
@@ -57,14 +57,14 @@ be called from CWL expressions.
 
   /**
    * Gets the value of the 'class$' field.
-   * The specific requirement type.   */
+   * Always 'InlineJavascriptRequirement'   */
   public java.lang.CharSequence getClass$() {
     return class$;
   }
 
   /**
    * Sets the value of the 'class$' field.
-   * The specific requirement type.   * @param value the value to set.
+   * Always 'InlineJavascriptRequirement'   * @param value the value to set.
    */
   public void setClass$(java.lang.CharSequence value) {
     this.class$ = value;

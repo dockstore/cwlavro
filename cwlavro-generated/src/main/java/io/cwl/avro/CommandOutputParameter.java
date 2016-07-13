@@ -8,8 +8,10 @@ package io.cwl.avro;
 /** An output parameter for a CommandLineTool. */
 @org.apache.avro.specific.AvroGenerated
 public class CommandOutputParameter extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CommandOutputParameter\",\"doc\":\"An output parameter for a CommandLineTool.\",\"fields\":[{\"name\":\"secondaryFiles\",\"type\":[\"null\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"Not a real type.  Indicates that a field must allow runtime parameter\\nreferences.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]},{\"type\":\"array\",\"items\":[\"string\",\"Expression\"]}],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nDescribes files that must be included alongside the primary file(s).\\n\\nIf the value is an expression, the value of `self` in the expression\\nmust be the primary input or output File to which this binding applies.\\n\\nIf the value is a string, it specifies that the following pattern\\nshould be applied to the primary file:\\n\\n  1. If string begins with one or more caret `^` characters, for each\\n    caret, remove the last file extension from the path (the last\\n    period `.` and all following characters).  If there are no file\\n    extensions, the path is unchanged.\\n  2. Append the remainder of the string to the end of the file path.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"format\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"},\"Expression\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nFor input parameters, this must be one or more URIs of a concept nodes\\nthat represents file formats which are allowed as input to this\\nparameter, preferrably defined within an ontology.  If no ontology is\\navailable, file formats may be tested by exact match.\\n\\nFor output parameters, this is the file format that will be assigned to\\nthe output parameter.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"streamable\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nA value of `true` indicates that the file is read or written\\nsequentially without seeking.  An implementation may use this flag to\\nindicate whether it is valid to stream file contents using a named\\npipe.  Default: `false`.\\n\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"CWLType\",\"symbols\":[\"File\"],\"symbol\":[\"https://w3id.org/cwl/salad#null\",\"http://www.w3.org/2001/XMLSchema#boolean\",\"http://www.w3.org/2001/XMLSchema#int\",\"http://www.w3.org/2001/XMLSchema#long\",\"http://www.w3.org/2001/XMLSchema#float\",\"http://www.w3.org/2001/XMLSchema#double\",\"http://www.w3.org/2001/XMLSchema#string\",\"https://w3id.org/cwl/cwl#File\"],\"extends\":\"https://w3id.org/cwl/salad#PrimitiveType\"},{\"type\":\"record\",\"name\":\"CommandOutputRecordSchema\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Record_symbol\",\"symbols\":[\"record\"]},\"doc\":\"Must be `record`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"},\"inherited_from\":\"https://w3id.org/cwl/salad#RecordSchema\"},{\"name\":\"fields\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"CommandOutputRecordField\",\"fields\":[{\"name\":\"name\",\"type\":\"string\",\"doc\":\"The name of the field\\n\",\"jsonldPredicate\":\"@id\",\"inherited_from\":\"https://w3id.org/cwl/salad#RecordField\"},{\"name\":\"doc\",\"type\":[\"null\",\"string\"],\"doc\":\"A documentation string for this field\\n\",\"jsonldPredicate\":\"sld:doc\",\"inherited_from\":\"https://w3id.org/cwl/salad#RecordField\"},{\"name\":\"type\",\"type\":[{\"type\":\"enum\",\"name\":\"PrimitiveType\",\"symbols\":[\"null\",\"boolean\",\"int\",\"long\",\"float\",\"double\",\"string\"]},\"CommandOutputRecordSchema\",{\"type\":\"record\",\"name\":\"CommandOutputEnumSchema\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"},{\"name\":\"symbols\",\"type\":[{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",\"string\",\"Expression\",{\"type\":\"array\",\"items\":[\"string\",\"Expression\"]}],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nDescribes files that must be included alongside the primary file(s).\\n\\nIf the value is an expression, the value of `self` in the expression\\nmust be the primary input or output File to which this binding applies.\\n\\nIf the value is a string, it specifies that the following pattern\\nshould be applied to the primary file:\\n\\n  1. If string begins with one or more caret `^` characters, for each\\n    caret, remove the last file extension from the path (the last\\n    period `.` and all following characters).  If there are no file\\n    extensions, the path is unchanged.\\n  2. Append the remainder of the string to the end of the file path.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"format\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"},\"Expression\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nFor input parameters, this must be one or more URIs of a concept nodes\\nthat represents file formats which are allowed as input to this\\nparameter, preferrably defined within an ontology.  If no ontology is\\navailable, file formats may be tested by exact match.\\n\\nFor output parameters, this is the file format that will be assigned to\\nthe output parameter.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"streamable\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nA value of `true` indicates that the file is read or written\\nsequentially without seeking.  An implementation may use this flag to\\nindicate whether it is valid to stream file contents using a named\\npipe.  Default: `false`.\\n\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"outputBinding\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CommandOutputBinding\",\"doc\":\"Describes how to generate an output parameter based on the files produced\\nby a CommandLineTool.\\n\\nThe output parameter is generated by applying these operations in\\nthe following order:\\n\\n  - glob\\n  - loadContents\\n  - outputEval\\n\",\"fields\":[{\"name\":\"glob\",\"type\":[\"null\",\"string\",\"Expression\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Find files relative to the output directory, using POSIX glob(3)\\npathname matching.  If provided an array, find files that match any\\npattern in the array.  If provided an expression, the expression must\\nreturn a string or an array of strings, which will then be evaluated as\\none or more glob patterns.  Must only match and return files which\\nactually exist.\\n\"},{\"name\":\"loadContents\",\"type\":[\"null\",\"boolean\"],\"doc\":\"For each file matched in `glob`, read up to\\nthe first 64 KiB of text from the file and place it in the `contents`\\nfield of the file object for manipulation by `outputEval`.\\n\",\"jsonldPredicate\":\"cwl:loadContents\"},{\"name\":\"outputEval\",\"type\":[\"null\",\"string\",\"Expression\"],\"doc\":\"Evaluate an expression to generate the output value.  If `glob` was\\nspecified, the value of `self` must be an array containing file objects\\nthat were matched.  If no files were matched, `self' must be a zero\\nlength array; if a single file was matched, the value of `self` is an\\narray of a single element.  Additionally, if `loadContents` is `true`,\\nthe File objects must include up to the first 64 KiB of file contents\\nin the `contents` field.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputBinding\"}],\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\"}],\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cw","l#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\"},{\"type\":\"record\",\"name\":\"CommandOutputArraySchema\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Array_symbol\",\"symbols\":[\"array\"]},\"doc\":\"Must be `array`\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"},\"inherited_from\":\"https://w3id.org/cwl/salad#ArraySchema\"},{\"name\":\"items\",\"type\":[\"PrimitiveType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\"]}],\"doc\":\"Defines the type of the array elements.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#items\"},\"inherited_from\":\"https://w3id.org/cwl/salad#ArraySchema\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",\"string\",\"Expression\",{\"type\":\"array\",\"items\":[\"string\",\"Expression\"]}],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nDescribes files that must be included alongside the primary file(s).\\n\\nIf the value is an expression, the value of `self` in the expression\\nmust be the primary input or output File to which this binding applies.\\n\\nIf the value is a string, it specifies that the following pattern\\nshould be applied to the primary file:\\n\\n  1. If string begins with one or more caret `^` characters, for each\\n    caret, remove the last file extension from the path (the last\\n    period `.` and all following characters).  If there are no file\\n    extensions, the path is unchanged.\\n  2. Append the remainder of the string to the end of the file path.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"format\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"},\"Expression\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nFor input parameters, this must be one or more URIs of a concept nodes\\nthat represents file formats which are allowed as input to this\\nparameter, preferrably defined within an ontology.  If no ontology is\\navailable, file formats may be tested by exact match.\\n\\nFor output parameters, this is the file format that will be assigned to\\nthe output parameter.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"streamable\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nA value of `true` indicates that the file is read or written\\nsequentially without seeking.  An implementation may use this flag to\\nindicate whether it is valid to stream file contents using a named\\npipe.  Default: `false`.\\n\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"outputBinding\",\"type\":[\"null\",\"CommandOutputBinding\"],\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputArraySchema\"}],\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputArraySchema\"},\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\"]}],\"doc\":\"The field type\\n\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"},\"inherited_from\":\"https://w3id.org/cwl/salad#RecordField\"},{\"name\":\"outputBinding\",\"type\":[\"null\",\"CommandOutputBinding\"],\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputRecordField\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputRecordField\",\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}]}}],\"doc\":\"Defines the fields of the record.\",\"jsonldPredicate\":\"sld:fields\",\"inherited_from\":\"https://w3id.org/cwl/salad#RecordSchema\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",\"string\",\"Expression\",{\"type\":\"array\",\"items\":[\"string\",\"Expression\"]}],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nDescribes files that must be included alongside the primary file(s).\\n\\nIf the value is an expression, the value of `self` in the expression\\nmust be the primary input or output File to which this binding applies.\\n\\nIf the value is a string, it specifies that the following pattern\\nshould be applied to the primary file:\\n\\n  1. If string begins with one or more caret `^` characters, for each\\n    caret, remove the last file extension from the path (the last\\n    period `.` and all following characters).  If there are no file\\n    extensions, the path is unchanged.\\n  2. Append the remainder of the string to the end of the file path.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"format\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"},\"Expression\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nFor input parameters, this must be one or more URIs of a concept nodes\\nthat represents file formats which are allowed as input to this\\nparameter, preferrably defined within an ontology.  If no ontology is\\navailable, file formats may be tested by exact match.\\n\\nFor output parameters, this is the file format that will be assigned to\\nthe output parameter.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"streamable\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nA value of `true` indicates that the file is read or written\\nsequentially without seeking.  An implementation may use this flag to\\nindicate whether it is valid to stream file contents using a named\\npipe.  Default: `false`.\\n\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"}],\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordField\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordField\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\"},\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"CWLType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\"]}],\"doc\":\"Specify valid types of data that may be assigned to this parameter.\\n\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"label\",\"type\":[\"null\",\"string\"],\"doc\":\"A short, human-readable label of this parameter object.\",\"jsonldPredicate\":\"rdfs:label\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"description\",\"type\":[\"null\",\"string\"],\"doc\":\"A long, human-readable description of this parameter object.\",\"jsonldPredicate\":\"rdfs:comment\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"id\",\"type\":\"string\",\"doc\":","\"The unique identifier for this parameter object.\",\"jsonldPredicate\":\"@id\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputParameter\"},{\"name\":\"outputBinding\",\"type\":[\"null\",\"CommandOutputBinding\"],\"doc\":\"Describes how to handle the outputs of a process.\\n\",\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputParameter\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputParameter\",\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CommandOutputParameter\",\"doc\":\"An output parameter for a CommandLineTool.\",\"fields\":[{\"name\":\"label\",\"type\":[\"null\",\"string\"],\"doc\":\"A short, human-readable label of this object.\",\"jsonldPredicate\":\"rdfs:label\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]},{\"type\":\"array\",\"items\":[\"string\",\"Expression\"]}],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nDescribes files that must be included alongside the primary file(s).\\n\\nIf the value is an expression, the value of `self` in the expression\\nmust be the primary input or output File to which this binding applies.\\n\\nIf the value is a string, it specifies that the following pattern\\nshould be applied to the primary file:\\n\\n  1. If string begins with one or more caret `^` characters, for each\\n    caret, remove the last file extension from the path (the last\\n    period `.` and all following characters).  If there are no file\\n    extensions, the path is unchanged.\\n  2. Append the remainder of the string to the end of the file path.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"format\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"},\"Expression\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nFor input parameters, this must be one or more IRIs of concept nodes\\nthat represents file formats which are allowed as input to this\\nparameter, preferrably defined within an ontology.  If no ontology is\\navailable, file formats may be tested by exact match.\\n\\nFor output parameters, this is the file format that will be assigned to\\nthe output parameter.\\n\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#format\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"streamable\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nA value of `true` indicates that the file is read or written\\nsequentially without seeking.  An implementation may use this flag to\\nindicate whether it is valid to stream file contents using a named\\npipe.  Default: `false`.\\n\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"doc\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"A documentation string for this type, or an array of strings which should be concatenated.\",\"jsonldPredicate\":\"rdfs:comment\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Parameter\"},{\"name\":\"id\",\"type\":\"string\",\"doc\":\"The unique identifier for this parameter object.\",\"jsonldPredicate\":\"@id\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputParameter\"},{\"name\":\"outputBinding\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"CommandOutputBinding\",\"doc\":\"Describes how to generate an output parameter based on the files produced\\nby a CommandLineTool.\\n\\nThe output parameter is generated by applying these operations in\\nthe following order:\\n\\n  - glob\\n  - loadContents\\n  - outputEval\\n\",\"fields\":[{\"name\":\"glob\",\"type\":[\"null\",\"string\",\"Expression\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Find files relative to the output directory, using POSIX glob(3)\\npathname matching.  If an array is provided, find files that match any\\npattern in the array.  If an expression is provided, the expression must\\nreturn a string or an array of strings, which will then be evaluated as\\none or more glob patterns.  Must only match and return files which\\nactually exist.\\n\"},{\"name\":\"loadContents\",\"type\":[\"null\",\"boolean\"],\"doc\":\"For each file matched in `glob`, read up to\\nthe first 64 KiB of text from the file and place it in the `contents`\\nfield of the file object for manipulation by `outputEval`.\\n\",\"jsonldPredicate\":\"cwl:loadContents\"},{\"name\":\"outputEval\",\"type\":[\"null\",\"string\",\"Expression\"],\"doc\":\"Evaluate an expression to generate the output value.  If `glob` was\\nspecified, the value of `self` must be an array containing file objects\\nthat were matched.  If no files were matched, `self` must be a zero\\nlength array; if a single file was matched, the value of `self` is an\\narray of a single element.  Additionally, if `loadContents` is `true`,\\nthe File objects must include up to the first 64 KiB of file contents\\nin the `contents` field.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputBinding\"}],\"doc\":\"Describes how to handle the outputs of a process.\\n\",\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputParameter\"},{\"name\":\"type\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"CWLType\",\"symbols\":[\"File\",\"Directory\"],\"symbol\":[\"https://w3id.org/cwl/salad#null\",\"http://www.w3.org/2001/XMLSchema#boolean\",\"http://www.w3.org/2001/XMLSchema#int\",\"http://www.w3.org/2001/XMLSchema#long\",\"http://www.w3.org/2001/XMLSchema#float\",\"http://www.w3.org/2001/XMLSchema#double\",\"http://www.w3.org/2001/XMLSchema#string\",\"https://w3id.org/cwl/cwl#File\",\"https://w3id.org/cwl/cwl#Directory\"],\"extends\":\"https://w3id.org/cwl/salad#PrimitiveType\"},{\"type\":\"enum\",\"name\":\"stdout\",\"doc\":\"Only valid as a `type` for a `CommandLineTool` output with no\\n`outputBinding` set.\\n\\nThe following\\n```\\noutputs:\\n   an_output_name:\\n   type: stdout\\n\\nstdout: a_stdout_file\\n```\\nis equivalent to\\n```\\noutputs:\\n  an_output_name:\\n    type: File\\n    streamable: true\\n    outputBinding:\\n      glob: a_stdout_file\\n\\nstdout: a_stdout_file\\n```\\n\\nIf there is no `stdout` name provided, a random filename will be created.\\nFor example, the following\\n```\\noutputs:\\n  an_output_name:\\n    type: stdout\\n```\\nis equivalent to\\n```\\noutputs:\\n  an_output_name:\\n    type: File\\n    streamable: true\\n    outputBinding:\\n      glob: random_stdout_filenameABCDEFG\\n\\nstdout: random_stdout_filenameABCDEFG\\n```\\n\",\"symbols\":[\"stdout\"],\"docParent\":\"https://w3id.org/cwl/cwl#CommandOutputParameter\"},{\"type\":\"enum\",\"name\":\"stderr\",\"doc\":\"Only valid as a `type` for a `CommandLineTool` output with no\\n`outputBinding` set.\\n\\nThe following\\n```\\noutputs:\\n  an_output_name:\\n  type: stderr\\n\\nstderr: a_stderr_file\\n```\\nis equivalent to\\n```\\noutputs:\\n  an_output_name:\\n    type: File\\n    streamable: true\\n    outputBinding:\\n      glob: a_stderr_file\\n\\nstderr: a_stderr_file\\n```\\n\\nIf there is no `stderr` name provided, a random filename will be created.\\nFor example, the following\\n```\\noutputs:\\n  an_output_name:\\n    type: stderr\\n```\\nis equivalent to\\n```\\noutputs:\\n  an_output_name:\\n    type: File\\n    streamable: true\\n    outputBinding:\\n      glob: random_stderr_filenameABCDEFG\\n\\nstderr: random_stderr_filenameABCDEFG\\n```\\n\",\"symbols\":[\"stderr\"],\"docParent\":\"https://w3id.org/cwl/cwl#CommandOutputParameter\"},{\"type\":\"record\",\"name\":\"CommandOutputRecordSchema\",\"fields\":[{\"name\":\"fields\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"CommandOutputRecordField\",\"fields\":[{\"name\":\"name\",\"type\":\"string\",\"doc\":\"The name of the field\\n\",\"jsonldPredicate\":\"@id\",\"inherited_from\":\"https://w3id.org/cwl/salad#RecordField\"},{\"name\":\"doc\",\"type\":[\"null\",\"string\"],\"doc\":\"A documentation string for this field\\n\",\"jsonldPredicate\":\"rdfs:comment\",\"inherited_from\":\"https://w3id.org/cwl/salad#RecordField\"},{\"name\":\"type\",\"type\":[\"CWLType\",\"CommandOutputRecordSchema\",{\"type\":\"record\",\"name\":\"CommandOutputEnumSchema\",\"fields\":[{\"name\":\"symbols\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"},{\"name\":\"label\"",",\"type\":[\"null\",\"string\"],\"doc\":\"A short, human-readable label of this object.\",\"jsonldPredicate\":\"rdfs:label\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"outputBinding\",\"type\":[\"null\",\"CommandOutputBinding\"],\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\"}],\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\"},{\"type\":\"record\",\"name\":\"CommandOutputArraySchema\",\"fields\":[{\"name\":\"items\",\"type\":[\"CWLType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"CWLType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\"]}],\"doc\":\"Defines the type of the array elements.\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#items\"},\"inherited_from\":\"https://w3id.org/cwl/salad#ArraySchema\"},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Array_symbol\",\"symbols\":[\"array\"]},\"doc\":\"Must be `array`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#ArraySchema\"},{\"name\":\"label\",\"type\":[\"null\",\"string\"],\"doc\":\"A short, human-readable label of this object.\",\"jsonldPredicate\":\"rdfs:label\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"},{\"name\":\"outputBinding\",\"type\":[\"null\",\"CommandOutputBinding\"],\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputArraySchema\"}],\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputArraySchema\"},\"string\",{\"type\":\"array\",\"items\":[\"CWLType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\"]}],\"doc\":\"The field type\\n\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#RecordField\"},{\"name\":\"outputBinding\",\"type\":[\"null\",\"CommandOutputBinding\"],\"jsonldPredicate\":\"cwl:outputBinding\",\"inherited_from\":\"https://w3id.org/cwl/cwl#OutputRecordField\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputRecordField\",\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputEnumSchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputEnumSchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputArraySchema\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputArraySchema\"},{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}]}}],\"doc\":\"Defines the fields of the record.\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#fields\",\"mapSubject\":\"name\",\"mapPredicate\":\"type\"},\"inherited_from\":\"https://w3id.org/cwl/salad#RecordSchema\"},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Record_symbol\",\"symbols\":[\"record\"]},\"doc\":\"Must be `record`\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#RecordSchema\"},{\"name\":\"label\",\"type\":[\"null\",\"string\"],\"doc\":\"A short, human-readable label of this object.\",\"jsonldPredicate\":\"rdfs:label\",\"inherited_from\":\"https://w3id.org/cwl/cwl#SchemaBase\"}],\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputRecordField\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputRecordField\"}],\"extends\":\"https://w3id.org/cwl/cwl#OutputRecordSchema\"},\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"CWLType\",\"CommandOutputRecordSchema\",\"CommandOutputEnumSchema\",\"CommandOutputArraySchema\",\"string\"]}],\"doc\":\"Specify valid types of data that may be assigned to this parameter.\\n\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@vocab\",\"_id\":\"https://w3id.org/cwl/salad#type\",\"typeDSL\":true}}],\"extends\":\"https://w3id.org/cwl/cwl#OutputParameter\",\"specialize\":[{\"specializeFrom\":\"https://w3id.org/cwl/cwl#OutputBinding\",\"specializeTo\":\"https://w3id.org/cwl/cwl#CommandOutputBinding\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+  /** A short, human-readable label of this object. */
+  @Deprecated public java.lang.CharSequence label;
   /** Only valid when `type: File` or is an array of `items: File`.
 
 Describes files that must be included alongside the primary file(s).
@@ -29,7 +31,7 @@ should be applied to the primary file:
   @Deprecated public java.lang.Object secondaryFiles;
   /** Only valid when `type: File` or is an array of `items: File`.
 
-For input parameters, this must be one or more URIs of a concept nodes
+For input parameters, this must be one or more IRIs of concept nodes
 that represents file formats which are allowed as input to this
 parameter, preferrably defined within an ontology.  If no ontology is
 available, file formats may be tested by exact match.
@@ -46,18 +48,16 @@ indicate whether it is valid to stream file contents using a named
 pipe.  Default: `false`.
  */
   @Deprecated public java.lang.Boolean streamable;
-  /** Specify valid types of data that may be assigned to this parameter.
- */
-  @Deprecated public java.lang.Object type;
-  /** A short, human-readable label of this parameter object. */
-  @Deprecated public java.lang.CharSequence label;
-  /** A long, human-readable description of this parameter object. */
-  @Deprecated public java.lang.CharSequence description;
+  /** A documentation string for this type, or an array of strings which should be concatenated. */
+  @Deprecated public java.lang.Object doc;
   /** The unique identifier for this parameter object. */
   @Deprecated public java.lang.CharSequence id;
   /** Describes how to handle the outputs of a process.
  */
   @Deprecated public CommandOutputBinding outputBinding;
+  /** Specify valid types of data that may be assigned to this parameter.
+ */
+  @Deprecated public java.lang.Object type;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -69,29 +69,29 @@ pipe.  Default: `false`.
   /**
    * All-args constructor.
    */
-  public CommandOutputParameter(java.lang.Object secondaryFiles, java.lang.Object format, java.lang.Boolean streamable, java.lang.Object type, java.lang.CharSequence label, java.lang.CharSequence description, java.lang.CharSequence id, CommandOutputBinding outputBinding) {
+  public CommandOutputParameter(java.lang.CharSequence label, java.lang.Object secondaryFiles, java.lang.Object format, java.lang.Boolean streamable, java.lang.Object doc, java.lang.CharSequence id, CommandOutputBinding outputBinding, java.lang.Object type) {
+    this.label = label;
     this.secondaryFiles = secondaryFiles;
     this.format = format;
     this.streamable = streamable;
-    this.type = type;
-    this.label = label;
-    this.description = description;
+    this.doc = doc;
     this.id = id;
     this.outputBinding = outputBinding;
+    this.type = type;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call. 
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return secondaryFiles;
-    case 1: return format;
-    case 2: return streamable;
-    case 3: return type;
-    case 4: return label;
-    case 5: return description;
-    case 6: return id;
-    case 7: return outputBinding;
+    case 0: return label;
+    case 1: return secondaryFiles;
+    case 2: return format;
+    case 3: return streamable;
+    case 4: return doc;
+    case 5: return id;
+    case 6: return outputBinding;
+    case 7: return type;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -99,16 +99,31 @@ pipe.  Default: `false`.
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: secondaryFiles = (java.lang.Object)value$; break;
-    case 1: format = (java.lang.Object)value$; break;
-    case 2: streamable = (java.lang.Boolean)value$; break;
-    case 3: type = (java.lang.Object)value$; break;
-    case 4: label = (java.lang.CharSequence)value$; break;
-    case 5: description = (java.lang.CharSequence)value$; break;
-    case 6: id = (java.lang.CharSequence)value$; break;
-    case 7: outputBinding = (CommandOutputBinding)value$; break;
+    case 0: label = (java.lang.CharSequence)value$; break;
+    case 1: secondaryFiles = (java.lang.Object)value$; break;
+    case 2: format = (java.lang.Object)value$; break;
+    case 3: streamable = (java.lang.Boolean)value$; break;
+    case 4: doc = (java.lang.Object)value$; break;
+    case 5: id = (java.lang.CharSequence)value$; break;
+    case 6: outputBinding = (CommandOutputBinding)value$; break;
+    case 7: type = (java.lang.Object)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
+  }
+
+  /**
+   * Gets the value of the 'label' field.
+   * A short, human-readable label of this object.   */
+  public java.lang.CharSequence getLabel() {
+    return label;
+  }
+
+  /**
+   * Sets the value of the 'label' field.
+   * A short, human-readable label of this object.   * @param value the value to set.
+   */
+  public void setLabel(java.lang.CharSequence value) {
+    this.label = value;
   }
 
   /**
@@ -160,7 +175,7 @@ should be applied to the primary file:
    * Gets the value of the 'format' field.
    * Only valid when `type: File` or is an array of `items: File`.
 
-For input parameters, this must be one or more URIs of a concept nodes
+For input parameters, this must be one or more IRIs of concept nodes
 that represents file formats which are allowed as input to this
 parameter, preferrably defined within an ontology.  If no ontology is
 available, file formats may be tested by exact match.
@@ -176,7 +191,7 @@ the output parameter.
    * Sets the value of the 'format' field.
    * Only valid when `type: File` or is an array of `items: File`.
 
-For input parameters, this must be one or more URIs of a concept nodes
+For input parameters, this must be one or more IRIs of concept nodes
 that represents file formats which are allowed as input to this
 parameter, preferrably defined within an ontology.  If no ontology is
 available, file formats may be tested by exact match.
@@ -217,50 +232,18 @@ pipe.  Default: `false`.
   }
 
   /**
-   * Gets the value of the 'type' field.
-   * Specify valid types of data that may be assigned to this parameter.
+   * Gets the value of the 'doc' field.
+   * A documentation string for this type, or an array of strings which should be concatenated.   */
+  public java.lang.Object getDoc() {
+    return doc;
+  }
+
+  /**
+   * Sets the value of the 'doc' field.
+   * A documentation string for this type, or an array of strings which should be concatenated.   * @param value the value to set.
    */
-  public java.lang.Object getType() {
-    return type;
-  }
-
-  /**
-   * Sets the value of the 'type' field.
-   * Specify valid types of data that may be assigned to this parameter.
-   * @param value the value to set.
-   */
-  public void setType(java.lang.Object value) {
-    this.type = value;
-  }
-
-  /**
-   * Gets the value of the 'label' field.
-   * A short, human-readable label of this parameter object.   */
-  public java.lang.CharSequence getLabel() {
-    return label;
-  }
-
-  /**
-   * Sets the value of the 'label' field.
-   * A short, human-readable label of this parameter object.   * @param value the value to set.
-   */
-  public void setLabel(java.lang.CharSequence value) {
-    this.label = value;
-  }
-
-  /**
-   * Gets the value of the 'description' field.
-   * A long, human-readable description of this parameter object.   */
-  public java.lang.CharSequence getDescription() {
-    return description;
-  }
-
-  /**
-   * Sets the value of the 'description' field.
-   * A long, human-readable description of this parameter object.   * @param value the value to set.
-   */
-  public void setDescription(java.lang.CharSequence value) {
-    this.description = value;
+  public void setDoc(java.lang.Object value) {
+    this.doc = value;
   }
 
   /**
@@ -295,6 +278,23 @@ pipe.  Default: `false`.
     this.outputBinding = value;
   }
 
+  /**
+   * Gets the value of the 'type' field.
+   * Specify valid types of data that may be assigned to this parameter.
+   */
+  public java.lang.Object getType() {
+    return type;
+  }
+
+  /**
+   * Sets the value of the 'type' field.
+   * Specify valid types of data that may be assigned to this parameter.
+   * @param value the value to set.
+   */
+  public void setType(java.lang.Object value) {
+    this.type = value;
+  }
+
   /** Creates a new CommandOutputParameter RecordBuilder */
   public static CommandOutputParameter.Builder newBuilder() {
     return new CommandOutputParameter.Builder();
@@ -316,14 +316,14 @@ pipe.  Default: `false`.
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CommandOutputParameter>
     implements org.apache.avro.data.RecordBuilder<CommandOutputParameter> {
 
+    private java.lang.CharSequence label;
     private java.lang.Object secondaryFiles;
     private java.lang.Object format;
     private java.lang.Boolean streamable;
-    private java.lang.Object type;
-    private java.lang.CharSequence label;
-    private java.lang.CharSequence description;
+    private java.lang.Object doc;
     private java.lang.CharSequence id;
     private CommandOutputBinding outputBinding;
+    private java.lang.Object type;
 
     /** Creates a new Builder */
     private Builder() {
@@ -333,36 +333,36 @@ pipe.  Default: `false`.
     /** Creates a Builder by copying an existing Builder */
     private Builder(CommandOutputParameter.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.secondaryFiles)) {
-        this.secondaryFiles = data().deepCopy(fields()[0].schema(), other.secondaryFiles);
+      if (isValidValue(fields()[0], other.label)) {
+        this.label = data().deepCopy(fields()[0].schema(), other.label);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.format)) {
-        this.format = data().deepCopy(fields()[1].schema(), other.format);
+      if (isValidValue(fields()[1], other.secondaryFiles)) {
+        this.secondaryFiles = data().deepCopy(fields()[1].schema(), other.secondaryFiles);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.streamable)) {
-        this.streamable = data().deepCopy(fields()[2].schema(), other.streamable);
+      if (isValidValue(fields()[2], other.format)) {
+        this.format = data().deepCopy(fields()[2].schema(), other.format);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.type)) {
-        this.type = data().deepCopy(fields()[3].schema(), other.type);
+      if (isValidValue(fields()[3], other.streamable)) {
+        this.streamable = data().deepCopy(fields()[3].schema(), other.streamable);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.label)) {
-        this.label = data().deepCopy(fields()[4].schema(), other.label);
+      if (isValidValue(fields()[4], other.doc)) {
+        this.doc = data().deepCopy(fields()[4].schema(), other.doc);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.description)) {
-        this.description = data().deepCopy(fields()[5].schema(), other.description);
+      if (isValidValue(fields()[5], other.id)) {
+        this.id = data().deepCopy(fields()[5].schema(), other.id);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.id)) {
-        this.id = data().deepCopy(fields()[6].schema(), other.id);
+      if (isValidValue(fields()[6], other.outputBinding)) {
+        this.outputBinding = data().deepCopy(fields()[6].schema(), other.outputBinding);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.outputBinding)) {
-        this.outputBinding = data().deepCopy(fields()[7].schema(), other.outputBinding);
+      if (isValidValue(fields()[7], other.type)) {
+        this.type = data().deepCopy(fields()[7].schema(), other.type);
         fieldSetFlags()[7] = true;
       }
     }
@@ -370,38 +370,63 @@ pipe.  Default: `false`.
     /** Creates a Builder by copying an existing CommandOutputParameter instance */
     private Builder(CommandOutputParameter other) {
             super(CommandOutputParameter.SCHEMA$);
-      if (isValidValue(fields()[0], other.secondaryFiles)) {
-        this.secondaryFiles = data().deepCopy(fields()[0].schema(), other.secondaryFiles);
+      if (isValidValue(fields()[0], other.label)) {
+        this.label = data().deepCopy(fields()[0].schema(), other.label);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.format)) {
-        this.format = data().deepCopy(fields()[1].schema(), other.format);
+      if (isValidValue(fields()[1], other.secondaryFiles)) {
+        this.secondaryFiles = data().deepCopy(fields()[1].schema(), other.secondaryFiles);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.streamable)) {
-        this.streamable = data().deepCopy(fields()[2].schema(), other.streamable);
+      if (isValidValue(fields()[2], other.format)) {
+        this.format = data().deepCopy(fields()[2].schema(), other.format);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.type)) {
-        this.type = data().deepCopy(fields()[3].schema(), other.type);
+      if (isValidValue(fields()[3], other.streamable)) {
+        this.streamable = data().deepCopy(fields()[3].schema(), other.streamable);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.label)) {
-        this.label = data().deepCopy(fields()[4].schema(), other.label);
+      if (isValidValue(fields()[4], other.doc)) {
+        this.doc = data().deepCopy(fields()[4].schema(), other.doc);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.description)) {
-        this.description = data().deepCopy(fields()[5].schema(), other.description);
+      if (isValidValue(fields()[5], other.id)) {
+        this.id = data().deepCopy(fields()[5].schema(), other.id);
         fieldSetFlags()[5] = true;
       }
-      if (isValidValue(fields()[6], other.id)) {
-        this.id = data().deepCopy(fields()[6].schema(), other.id);
+      if (isValidValue(fields()[6], other.outputBinding)) {
+        this.outputBinding = data().deepCopy(fields()[6].schema(), other.outputBinding);
         fieldSetFlags()[6] = true;
       }
-      if (isValidValue(fields()[7], other.outputBinding)) {
-        this.outputBinding = data().deepCopy(fields()[7].schema(), other.outputBinding);
+      if (isValidValue(fields()[7], other.type)) {
+        this.type = data().deepCopy(fields()[7].schema(), other.type);
         fieldSetFlags()[7] = true;
       }
+    }
+
+    /** Gets the value of the 'label' field */
+    public java.lang.CharSequence getLabel() {
+      return label;
+    }
+    
+    /** Sets the value of the 'label' field */
+    public CommandOutputParameter.Builder setLabel(java.lang.CharSequence value) {
+      validate(fields()[0], value);
+      this.label = value;
+      fieldSetFlags()[0] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'label' field has been set */
+    public boolean hasLabel() {
+      return fieldSetFlags()[0];
+    }
+    
+    /** Clears the value of the 'label' field */
+    public CommandOutputParameter.Builder clearLabel() {
+      label = null;
+      fieldSetFlags()[0] = false;
+      return this;
     }
 
     /** Gets the value of the 'secondaryFiles' field */
@@ -411,21 +436,21 @@ pipe.  Default: `false`.
     
     /** Sets the value of the 'secondaryFiles' field */
     public CommandOutputParameter.Builder setSecondaryFiles(java.lang.Object value) {
-      validate(fields()[0], value);
+      validate(fields()[1], value);
       this.secondaryFiles = value;
-      fieldSetFlags()[0] = true;
+      fieldSetFlags()[1] = true;
       return this; 
     }
     
     /** Checks whether the 'secondaryFiles' field has been set */
     public boolean hasSecondaryFiles() {
-      return fieldSetFlags()[0];
+      return fieldSetFlags()[1];
     }
     
     /** Clears the value of the 'secondaryFiles' field */
     public CommandOutputParameter.Builder clearSecondaryFiles() {
       secondaryFiles = null;
-      fieldSetFlags()[0] = false;
+      fieldSetFlags()[1] = false;
       return this;
     }
 
@@ -436,21 +461,21 @@ pipe.  Default: `false`.
     
     /** Sets the value of the 'format' field */
     public CommandOutputParameter.Builder setFormat(java.lang.Object value) {
-      validate(fields()[1], value);
+      validate(fields()[2], value);
       this.format = value;
-      fieldSetFlags()[1] = true;
+      fieldSetFlags()[2] = true;
       return this; 
     }
     
     /** Checks whether the 'format' field has been set */
     public boolean hasFormat() {
-      return fieldSetFlags()[1];
+      return fieldSetFlags()[2];
     }
     
     /** Clears the value of the 'format' field */
     public CommandOutputParameter.Builder clearFormat() {
       format = null;
-      fieldSetFlags()[1] = false;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -461,96 +486,46 @@ pipe.  Default: `false`.
     
     /** Sets the value of the 'streamable' field */
     public CommandOutputParameter.Builder setStreamable(java.lang.Boolean value) {
-      validate(fields()[2], value);
+      validate(fields()[3], value);
       this.streamable = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[3] = true;
       return this; 
     }
     
     /** Checks whether the 'streamable' field has been set */
     public boolean hasStreamable() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[3];
     }
     
     /** Clears the value of the 'streamable' field */
     public CommandOutputParameter.Builder clearStreamable() {
       streamable = null;
-      fieldSetFlags()[2] = false;
-      return this;
-    }
-
-    /** Gets the value of the 'type' field */
-    public java.lang.Object getType() {
-      return type;
-    }
-    
-    /** Sets the value of the 'type' field */
-    public CommandOutputParameter.Builder setType(java.lang.Object value) {
-      validate(fields()[3], value);
-      this.type = value;
-      fieldSetFlags()[3] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'type' field has been set */
-    public boolean hasType() {
-      return fieldSetFlags()[3];
-    }
-    
-    /** Clears the value of the 'type' field */
-    public CommandOutputParameter.Builder clearType() {
-      type = null;
       fieldSetFlags()[3] = false;
       return this;
     }
 
-    /** Gets the value of the 'label' field */
-    public java.lang.CharSequence getLabel() {
-      return label;
+    /** Gets the value of the 'doc' field */
+    public java.lang.Object getDoc() {
+      return doc;
     }
     
-    /** Sets the value of the 'label' field */
-    public CommandOutputParameter.Builder setLabel(java.lang.CharSequence value) {
+    /** Sets the value of the 'doc' field */
+    public CommandOutputParameter.Builder setDoc(java.lang.Object value) {
       validate(fields()[4], value);
-      this.label = value;
+      this.doc = value;
       fieldSetFlags()[4] = true;
       return this; 
     }
     
-    /** Checks whether the 'label' field has been set */
-    public boolean hasLabel() {
+    /** Checks whether the 'doc' field has been set */
+    public boolean hasDoc() {
       return fieldSetFlags()[4];
     }
     
-    /** Clears the value of the 'label' field */
-    public CommandOutputParameter.Builder clearLabel() {
-      label = null;
+    /** Clears the value of the 'doc' field */
+    public CommandOutputParameter.Builder clearDoc() {
+      doc = null;
       fieldSetFlags()[4] = false;
-      return this;
-    }
-
-    /** Gets the value of the 'description' field */
-    public java.lang.CharSequence getDescription() {
-      return description;
-    }
-    
-    /** Sets the value of the 'description' field */
-    public CommandOutputParameter.Builder setDescription(java.lang.CharSequence value) {
-      validate(fields()[5], value);
-      this.description = value;
-      fieldSetFlags()[5] = true;
-      return this; 
-    }
-    
-    /** Checks whether the 'description' field has been set */
-    public boolean hasDescription() {
-      return fieldSetFlags()[5];
-    }
-    
-    /** Clears the value of the 'description' field */
-    public CommandOutputParameter.Builder clearDescription() {
-      description = null;
-      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -561,21 +536,21 @@ pipe.  Default: `false`.
     
     /** Sets the value of the 'id' field */
     public CommandOutputParameter.Builder setId(java.lang.CharSequence value) {
-      validate(fields()[6], value);
+      validate(fields()[5], value);
       this.id = value;
-      fieldSetFlags()[6] = true;
+      fieldSetFlags()[5] = true;
       return this; 
     }
     
     /** Checks whether the 'id' field has been set */
     public boolean hasId() {
-      return fieldSetFlags()[6];
+      return fieldSetFlags()[5];
     }
     
     /** Clears the value of the 'id' field */
     public CommandOutputParameter.Builder clearId() {
       id = null;
-      fieldSetFlags()[6] = false;
+      fieldSetFlags()[5] = false;
       return this;
     }
 
@@ -586,20 +561,45 @@ pipe.  Default: `false`.
     
     /** Sets the value of the 'outputBinding' field */
     public CommandOutputParameter.Builder setOutputBinding(CommandOutputBinding value) {
-      validate(fields()[7], value);
+      validate(fields()[6], value);
       this.outputBinding = value;
-      fieldSetFlags()[7] = true;
+      fieldSetFlags()[6] = true;
       return this; 
     }
     
     /** Checks whether the 'outputBinding' field has been set */
     public boolean hasOutputBinding() {
-      return fieldSetFlags()[7];
+      return fieldSetFlags()[6];
     }
     
     /** Clears the value of the 'outputBinding' field */
     public CommandOutputParameter.Builder clearOutputBinding() {
       outputBinding = null;
+      fieldSetFlags()[6] = false;
+      return this;
+    }
+
+    /** Gets the value of the 'type' field */
+    public java.lang.Object getType() {
+      return type;
+    }
+    
+    /** Sets the value of the 'type' field */
+    public CommandOutputParameter.Builder setType(java.lang.Object value) {
+      validate(fields()[7], value);
+      this.type = value;
+      fieldSetFlags()[7] = true;
+      return this; 
+    }
+    
+    /** Checks whether the 'type' field has been set */
+    public boolean hasType() {
+      return fieldSetFlags()[7];
+    }
+    
+    /** Clears the value of the 'type' field */
+    public CommandOutputParameter.Builder clearType() {
+      type = null;
       fieldSetFlags()[7] = false;
       return this;
     }
@@ -608,14 +608,14 @@ pipe.  Default: `false`.
     public CommandOutputParameter build() {
       try {
         CommandOutputParameter record = new CommandOutputParameter();
-        record.secondaryFiles = fieldSetFlags()[0] ? this.secondaryFiles : (java.lang.Object) defaultValue(fields()[0]);
-        record.format = fieldSetFlags()[1] ? this.format : (java.lang.Object) defaultValue(fields()[1]);
-        record.streamable = fieldSetFlags()[2] ? this.streamable : (java.lang.Boolean) defaultValue(fields()[2]);
-        record.type = fieldSetFlags()[3] ? this.type : (java.lang.Object) defaultValue(fields()[3]);
-        record.label = fieldSetFlags()[4] ? this.label : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.description = fieldSetFlags()[5] ? this.description : (java.lang.CharSequence) defaultValue(fields()[5]);
-        record.id = fieldSetFlags()[6] ? this.id : (java.lang.CharSequence) defaultValue(fields()[6]);
-        record.outputBinding = fieldSetFlags()[7] ? this.outputBinding : (CommandOutputBinding) defaultValue(fields()[7]);
+        record.label = fieldSetFlags()[0] ? this.label : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.secondaryFiles = fieldSetFlags()[1] ? this.secondaryFiles : (java.lang.Object) defaultValue(fields()[1]);
+        record.format = fieldSetFlags()[2] ? this.format : (java.lang.Object) defaultValue(fields()[2]);
+        record.streamable = fieldSetFlags()[3] ? this.streamable : (java.lang.Boolean) defaultValue(fields()[3]);
+        record.doc = fieldSetFlags()[4] ? this.doc : (java.lang.Object) defaultValue(fields()[4]);
+        record.id = fieldSetFlags()[5] ? this.id : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.outputBinding = fieldSetFlags()[6] ? this.outputBinding : (CommandOutputBinding) defaultValue(fields()[6]);
+        record.type = fieldSetFlags()[7] ? this.type : (java.lang.Object) defaultValue(fields()[7]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

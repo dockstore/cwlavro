@@ -6,12 +6,13 @@ package io.cwl.avro;
  */
 @SuppressWarnings("all")
 /** Indicate that the workflow platform must support the `valueFrom` field
-of [WorkflowStepInput](#WorkflowStepInput). */
+of [WorkflowStepInput](#WorkflowStepInput).
+ */
 @org.apache.avro.specific.AvroGenerated
 public class StepInputExpressionRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StepInputExpressionRequirement\",\"doc\":\"Indicate that the workflow platform must support the `valueFrom` field\\nof [WorkflowStepInput](#WorkflowStepInput).\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"The specific requirement type.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"StepInputExpressionRequirement\",\"doc\":\"Indicate that the workflow platform must support the `valueFrom` field\\nof [WorkflowStepInput](#WorkflowStepInput).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'StepInputExpressionRequirement'\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The specific requirement type. */
+  /** Always 'StepInputExpressionRequirement' */
   @Deprecated public java.lang.CharSequence class$;
 
   /**
@@ -47,14 +48,14 @@ public class StepInputExpressionRequirement extends org.apache.avro.specific.Spe
 
   /**
    * Gets the value of the 'class$' field.
-   * The specific requirement type.   */
+   * Always 'StepInputExpressionRequirement'   */
   public java.lang.CharSequence getClass$() {
     return class$;
   }
 
   /**
    * Sets the value of the 'class$' field.
-   * The specific requirement type.   * @param value the value to set.
+   * Always 'StepInputExpressionRequirement'   * @param value the value to set.
    */
   public void setClass$(java.lang.CharSequence value) {
     this.class$ = value;

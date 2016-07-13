@@ -10,9 +10,9 @@ execution environment of the tool.  See `EnvironmentDef` for details.
  */
 @org.apache.avro.specific.AvroGenerated
 public class EnvVarRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EnvVarRequirement\",\"doc\":\"Define a list of environment variables which will be set in the\\nexecution environment of the tool.  See `EnvironmentDef` for details.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"The specific requirement type.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"},{\"name\":\"envDef\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"EnvironmentDef\",\"doc\":\"Define an environment variable that will be set in the runtime environment\\nby the workflow platform when executing the command line tool.  May be the\\nresult of executing an expression, such as getting a parameter from input.\\n\",\"fields\":[{\"name\":\"envName\",\"type\":\"string\",\"doc\":\"The environment variable name\"},{\"name\":\"envValue\",\"type\":[\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"Not a real type.  Indicates that a field must allow runtime parameter\\nreferences.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"The environment variable value\"}]}},\"doc\":\"The list of environment variables.\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EnvVarRequirement\",\"doc\":\"Define a list of environment variables which will be set in the\\nexecution environment of the tool.  See `EnvironmentDef` for details.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'EnvVarRequirement'\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"envDef\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"EnvironmentDef\",\"doc\":\"Define an environment variable that will be set in the runtime environment\\nby the workflow platform when executing the command line tool.  May be the\\nresult of executing an expression, such as getting a parameter from input.\\n\",\"fields\":[{\"name\":\"envName\",\"type\":\"string\",\"doc\":\"The environment variable name\"},{\"name\":\"envValue\",\"type\":[\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"The environment variable value\"}]}},\"doc\":\"The list of environment variables.\",\"jsonldPredicate\":{\"mapSubject\":\"envName\",\"mapPredicate\":\"envValue\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The specific requirement type. */
+  /** Always 'EnvVarRequirement' */
   @Deprecated public java.lang.CharSequence class$;
   /** The list of environment variables. */
   @Deprecated public java.util.List<EnvironmentDef> envDef;
@@ -53,14 +53,14 @@ public class EnvVarRequirement extends org.apache.avro.specific.SpecificRecordBa
 
   /**
    * Gets the value of the 'class$' field.
-   * The specific requirement type.   */
+   * Always 'EnvVarRequirement'   */
   public java.lang.CharSequence getClass$() {
     return class$;
   }
 
   /**
    * Sets the value of the 'class$' field.
-   * The specific requirement type.   * @param value the value to set.
+   * Always 'EnvVarRequirement'   * @param value the value to set.
    */
   public void setClass$(java.lang.CharSequence value) {
     this.class$ = value;

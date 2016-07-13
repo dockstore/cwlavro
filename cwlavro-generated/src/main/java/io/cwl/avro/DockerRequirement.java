@@ -10,7 +10,7 @@ package io.cwl.avro;
 the image.
 
 If a CommandLineTool lists `DockerRequirement` under
-`hints` or `requirements`, it may (or must) be run in the specified Docker
+`hints` (or `requirements`), it may (or must) be run in the specified Docker
 container.
 
 The platform must first acquire or install the correct Docker image as
@@ -39,9 +39,9 @@ environment as defined by Docker.
  */
 @org.apache.avro.specific.AvroGenerated
 public class DockerRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DockerRequirement\",\"doc\":\"Indicates that a workflow component should be run in a\\n[Docker](http://docker.com) container, and specifies how to fetch or build\\nthe image.\\n\\nIf a CommandLineTool lists `DockerRequirement` under\\n`hints` or `requirements`, it may (or must) be run in the specified Docker\\ncontainer.\\n\\nThe platform must first acquire or install the correct Docker image as\\nspecified by `dockerPull`, `dockerImport`, `dockerLoad` or `dockerFile`.\\n\\nThe platform must execute the tool in the container using `docker run` with\\nthe appropriate Docker image and tool command line.\\n\\nThe workflow platform may provide input files and the designated output\\ndirectory through the use of volume bind mounts.  The platform may rewrite\\nfile paths in the input object to correspond to the Docker bind mounted\\nlocations.\\n\\nWhen running a tool contained in Docker, the workflow platform must not\\nassume anything about the contents of the Docker container, such as the\\npresence or absence of specific software, except to assume that the\\ngenerated command line represents a valid command within the runtime\\nenvironment of the container.\\n\\n## Interaction with other requirements\\n\\nIf [EnvVarRequirement](#EnvVarRequirement) is specified alongside a\\nDockerRequirement, the environment variables must be provided to Docker\\nusing `--env` or `--env-file` and interact with the container's preexisting\\nenvironment as defined by Docker.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"The specific requirement type.\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"},{\"name\":\"dockerPull\",\"type\":[\"null\",\"string\"],\"doc\":\"Specify a Docker image to retrieve using `docker pull`.\"},{\"name\":\"dockerLoad\",\"type\":[\"null\",\"string\"],\"doc\":\"Specify a HTTP URL from which to download a Docker image using `docker load`.\"},{\"name\":\"dockerFile\",\"type\":[\"null\",\"string\"],\"doc\":\"Supply the contents of a Dockerfile which will be built using `docker build`.\"},{\"name\":\"dockerImport\",\"type\":[\"null\",\"string\"],\"doc\":\"Provide HTTP URL to download and gunzip a Docker images using `docker import.\"},{\"name\":\"dockerImageId\",\"type\":[\"null\",\"string\"],\"doc\":\"The image id that will be used for `docker run`.  May be a\\nhuman-readable image name or the image identifier hash.  May be skipped\\nif `dockerPull` is specified, in which case the `dockerPull` image id\\nmust be used.\\n\"},{\"name\":\"dockerOutputDirectory\",\"type\":[\"null\",\"string\"],\"doc\":\"Set the designated output directory to a specific location inside the\\nDocker container.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DockerRequirement\",\"doc\":\"Indicates that a workflow component should be run in a\\n[Docker](http://docker.com) container, and specifies how to fetch or build\\nthe image.\\n\\nIf a CommandLineTool lists `DockerRequirement` under\\n`hints` (or `requirements`), it may (or must) be run in the specified Docker\\ncontainer.\\n\\nThe platform must first acquire or install the correct Docker image as\\nspecified by `dockerPull`, `dockerImport`, `dockerLoad` or `dockerFile`.\\n\\nThe platform must execute the tool in the container using `docker run` with\\nthe appropriate Docker image and tool command line.\\n\\nThe workflow platform may provide input files and the designated output\\ndirectory through the use of volume bind mounts.  The platform may rewrite\\nfile paths in the input object to correspond to the Docker bind mounted\\nlocations.\\n\\nWhen running a tool contained in Docker, the workflow platform must not\\nassume anything about the contents of the Docker container, such as the\\npresence or absence of specific software, except to assume that the\\ngenerated command line represents a valid command within the runtime\\nenvironment of the container.\\n\\n## Interaction with other requirements\\n\\nIf [EnvVarRequirement](#EnvVarRequirement) is specified alongside a\\nDockerRequirement, the environment variables must be provided to Docker\\nusing `--env` or `--env-file` and interact with the container's preexisting\\nenvironment as defined by Docker.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'DockerRequirement'\",\"jsonldPredicate\":{\"_type\":\"@vocab\",\"_id\":\"@type\"}},{\"name\":\"dockerPull\",\"type\":[\"null\",\"string\"],\"doc\":\"Specify a Docker image to retrieve using `docker pull`.\"},{\"name\":\"dockerLoad\",\"type\":[\"null\",\"string\"],\"doc\":\"Specify a HTTP URL from which to download a Docker image using `docker load`.\"},{\"name\":\"dockerFile\",\"type\":[\"null\",\"string\"],\"doc\":\"Supply the contents of a Dockerfile which will be built using `docker build`.\"},{\"name\":\"dockerImport\",\"type\":[\"null\",\"string\"],\"doc\":\"Provide HTTP URL to download and gunzip a Docker images using `docker import.\"},{\"name\":\"dockerImageId\",\"type\":[\"null\",\"string\"],\"doc\":\"The image id that will be used for `docker run`.  May be a\\nhuman-readable image name or the image identifier hash.  May be skipped\\nif `dockerPull` is specified, in which case the `dockerPull` image id\\nmust be used.\\n\"},{\"name\":\"dockerOutputDirectory\",\"type\":[\"null\",\"string\"],\"doc\":\"Set the designated output directory to a specific location inside the\\nDocker container.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  /** The specific requirement type. */
+  /** Always 'DockerRequirement' */
   @Deprecated public java.lang.CharSequence class$;
   /** Specify a Docker image to retrieve using `docker pull`. */
   @Deprecated public java.lang.CharSequence dockerPull;
@@ -113,14 +113,14 @@ Docker container.
 
   /**
    * Gets the value of the 'class$' field.
-   * The specific requirement type.   */
+   * Always 'DockerRequirement'   */
   public java.lang.CharSequence getClass$() {
     return class$;
   }
 
   /**
    * Sets the value of the 'class$' field.
-   * The specific requirement type.   * @param value the value to set.
+   * Always 'DockerRequirement'   * @param value the value to set.
    */
   public void setClass$(java.lang.CharSequence value) {
     this.class$ = value;
