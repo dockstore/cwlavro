@@ -18,9 +18,9 @@ install:
    - sed -i 's/<A>/A/g' cwl.edited.avsc
    - sed -i 's/<B>/B/g' cwl.edited.avsc
    - sed -i 's/<C>/C/g' cwl.edited.avsc
-   - wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.7.7/avro-tools-1.7.7.jar
+   - wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.8.1/avro-tools-1.8.1.jar
    # generate Java model classes
-   - java -jar avro-tools-1.7.7.jar compile schema cwl.edited.avsc cwl-temp
+   - java -jar avro-tools-1.8.1.jar compile schema cwl.edited.avsc cwl-temp
    # create packages for the classes
    - sed -i '1i package io.cwl.avro;' cwl-temp/*
    - rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
