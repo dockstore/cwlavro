@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
+[![Dependency Status](https://www.versioneye.com/user/projects/5786817bd74b4d000d0bfc44/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5786817bd74b4d000d0bfc44)
 
 CWL Avro Project 
 ================
@@ -8,6 +9,16 @@ auto-generate classes to work in other languages. Due to familiarity, we're star
 Java here, but other languages are encouraged.  
 
 All comments and recommendations are welcome.
+
+Releases starting with v1.0 support CWL v1.0
+
+This depends on cwltool to parse CWL documents into avro (before this takes avro documents and transforms them 
+into Java objects). 
+
+Install it with the following commands (may differ depending on your distribution of Linux). 
+
+    pip install --user setuptools==24.0.3
+    pip install --user cwl-runner cwltool==1.0.20160712154127 schema-salad==1.14.20160708181155 avro==1.8.1
 
 # CWL Java SDK
 
@@ -49,7 +60,6 @@ Since this is kinda involved, a travis-CI build is provided which demos the proc
 
 ## Individual Contributors
 
-* Peter Amstutz <peter.amstutz@curoverse.com>
-* Paul Grosu <pgrosu@gmail.com>
 * Denis Yuen <denis.yuen@gmail.com>
+* Peter Amstutz <peter.amstutz@curoverse.com>
 

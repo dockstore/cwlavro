@@ -15,19 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.google.common.io.Resources;
+import com.google.gson.Gson;
+import io.cwl.avro.CWL;
+import io.cwl.avro.CommandLineTool;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.junit.Test;
+
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.junit.Test;
-
-import com.google.common.io.Resources;
-import com.google.gson.Gson;
-
-import io.cwl.avro.CWL;
-import io.cwl.avro.CommandLineTool;
 
 import static org.junit.Assert.assertTrue;
 
@@ -63,7 +61,7 @@ public class CWLClientTest {
     public void parseCWL() throws Exception{
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = new CWL();
-        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile(), true);
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
         assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
     }
@@ -77,7 +75,7 @@ public class CWLClientTest {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = new CWL();
         Gson gson =  CWL.getTypeSafeCWLToolDocument();
-        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile(), true);
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final CommandLineTool commandLineTool = gson.fromJson(output.getLeft(), CommandLineTool.class);
         assertTrue(commandLineTool != null && commandLineTool.getLabel().equals("BAMStats tool"));
     }
@@ -90,7 +88,7 @@ public class CWLClientTest {
     public void extractCWLTypes() throws Exception {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = new CWL();
-        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile(), true);
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map<String, String> typeMap = cwl.extractCWLTypes(output.getLeft());
         assertTrue(typeMap.size() == 3);
         assertTrue("int".equals(typeMap.get("mem_gb")));
@@ -105,7 +103,7 @@ public class CWLClientTest {
     public void extractMetadata() throws Exception {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = new CWL();
-        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile(), true);
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map map = cwl.cwlJson2Map(output.getLeft());
         assertTrue(map.size() == 1 && ((Map)map.get("http://purl.org/dc/terms/creator")).size() == 3);
         String key = (String)((Map) map.get("http://purl.org/dc/terms/creator")).get("http://xmlns.com/foaf/0.1/name");
