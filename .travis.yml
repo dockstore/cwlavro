@@ -2,8 +2,6 @@ language: java
 jdk: 
   - oraclejdk8
 
-sudo: required
-
 install:
    # install a specific version of the cwl dependencies to test with
    - pip2.7 install --user setuptools==24.0.3
@@ -35,4 +33,4 @@ script: mvn -B clean install cobertura:cobertura
 
 after_success:
 - mvn -B coveralls:report
-- mvn -B versioneye:update
+- mvn -B versioneye:update || true
