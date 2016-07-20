@@ -183,10 +183,11 @@ public class CWL {
         return gson1.fromJson(jsonElement, anyClass);
     }
 
-    public ImmutablePair<String, String> parseCWL(final String cwlFile, final boolean validate) {
+    public ImmutablePair<String, String> parseCWL(final String cwlFile) {
         // update seems to just output the JSON version without checking file links
-        final String[] s = { "cwltool", "--non-strict", validate ? "--print-pre" : "--update", cwlFile };
-        final ImmutablePair<String, String> execute = Utilities.executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
+        final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
+        final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
+                .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
         return execute;
     }
 

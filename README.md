@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
+[![Dependency Status](https://www.versioneye.com/user/projects/5786817bd74b4d000d0bfc44/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5786817bd74b4d000d0bfc44)
 
 CWL Avro Project 
 ================
@@ -8,6 +9,8 @@ auto-generate classes to work in other languages. Due to familiarity, we're star
 Java here, but other languages are encouraged.  
 
 All comments and recommendations are welcome.
+
+Releases starting with v1.0 support CWL v1.0
 
 # CWL Java SDK
 
@@ -49,7 +52,6 @@ Since this is kinda involved, a travis-CI build is provided which demos the proc
 
 ## Individual Contributors
 
-* Peter Amstutz <peter.amstutz@curoverse.com>
-* Paul Grosu <pgrosu@gmail.com>
 * Denis Yuen <denis.yuen@gmail.com>
+* Peter Amstutz <peter.amstutz@curoverse.com>
 
