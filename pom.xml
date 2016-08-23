@@ -39,6 +39,14 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>seqwaremaven.oicr.on.ca-seqware-dependencies</id>
+            <name>seqwaremaven.oicr.on.ca-seqware-dependencies</name>
+            <url>https://seqwaremaven.oicr.on.ca/artifactory/seqware-dependencies</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>net.sourceforge.cobertura</groupId>
