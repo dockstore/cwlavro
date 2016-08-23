@@ -1,0 +1,48 @@
+{
+  "class" : "CommandLineTool",
+  "id" : "HelloWorld",
+  "cwlVersion" : "draft-3",
+  "description" : "Markdown description text here",
+  "label" : "HelloWorld Tool",
+  "contributor" : [ ],
+  "owner" : [ ],
+  "inputs" : [ {
+    "id" : "#ref_file_1",
+    "type" : "File",
+    "description" : "this describes a large reference file that does not change between runs"
+  }, {
+    "id" : "#ref_file_2",
+    "type" : "File",
+    "description" : "this describes a large reference file that does not change between runs"
+  }, {
+    "id" : "#hello_input",
+    "type" : "File",
+    "description" : "this describes an input file that should be provided before execution"
+  } ],
+  "outputs" : [ {
+    "id" : "#hello_output",
+    "type" : "File",
+    "outputBinding" : {
+      "glob" : "hello-output.txt"
+    },
+    "description" : "this describes an output file that should be saved after execution"
+  } ],
+  "hints" : [ {
+    "class" : "SBResource",
+    "ramMin" : 8092,
+    "description" : "these parameters are used to locate a VM with appropriate resources",
+    "outdirMin" : 512000,
+    "coresMin" : 8
+  } ],
+  "requirements" : [ {
+    "class" : "DockerRequirement",
+    "dockerPull" : "ubuntu:trusty"
+  }, {
+    "class" : "SBResource"
+  } ],
+  "successCodes" : [ ],
+  "baseCommand" : [ "/bin/bash", "-c" ],
+  "arguments" : [ {
+    "valueFrom" : "$(\"cat \" + inputs.hello_input.path + \" > hello-output.txt &&\" + \" ls \" + inputs.ref_file_1.path + \" >> hello-output.txt && \" + \" head -20 \" + inputs.ref_file_2.path + \" >> hello-output.txt\")"
+  } ]
+}

@@ -20,6 +20,7 @@
         <github.url>scm:git:git@github.com:common-workflow-language/cwlavro.git</github.url>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <rabix-version>0.6.1</rabix-version>
     </properties>
 
     <scm>
@@ -37,6 +38,14 @@
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>seqwaremaven.oicr.on.ca-seqware-dependencies</id>
+            <name>seqwaremaven.oicr.on.ca-seqware-dependencies</name>
+            <url>https://seqwaremaven.oicr.on.ca/artifactory/seqware-dependencies</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>

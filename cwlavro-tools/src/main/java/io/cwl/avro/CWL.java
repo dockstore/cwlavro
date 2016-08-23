@@ -3,23 +3,28 @@ package io.cwl.avro;
 import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.utils.JsonUtils;
-import com.google.common.base.Joiner;
-import com.google.common.base.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.io.FileUtils;
+import org.mortbay.log.Log;
+import org.rabix.bindings.BindingException;
+import org.rabix.bindings.Bindings;
+import org.rabix.bindings.BindingsFactory;
+import org.rabix.bindings.model.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +161,9 @@ public class CWL {
                             Collection<Object> hints = new ArrayList<>();
                             for (final JsonElement jsonElement : json.getAsJsonArray()) {
                                 final Object o = getCWLObject(sequenceSafeGson, jsonElement);
+                                if (o == null){
+                                    continue;
+                                }
                                 hints.add(o);
                             }
                             return hints;
@@ -176,25 +184,36 @@ public class CWL {
         try {
             anyClass = (Class<SpecificRecordBase>) Class.forName("io.cwl.avro." + elementClass);
         } catch (ClassNotFoundException e) {
-            //TODO: this should be a log
-            e.printStackTrace();
-            anyClass = null;
+            Log.debug("Could not process " + elementClass, e);
+            return null;
         }
         return gson1.fromJson(jsonElement, anyClass);
     }
 
-    public ImmutablePair<String, String> parseCWL(final String cwlFile) {
-        // update seems to just output the JSON version without checking file links
-        final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
-        final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
-                .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
-        return execute;
+    /**
+     * Return json representation of cwlFile
+     * @param cwlFile
+     * @return
+     */
+    public String parseCWL(final String cwlFile) {
+        final Path path = Paths.get(cwlFile);
+        final Bindings bindings;
+        try {
+            final String appURL = path.toFile().toURI().toString();
+            bindings = BindingsFactory.create(appURL);
+            final Application application = bindings.loadAppObject(appURL);
+            return application.serialize();
+        } catch (BindingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public Map cwlJson2Map(final String cwljson) {
+    public Map cwlJson2Map(java.io.File rawCwlDocument) {
         Map jsonObject;
         try {
-            jsonObject = (Map) JsonUtils.fromString(cwljson);
+            final String cwlString = FileUtils.readFileToString(rawCwlDocument, StandardCharsets.UTF_8);
+            Yaml yaml= new Yaml();
+            jsonObject = (Map<String, Object>) yaml.load(cwlString);
             // Create a context JSON map containing prefixes and definitions
             Map context = new HashMap();
             // Customise context...
