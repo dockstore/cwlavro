@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,6 +157,9 @@ public class CWL {
                             Collection<Object> hints = new ArrayList<>();
                             for (final JsonElement jsonElement : json.getAsJsonArray()) {
                                 final Object o = getCWLObject(sequenceSafeGson, jsonElement);
+                                if (o == null){
+                                    continue;
+                                }
                                 hints.add(o);
                             }
                             return hints;
@@ -176,9 +180,8 @@ public class CWL {
         try {
             anyClass = (Class<SpecificRecordBase>) Class.forName("io.cwl.avro." + elementClass);
         } catch (ClassNotFoundException e) {
-            //TODO: this should be a log
-            e.printStackTrace();
-            anyClass = null;
+            Log.debug("Could not process " + elementClass, e);
+            return null;
         }
         return gson1.fromJson(jsonElement, anyClass);
     }

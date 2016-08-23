@@ -19,11 +19,14 @@ import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import io.cwl.avro.CWL;
 import io.cwl.avro.CommandLineTool;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.Test;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
 
@@ -52,6 +55,8 @@ public class CWLClientTest {
         final String s = gson.toJson(runJson);
         assertTrue(s.length() > 10);
     }
+
+
 
     /**
      * This test demonstrates how to parse a CWL document using CWL tool.
@@ -108,6 +113,16 @@ public class CWLClientTest {
         assertTrue(map.size() == 1 && ((Map)map.get("http://purl.org/dc/terms/creator")).size() == 3);
         String key = (String)((Map) map.get("http://purl.org/dc/terms/creator")).get("http://xmlns.com/foaf/0.1/name");
         assertTrue(Objects.equals(key,"Brian O'Connor"));
+    }
+
+    @Test
+    public void convertFromSBJsonToObject() throws Exception {
+        final URL resource = Resources.getResource("cwl_sb.json");
+        final Gson typeSafeCWLToolDocument = CWL.getTypeSafeCWLToolDocument();
+        final File file = Paths.get(resource.toURI()).toFile();
+        final String s = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+        final CommandLineTool commandLineTool = typeSafeCWLToolDocument.fromJson(s, CommandLineTool.class);
+        assertTrue("could not convert", commandLineTool != null);
     }
 
 }
