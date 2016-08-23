@@ -14,11 +14,31 @@
     </parent>
 
     <dependencies>
-      <dependency>
-          <groupId>io.cwl</groupId>
-          <artifactId>cwlavro-generated</artifactId>
-          <version>v1.0.1-SNAPSHOT</version>
-      </dependency>
+        <dependency>
+            <groupId>io.cwl</groupId>
+            <artifactId>cwlavro-generated</artifactId>
+            <version>v1.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.rabix</groupId>
+            <artifactId>rabix-bindings</artifactId>
+            <version>${rabix-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.rabix</groupId>
+            <artifactId>rabix-bindings-draft2</artifactId>
+            <version>${rabix-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.rabix</groupId>
+            <artifactId>rabix-bindings-draft3</artifactId>
+            <version>${rabix-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.rabix</groupId>
+            <artifactId>rabix-bindings-sb</artifactId>
+            <version>${rabix-version}</version>
+        </dependency>
     </dependencies>
 
     <build>
