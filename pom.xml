@@ -4,7 +4,7 @@
     <artifactId>cwlavro</artifactId>
     <name>CWL Avro</name>
     <groupId>io.cwl</groupId>
-    <version>v1.0.1-SNAPSHOT</version>
+    <version>v1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
