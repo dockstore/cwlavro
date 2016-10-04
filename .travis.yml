@@ -2,17 +2,39 @@ language: java
 jdk: 
   - oraclejdk8
 
+sudo: required
+
 install:
-   - pip2.7 install --user cwl-runner cwltool==1.0.20160108200940 schema-salad==1.4.20160108200836
+   # upgrade pip?
+   - sudo pip install --upgrade pip
+   # install a specific version of the cwl dependencies to test with
+   - pip2.7 install --user setuptools==24.0.3
+   - pip2.7 install --user cwl-runner cwltool==1.0.20160712154127 schema-salad==1.14.20160708181155 avro==1.8.1
    - git clone https://github.com/common-workflow-language/common-workflow-language 
-   - python -mschema_salad --print-avro common-workflow-language/draft-3/CommonWorkflowLanguage.yml  > cwl.avsc
+   # convert CWL schema salad CWL to standard Avro json
+   - python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
+   # get rid of invalid avro symbols
    - sed '/draft-3/d' cwl.avsc > cwl.edited.avsc
-   - wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.7.7/avro-tools-1.7.7.jar
-   - java -jar avro-tools-1.7.7.jar compile schema cwl.edited.avsc cwl-temp
-   - sed -i '1i package cwl;' cwl-temp/*
-   - rm -Rf WIP/alternative/src/main/java/cwl
-   - cp -R cwl-temp WIP/alternative/src/main/java/cwl  
+   - sed -i '/draft-2/d' cwl.edited.avsc
+   - sed -i '/draft-4/d' cwl.edited.avsc
+   - sed -i '/dev4/d' cwl.edited.avsc
+   - sed -i '/v1.0/d' cwl.edited.avsc
+   # get rid of symbols that screw up javadoc (not sure if invalid avro schema)
+   - sed -i 's/<A>/A/g' cwl.edited.avsc
+   - sed -i 's/<B>/B/g' cwl.edited.avsc
+   - sed -i 's/<C>/C/g' cwl.edited.avsc
+   - wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.8.1/avro-tools-1.8.1.jar
+   # generate Java model classes
+   - java -jar avro-tools-1.8.1.jar compile schema cwl.edited.avsc cwl-temp
+   # create packages for the classes
+   - sed -i '1i package io.cwl.avro;' cwl-temp/*
+   - rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
+   - cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro    
    - echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
    - git diff 
 
-script: cd WIP/alternative/ && mvn -B clean install
+script: mvn -B clean install cobertura:cobertura
+
+after_success:
+- mvn -B coveralls:report
+- mvn -B versioneye:update || true
