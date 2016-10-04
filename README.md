@@ -10,7 +10,8 @@ Java here, but other languages are encouraged.
 
 All comments and recommendations are welcome.
 
-Releases starting with v1.0 support CWL v1.0
+Releases starting with v1.0 support CWL v1.0 and require CWLtool as a dependency
+Releases starting with v2.0 will support CWL v1.0 and require Rabix as a dependency
 
 This depends on cwltool to parse CWL documents into avro (before this takes avro documents and transforms them 
 into Java objects). 
