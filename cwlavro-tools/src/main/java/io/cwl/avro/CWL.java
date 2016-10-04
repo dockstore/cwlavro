@@ -146,29 +146,206 @@ public class CWL {
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
     public static Gson getTypeSafeCWLToolDocument() {
-        final Type hintType = new TypeToken<List<Any>>() {}.getType();
+        final java.lang.reflect.Type hintType = new TypeToken<List<Any>>() {}.getType();
+        final java.lang.reflect.Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
+        final java.lang.reflect.Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
+        final java.lang.reflect.Type inputParameterType = new TypeToken<List<InputParameter>>() {}.getType();
+        final java.lang.reflect.Type expressionToolOutputParameterType = new TypeToken<List<ExpressionToolOutputParameter>>() {}.getType();
+        final java.lang.reflect.Type workflowOutputParameterType = new TypeToken<List<WorkflowOutputParameter>>() {}.getType();
+        final java.lang.reflect.Type workflowStepInputType = new TypeToken<List<WorkflowStepInput>>() {}.getType();
+
         final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
-            (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
+                (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
 
         return new GsonBuilder().registerTypeAdapter(CharSequence.class,
-            (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())
-                        .registerTypeAdapter(hintType, (JsonDeserializer) (json, typeOfT, context) -> {
-                            Collection<Object> hints = new ArrayList<>();
-                            for (final JsonElement jsonElement : json.getAsJsonArray()) {
-                                final Object o = getCWLObject(sequenceSafeGson, jsonElement);
-                                hints.add(o);
+                (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())
+                .registerTypeAdapter(hintType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> hints = new ArrayList<>();
+                    for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                        final Object o = sequenceSafeGson.fromJson(jsonElement, Object.class);
+                        hints.add(o);
+                    }
+                    return hints;
+
+                }).registerTypeAdapter(commandInputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> commandInputParameter = new ArrayList<>();
+                    if (json.isJsonArray()) {
+                        for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                            final Object o = sequenceSafeGson.fromJson(jsonElement, CommandInputParameter.class);
+                            commandInputParameter.add(o);
+                        }
+                        return commandInputParameter;
+                    } else if (json.isJsonObject()){
+                        // store object as a map
+                        Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+
+                        // Iterate over keys, add to collection
+                        CommandInputParameter inParam;
+                        for (Map.Entry<String, Object> inputParameterObj : map.entrySet()) {
+                            if (inputParameterObj.getValue() instanceof Map) {
+                                String inputParameterJson = sequenceSafeGson.toJson(inputParameterObj.getValue());
+                                inParam = sequenceSafeGson.fromJson(inputParameterJson, CommandInputParameter.class);
+                            } else {
+                                inParam = new CommandInputParameter();
+                                inParam.setType(inputParameterObj.getValue());
                             }
-                            return hints;
-                        })
-                   .registerTypeAdapter(CommandInputParameter.class, (JsonDeserializer<CommandInputParameter>) (json, typeOfT, context) -> {
-                       final CommandInputParameter commandInputParameter = sequenceSafeGson.fromJson(json,
-                           CommandInputParameter.class);
-                       // default has a dollar sign in the schema but not in sample jsons, we could do something here if we wanted
-                       return commandInputParameter;
-                   })
-                   .serializeNulls().setPrettyPrinting()
-            .create();
+                            inParam.setId(inputParameterObj.getKey());
+                            commandInputParameter.add(inParam);
+                        }
+                        return commandInputParameter;
+
+                    } else{
+                        throw new RuntimeException("unexpected JSON entry");
+                    }
+                }).registerTypeAdapter(commandOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> commandOutputParameter = new ArrayList<>();
+                    if (json.isJsonArray()) {
+                        for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                            final Object o = sequenceSafeGson.fromJson(jsonElement, CommandOutputParameter.class);
+                            commandOutputParameter.add(o);
+                        }
+                        return commandOutputParameter;
+                    } else if (json.isJsonObject()){
+                        // store object as a map
+                        Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+
+                        // Iterate over keys, add to collection
+                        CommandOutputParameter outParam;
+                        for (Map.Entry<String, Object> outputParameterObj : map.entrySet()) {
+                            if (outputParameterObj.getValue() instanceof Map) {
+                                String outputParameterJson = sequenceSafeGson.toJson(outputParameterObj.getValue());
+                                outParam = sequenceSafeGson.fromJson(outputParameterJson, CommandOutputParameter.class);
+                            } else {
+                                outParam = new CommandOutputParameter();
+                                outParam.setType(outputParameterObj.getValue());
+                            }
+                            outParam.setId(outputParameterObj.getKey());
+                            commandOutputParameter.add(outParam);
+                        }
+                        return commandOutputParameter;
+
+                    } else{
+                        throw new RuntimeException("unexpected JSON entry");
+                    }
+                }).registerTypeAdapter(inputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> inputParameter = new ArrayList<>();
+                    if (json.isJsonArray()) {
+                        for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                            final Object o = sequenceSafeGson.fromJson(jsonElement, InputParameter.class);
+                            inputParameter.add(o);
+                        }
+                        return inputParameter;
+                    } else if (json.isJsonObject()){
+                        // store object as a map
+                        Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+
+                        // Iterate over keys, add to collection
+                        InputParameter inParam;
+                        for (Map.Entry<String, Object> inputParameterObj : map.entrySet()) {
+                            if (inputParameterObj.getValue() instanceof Map) {
+                                String inputParameterJson = sequenceSafeGson.toJson(inputParameterObj.getValue());
+                                inParam = sequenceSafeGson.fromJson(inputParameterJson, InputParameter.class);
+                            } else {
+                                inParam = new InputParameter();
+                                inParam.setType(inputParameterObj.getValue());
+                            }
+                            inParam.setId(inputParameterObj.getKey());
+                            inputParameter.add(inParam);
+                        }
+                        return inputParameter;
+
+                    } else{
+                        throw new RuntimeException("unexpected JSON entry");
+                    }
+                }).registerTypeAdapter(expressionToolOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> expressionToolOutputParameter = new ArrayList<>();
+                    if (json.isJsonArray()) {
+                        for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                            final Object o = sequenceSafeGson.fromJson(jsonElement, ExpressionToolOutputParameter.class);
+                            expressionToolOutputParameter.add(o);
+                        }
+                        return expressionToolOutputParameter;
+                    } else if (json.isJsonObject()){
+                        // store object as a map
+                        Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+
+                        // Iterate over keys, add to collection
+                        ExpressionToolOutputParameter expressionToolOutputParam;
+                        for (Map.Entry<String, Object> expressionToolOutputParameterObj : map.entrySet()) {
+                            if (expressionToolOutputParameterObj.getValue() instanceof Map) {
+                                String expressionToolOutputParameterJson = sequenceSafeGson.toJson(expressionToolOutputParameterObj.getValue());
+                                expressionToolOutputParam = sequenceSafeGson.fromJson(expressionToolOutputParameterJson, ExpressionToolOutputParameter.class);
+                            } else {
+                                expressionToolOutputParam = new ExpressionToolOutputParameter();
+                                expressionToolOutputParam.setType(expressionToolOutputParameterObj.getValue());
+                            }
+                            expressionToolOutputParam.setId(expressionToolOutputParameterObj.getKey());
+                            expressionToolOutputParameter.add(expressionToolOutputParam);
+                        }
+                        return expressionToolOutputParameter;
+
+                    } else{
+                        throw new RuntimeException("unexpected JSON entry");
+                    }
+                }).registerTypeAdapter(workflowOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> workflowOutputParameter = new ArrayList<>();
+                    if (json.isJsonArray()) {
+                        for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                            final Object o = sequenceSafeGson.fromJson(jsonElement, WorkflowOutputParameter.class);
+                            workflowOutputParameter.add(o);
+                        }
+                        return workflowOutputParameter;
+
+                    } else if (json.isJsonObject()){
+                        // store object as a map
+                        Map<String, WorkflowOutputParameter> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,WorkflowOutputParameter>>() {}.getType());
+
+                        // Iterate over keys, add to collection
+                        for (Map.Entry<String, WorkflowOutputParameter> workflowOutputParameterObj : map.entrySet()) {
+                            WorkflowOutputParameter outParam = workflowOutputParameterObj.getValue();
+                            outParam.setId(workflowOutputParameterObj.getKey());
+                            workflowOutputParameter.add(outParam);
+                        }
+                        return workflowOutputParameter;
+
+                    } else{
+                        throw new RuntimeException("unexpected JSON entry");
+                    }
+                }).registerTypeAdapter(workflowStepInputType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> workflowStepInput = new ArrayList<>();
+                    if (json.isJsonArray()) {
+                        for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                            final Object o = sequenceSafeGson.fromJson(jsonElement, WorkflowStepInput.class);
+                            workflowStepInput.add(o);
+                        }
+                        return workflowStepInput;
+                    } else if (json.isJsonObject()){
+                        // store object as a map
+                        Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+
+                        // Iterate over keys, add to collection
+                        WorkflowStepInput wsInput;
+                        for (Map.Entry<String, Object> workflowStepInputObj : map.entrySet()) {
+                            if (workflowStepInputObj.getValue() instanceof Map) {
+                                String workflowStepInputJson = sequenceSafeGson.toJson(workflowStepInputObj.getValue());
+                                wsInput = sequenceSafeGson.fromJson(workflowStepInputJson, WorkflowStepInput.class);
+                            } else {
+                                wsInput = new WorkflowStepInput();
+                                wsInput.setSource(workflowStepInputObj.getValue());
+                            }
+                            wsInput.setId(workflowStepInputObj.getKey());
+                            workflowStepInput.add(wsInput);
+                        }
+                        return workflowStepInput;
+
+                    } else{
+                        throw new RuntimeException("unexpected JSON entry");
+                    }
+                })
+                .serializeNulls().setPrettyPrinting()
+                .create();
     }
+
 
     private static Object getCWLObject(Gson gson1, JsonElement jsonElement) {
         final String elementClass = jsonElement.getAsJsonObject().get("class").getAsString();
