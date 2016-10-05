@@ -35,7 +35,7 @@ import java.util.Objects;
 public class CWL {
 
     private final Gson gson;
-    private final Logger log = LoggerFactory.getLogger(CWL.class);
+    private static final Logger log = LoggerFactory.getLogger(CWL.class);
 
     public CWL() throws GsonBuildException{
         gson = getTypeSafeCWLToolDocument();
@@ -147,7 +147,7 @@ public class CWL {
     /**
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
-    public Gson getTypeSafeCWLToolDocument() throws GsonBuildException {
+    public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException {
         final Type hintType = new TypeToken<List<Any>>() {}.getType();
         final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
         final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
@@ -192,7 +192,7 @@ public class CWL {
      * @param objectType
          * @return Collection of objects of Class c
          */
-    private Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
+    private static Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
             GsonBuildException {
         Collection<Object> objectCollection = new ArrayList<>();
         if (json.isJsonArray()) {
@@ -251,7 +251,7 @@ public class CWL {
         }
     }
 
-    public class GsonBuildException extends RuntimeException {
+    public static class GsonBuildException extends RuntimeException {
         public GsonBuildException(String message) {
             super(message);
         }
