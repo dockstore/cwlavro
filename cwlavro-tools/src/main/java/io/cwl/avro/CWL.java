@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -146,14 +147,14 @@ public class CWL {
     /**
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
-    public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException {
-        final java.lang.reflect.Type hintType = new TypeToken<List<Any>>() {}.getType();
-        final java.lang.reflect.Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
-        final java.lang.reflect.Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
-        final java.lang.reflect.Type inputParameterType = new TypeToken<List<InputParameter>>() {}.getType();
-        final java.lang.reflect.Type expressionToolOutputParameterType = new TypeToken<List<ExpressionToolOutputParameter>>() {}.getType();
-        final java.lang.reflect.Type workflowOutputParameterType = new TypeToken<List<WorkflowOutputParameter>>() {}.getType();
-        final java.lang.reflect.Type workflowStepInputType = new TypeToken<List<WorkflowStepInput>>() {}.getType();
+    public Gson getTypeSafeCWLToolDocument() throws GsonBuildException {
+        final Type hintType = new TypeToken<List<Any>>() {}.getType();
+        final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
+        final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
+        final Type inputParameterType = new TypeToken<List<InputParameter>>() {}.getType();
+        final Type expressionToolOutputParameterType = new TypeToken<List<ExpressionToolOutputParameter>>() {}.getType();
+        final Type workflowOutputParameterType = new TypeToken<List<WorkflowOutputParameter>>() {}.getType();
+        final Type workflowStepInputType = new TypeToken<List<WorkflowStepInput>>() {}.getType();
 
         final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
                 (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
@@ -191,7 +192,7 @@ public class CWL {
      * @param objectType
          * @return Collection of objects of Class c
          */
-    private static Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
+    private Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
             GsonBuildException {
         Collection<Object> objectCollection = new ArrayList<>();
         if (json.isJsonArray()) {
@@ -230,16 +231,16 @@ public class CWL {
                     objectCollection.add(item);
                 }
             } catch (InstantiationException ex) {
-                ex.printStackTrace();
+                log.error("The given class " + c.getName() + " could not be instantiated.", ex);
                 throw new GsonBuildException("Error casting to class " + c.getName());
             } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
+                log.error("The given class " + c.getName() + " could not be instantiated due to access privileges.", ex);
                 throw new GsonBuildException("Error casting to class " + c.getName());
             } catch (NoSuchMethodException ex) {
-                ex.printStackTrace();
+                log.error("The given class " + c.getName() + " was expected to have the methods setId and one of setType and setSource, but no such method exists.", ex);
                 throw new GsonBuildException("No matching methods for class " + c.getName());
             } catch (InvocationTargetException ex) {
-                ex.printStackTrace();
+                log.error("There was an exception during the running of a method for class " + c.getName() + ".", ex);
                 throw new GsonBuildException("Error running method for class " + c.getName());
             }
 
@@ -250,7 +251,7 @@ public class CWL {
         }
     }
 
-    public static class GsonBuildException extends RuntimeException {
+    public class GsonBuildException extends RuntimeException {
         public GsonBuildException(String message) {
             super(message);
         }
