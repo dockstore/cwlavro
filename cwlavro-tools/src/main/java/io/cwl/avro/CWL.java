@@ -10,13 +10,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
-import org.apache.avro.specific.SpecificRecordBase;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,10 +36,10 @@ import java.util.Objects;
 public class CWL {
 
     private final Gson gson;
-    private final Logger log = LoggerFactory.getLogger(CWL.class);
+    private static final Logger log = LoggerFactory.getLogger(CWL.class);
 
-    public CWL(){
-        gson =  getTypeSafeCWLToolDocument();
+    public CWL() throws GsonBuildException, JsonParseException {
+        gson = getTypeSafeCWLToolDocument();
     }
 
     /**
@@ -145,42 +148,114 @@ public class CWL {
     /**
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
-    public static Gson getTypeSafeCWLToolDocument() {
+    public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException, JsonParseException {
         final Type hintType = new TypeToken<List<Any>>() {}.getType();
-        final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
-            (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
+        final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
+        final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
+        final Type inputParameterType = new TypeToken<List<InputParameter>>() {}.getType();
+        final Type expressionToolOutputParameterType = new TypeToken<List<ExpressionToolOutputParameter>>() {}.getType();
+        final Type workflowOutputParameterType = new TypeToken<List<WorkflowOutputParameter>>() {}.getType();
+        final Type workflowStepInputType = new TypeToken<List<WorkflowStepInput>>() {}.getType();
 
-        return new GsonBuilder().registerTypeAdapter(CharSequence.class,
-            (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())
-                        .registerTypeAdapter(hintType, (JsonDeserializer) (json, typeOfT, context) -> {
-                            Collection<Object> hints = new ArrayList<>();
-                            for (final JsonElement jsonElement : json.getAsJsonArray()) {
-                                final Object o = getCWLObject(sequenceSafeGson, jsonElement);
-                                hints.add(o);
-                            }
-                            return hints;
-                        })
-                   .registerTypeAdapter(CommandInputParameter.class, (JsonDeserializer<CommandInputParameter>) (json, typeOfT, context) -> {
-                       final CommandInputParameter commandInputParameter = sequenceSafeGson.fromJson(json,
-                           CommandInputParameter.class);
-                       // default has a dollar sign in the schema but not in sample jsons, we could do something here if we wanted
-                       return commandInputParameter;
-                   })
-                   .serializeNulls().setPrettyPrinting()
-            .create();
+        final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
+                (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
+
+        return new GsonBuilder().registerTypeAdapter(CharSequence.class, (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())
+                .registerTypeAdapter(hintType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    Collection<Object> hints = new ArrayList<>();
+                    for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                        final Object o = sequenceSafeGson.fromJson(jsonElement, Object.class);
+                        hints.add(o);
+                    }
+                    return hints;
+
+                }).registerTypeAdapter(commandInputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    return gsonBuilderHelper(json, sequenceSafeGson, CommandInputParameter.class, true);
+                }).registerTypeAdapter(commandOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    return gsonBuilderHelper(json, sequenceSafeGson, CommandOutputParameter.class, true);
+                }).registerTypeAdapter(inputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    return gsonBuilderHelper(json, sequenceSafeGson, InputParameter.class, true);
+                }).registerTypeAdapter(expressionToolOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    return gsonBuilderHelper(json, sequenceSafeGson, ExpressionToolOutputParameter.class, true);
+                }).registerTypeAdapter(workflowOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    return gsonBuilderHelper(json, sequenceSafeGson, WorkflowOutputParameter.class, true);
+                }).registerTypeAdapter(workflowStepInputType, (JsonDeserializer) (json, typeOfT, context) -> {
+                    return gsonBuilderHelper(json, sequenceSafeGson, WorkflowStepInput.class, false);
+                }).serializeNulls().setPrettyPrinting().create();
+
     }
 
-    private static Object getCWLObject(Gson gson1, JsonElement jsonElement) {
-        final String elementClass = jsonElement.getAsJsonObject().get("class").getAsString();
-        Class<SpecificRecordBase> anyClass;
-        try {
-            anyClass = (Class<SpecificRecordBase>) Class.forName("io.cwl.avro." + elementClass);
-        } catch (ClassNotFoundException e) {
-            //TODO: this should be a log
-            e.printStackTrace();
-            anyClass = null;
+    /**
+     * Helper for storing CWL JSON elements into Collections of objects, as expected by CWL Avro classes
+     * @param json
+     * @param sequenceSafeGson
+     * @param c
+     * @param objectType
+         * @return Collection of objects of Class c
+         */
+    private static Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
+            GsonBuildException, JsonParseException {
+        Collection<Object> objectCollection = new ArrayList<>();
+        if (json.isJsonArray()) {
+            for (final JsonElement jsonElement : json.getAsJsonArray()) {
+                final Object o = sequenceSafeGson.fromJson(jsonElement, c);
+                objectCollection.add(o);
+            }
+            return objectCollection;
+        } else if (json.isJsonObject()){
+            Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+
+            try {
+                Object item;
+                Method setId;
+                Method setSource = null;
+                Method setType = null;
+                setId = c.getMethod("setId", CharSequence.class);
+                if (objectType) {
+                    setType = c.getMethod("setType", Object.class);
+                } else {
+                    setSource = c.getMethod("setSource", Object.class);
+                }
+                for (Map.Entry<String, Object> itemObj : map.entrySet()) {
+                    if (itemObj.getValue() instanceof Map) {
+                        String itemJson = sequenceSafeGson.toJson(itemObj.getValue());
+                        item = sequenceSafeGson.fromJson(itemJson, c);
+                    } else {
+                        item = c.newInstance();
+                        if (objectType) {
+                            setType.invoke(item, itemObj.getValue());
+                        } else {
+                            setSource.invoke(item, itemObj.getValue());
+                        }
+                    }
+                    setId.invoke(item, itemObj.getKey());
+                    objectCollection.add(item);
+                }
+            } catch (InstantiationException ex) {
+                log.error("The given class " + c.getName() + " could not be instantiated.", ex);
+                throw new GsonBuildException("Error casting to class " + c.getName());
+            } catch (IllegalAccessException ex) {
+                log.error("The given class " + c.getName() + " could not be instantiated due to access privileges.", ex);
+                throw new GsonBuildException("Error casting to class " + c.getName());
+            } catch (NoSuchMethodException ex) {
+                log.error("The given class " + c.getName() + " was expected to have the methods setId and one of setType and setSource, but no such method exists.", ex);
+                throw new GsonBuildException("No matching methods for class " + c.getName());
+            } catch (InvocationTargetException ex) {
+                log.error("There was an exception during the running of a method for class " + c.getName() + ".", ex);
+                throw new GsonBuildException("Error running method for class " + c.getName());
+            }
+
+            return objectCollection;
+
+        } else{
+            throw new JsonParseException("Invalid JSON entry.");
         }
-        return gson1.fromJson(jsonElement, anyClass);
+    }
+
+    public static class GsonBuildException extends RuntimeException {
+        public GsonBuildException(String message) {
+            super(message);
+        }
     }
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
