@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -37,7 +38,7 @@ public class CWL {
     private final Gson gson;
     private static final Logger log = LoggerFactory.getLogger(CWL.class);
 
-    public CWL() throws GsonBuildException{
+    public CWL() throws GsonBuildException, JsonParseException {
         gson = getTypeSafeCWLToolDocument();
     }
 
@@ -147,7 +148,7 @@ public class CWL {
     /**
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
-    public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException {
+    public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException, JsonParseException {
         final Type hintType = new TypeToken<List<Any>>() {}.getType();
         final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
         final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
@@ -193,7 +194,7 @@ public class CWL {
          * @return Collection of objects of Class c
          */
     private static Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
-            GsonBuildException {
+            GsonBuildException, JsonParseException {
         Collection<Object> objectCollection = new ArrayList<>();
         if (json.isJsonArray()) {
             for (final JsonElement jsonElement : json.getAsJsonArray()) {
@@ -247,7 +248,7 @@ public class CWL {
             return objectCollection;
 
         } else{
-            throw new RuntimeException("Unexpected JSON entry");
+            throw new JsonParseException("Invalid JSON entry.");
         }
     }
 
