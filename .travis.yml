@@ -9,7 +9,7 @@ install:
    - sudo pip install --upgrade pip
    # install a specific version of the cwl dependencies to test with
    - pip2.7 install --user setuptools==24.0.3
-   - pip2.7 install --user cwl-runner cwltool==1.0.20160712154127 schema-salad==1.14.20160708181155 avro==1.8.1
+   - pip2.7 install --user cwl-runner cwltool==1.0.20161114152756 schema-salad==1.18.20161005190847 avro==1.8.1
    - git clone https://github.com/common-workflow-language/common-workflow-language 
    # convert CWL schema salad CWL to standard Avro json
    - python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc

@@ -19,7 +19,7 @@ into Java objects).
 Install it with the following commands (may differ depending on your distribution of Linux). 
 
     pip install --user setuptools==24.0.3
-    pip install --user cwl-runner cwltool==1.0.20160712154127 schema-salad==1.14.20160708181155 avro==1.8.1
+    pip install --user cwl-runner cwltool==1.0.20161114152756 schema-salad==1.18.20161005190847 avro==1.8.1
 
 # CWL Java SDK
 
@@ -55,7 +55,8 @@ We cannot use these classes directly since CWL documents are not json or avro bi
 1. Get schema salad from the common-workflow-language organization and run `python -mschema_salad --print-avro ~/common-workflow-language/v1.0/CommonWorkflowLanguage.yml > cwl.avsc`
 2. Edit the allowed symbols for CWL versions. The draft3 specification generates symbols like "draft-3.dev1" which the avro parser will reject with the error "Exception in thread \"main\" org.apache.avro.SchemaParseException: Illegal character in: draft-3.dev1". You can safety delete all the symbols which are designated "draft" versions. 
 3. Get the avro tools jar and CWL avsc and call `java -jar avro-tools-1.8.1.jar compile schema cwl.avsc cwl`
-3. Copy them to the appropriate directory in dockstore-client (you will need to refactor to insert package names)
+4. Change the `Any` `enum` type Object and delete the class. The odd creation of Any as an enum otherwise block attempts to instantiate these values.
+5. Copy them to the appropriate directory in dockstore-client (you will need to refactor to insert package names)
 
 Since this is kinda involved, a travis-CI build is provided which demos the process at https://travis-ci.org/common-workflow-language/cwlavro
 
