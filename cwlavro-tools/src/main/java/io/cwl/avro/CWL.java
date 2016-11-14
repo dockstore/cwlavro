@@ -55,6 +55,10 @@ public class CWL {
         for(final CommandInputParameter inputParam : commandLineTool.getInputs()){
             final String idString = inputParam.getId().toString();
             final Object stub = getStub(inputParam.getType(), inputParam.getDefault$() != null ? inputParam.getDefault$().toString() : null);
+            // transfer over a format value as well
+            if (inputParam.getFormat() != null){
+                ((Map)stub).put("format", inputParam.getFormat());
+            }
             runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
         }
         for(final CommandOutputParameter outParam : commandLineTool.getOutputs()){
