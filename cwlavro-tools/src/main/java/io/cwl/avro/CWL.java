@@ -10,9 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
-
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class CWL {
 
         for(final CommandInputParameter inputParam : commandLineTool.getInputs()){
             final String idString = inputParam.getId().toString();
-            final Object stub = getStub(inputParam.getType(), null);
+            final Object stub = getStub(inputParam.getType(), inputParam.getDefault$() != null ? inputParam.getDefault$().toString() : null);
             runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
         }
         for(final CommandOutputParameter outParam : commandLineTool.getOutputs()){
@@ -101,7 +102,7 @@ public class CWL {
     /**
      * This is an ugly mapping between CWL's primitives and Java primitives
      * @param type the CWL type
-     * @param value
+     * @param value a default value
      * @return a stub Java object corresponding to type
      */
     public static Object getStub(final Object type, final String value) {
@@ -149,7 +150,7 @@ public class CWL {
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
     public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException, JsonParseException {
-        final Type hintType = new TypeToken<List<Any>>() {}.getType();
+        final Type hintType = new TypeToken<List<Object>>() {}.getType();
         final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
         final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
         final Type inputParameterType = new TypeToken<List<InputParameter>>() {}.getType();
@@ -169,7 +170,8 @@ public class CWL {
                     }
                     return hints;
 
-                }).registerTypeAdapter(commandInputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                }).enableComplexMapKeySerialization()
+                .registerTypeAdapter(commandInputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, CommandInputParameter.class, true);
                 }).registerTypeAdapter(commandOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, CommandOutputParameter.class, true);
@@ -199,6 +201,15 @@ public class CWL {
         if (json.isJsonArray()) {
             for (final JsonElement jsonElement : json.getAsJsonArray()) {
                 final Object o = sequenceSafeGson.fromJson(jsonElement, c);
+                // hack to transfer over defaults
+                if (jsonElement instanceof JsonObject && ((JsonObject)jsonElement).has("default")){
+                    final JsonPrimitive defaultValue = ((JsonObject) jsonElement).getAsJsonPrimitive("default");
+                    if (o instanceof CommandInputParameter){
+                        String defaultVal= defaultValue.toString().replaceAll("^\"|\"$", "");
+                        ((CommandInputParameter)o).setDefault$(defaultVal);
+                    }
+                }
+
                 objectCollection.add(o);
             }
             return objectCollection;

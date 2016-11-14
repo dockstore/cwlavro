@@ -50,7 +50,7 @@ specified, the default method is "merge_nested".
 @org.apache.avro.specific.AvroGenerated
 public class WorkflowStepInput extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 381154458256279275L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"WorkflowStepInput\",\"doc\":\"The input of a workflow step connects an upstream parameter (from the\\nworkflow inputs, or the outputs of other workflows steps) with the input\\nparameters of the underlying step.\\n\\n## Input object\\n\\nA WorkflowStepInput object must contain an `id` field in the form\\n`#fieldname` or `#stepname.fieldname`.  When the `id` field contains a\\nperiod `.` the field name consists of the characters following the final\\nperiod.  This defines a field of the workflow step input object with the\\nvalue of the `source` parameter(s).\\n\\n## Merging\\n\\nTo merge multiple inbound data links,\\n[MultipleInputFeatureRequirement](#MultipleInputFeatureRequirement) must be specified\\nin the workflow or workflow step requirements.\\n\\nIf the sink parameter is an array, or named in a [workflow\\nscatter](#WorkflowStep) operation, there may be multiple inbound data links\\nlisted in the `source` field.  The values from the input links are merged\\ndepending on the method specified in the `linkMerge` field.  If not\\nspecified, the default method is \\\"merge_nested\\\".\\n\\n* **merge_nested**\\n\\n  The input must be an array consisting of exactly one entry for each\\n  input link.  If \\\"merge_nested\\\" is specified with a single link, the value\\n  from the link must be wrapped in a single-item list.\\n\\n* **merge_flattened**\\n\\n  1. The source and sink parameters must be compatible types, or the source\\n     type must be compatible with single element from the \\\"items\\\" type of\\n     the destination array parameter.\\n  2. Source parameters which are arrays are concatenated.\\n     Source parameters which are single element types are appended as\\n     single elements.\\n\",\"fields\":[{\"name\":\"source\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Specifies one or more workflow parameters that will provide input to\\nthe underlying step parameter.\\n\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#source\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#Sink\"},{\"name\":\"linkMerge\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"LinkMergeMethod\",\"doc\":\"The input link merge method, described in [WorkflowStepInput](#WorkflowStepInput).\",\"symbols\":[\"merge_nested\",\"merge_flattened\"],\"docParent\":\"https://w3id.org/cwl/cwl#WorkflowStepInput\"}],\"doc\":\"The method to use to merge multiple inbound links into a single array.\\nIf not specified, the default method is \\\"merge_nested\\\".\\n\",\"jsonldPredicate\":\"cwl:linkMerge\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Sink\"},{\"name\":\"id\",\"type\":\"string\",\"doc\":\"A unique identifier for this workflow input parameter.\",\"jsonldPredicate\":\"@id\"},{\"name\":\"default\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Any\",\"doc\":\"The **Any** type validates for any non-null value.\\n\",\"symbols\":[\"Any\"]}],\"doc\":\"The default value for this parameter if there is no `source`\\nfield.\\n\",\"jsonldPredicate\":\"cwl:default\"},{\"name\":\"valueFrom\",\"type\":[\"null\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"To use valueFrom, [StepInputExpressionRequirement](#StepInputExpressionRequirement) must\\nbe specified in the workflow or workflow step requirements.\\n\\nIf `valueFrom` is a constant string value, use this as the value for\\nthis input parameter.\\n\\nIf `valueFrom` is a parameter reference or expression, it must be\\nevaluated to yield the actual value to be assiged to the input field.\\n\\nThe `self` value of in the parameter reference or expression must be\\nthe value of the parameter(s) specified in the `source` field, or\\nnull if there is no `source` field.\\n\\nThe value of `inputs` in the parameter reference or expression must be\\nthe input object to the workflow step after assigning the `source`\\nvalues and then scattering.  The order of evaluating `valueFrom` among\\nstep input parameters is undefined and the result of evaluating\\n`valueFrom` on a parameter must not be visible to evaluation of\\n`valueFrom` on other parameters.\\n\",\"jsonldPredicate\":\"cwl:valueFrom\"}],\"docParent\":\"https://w3id.org/cwl/cwl#WorkflowStep\",\"extends\":\"https://w3id.org/cwl/cwl#Sink\"}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"WorkflowStepInput\",\"doc\":\"The input of a workflow step connects an upstream parameter (from the\\nworkflow inputs, or the outputs of other workflows steps) with the input\\nparameters of the underlying step.\\n\\n## Input object\\n\\nA WorkflowStepInput object must contain an `id` field in the form\\n`#fieldname` or `#stepname.fieldname`.  When the `id` field contains a\\nperiod `.` the field name consists of the characters following the final\\nperiod.  This defines a field of the workflow step input object with the\\nvalue of the `source` parameter(s).\\n\\n## Merging\\n\\nTo merge multiple inbound data links,\\n[MultipleInputFeatureRequirement](#MultipleInputFeatureRequirement) must be specified\\nin the workflow or workflow step requirements.\\n\\nIf the sink parameter is an array, or named in a [workflow\\nscatter](#WorkflowStep) operation, there may be multiple inbound data links\\nlisted in the `source` field.  The values from the input links are merged\\ndepending on the method specified in the `linkMerge` field.  If not\\nspecified, the default method is \\\"merge_nested\\\".\\n\\n* **merge_nested**\\n\\n  The input must be an array consisting of exactly one entry for each\\n  input link.  If \\\"merge_nested\\\" is specified with a single link, the value\\n  from the link must be wrapped in a single-item list.\\n\\n* **merge_flattened**\\n\\n  1. The source and sink parameters must be compatible types, or the source\\n     type must be compatible with single element from the \\\"items\\\" type of\\n     the destination array parameter.\\n  2. Source parameters which are arrays are concatenated.\\n     Source parameters which are single element types are appended as\\n     single elements.\\n\",\"fields\":[{\"name\":\"source\",\"type\":[\"null\",\"string\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Specifies one or more workflow parameters that will provide input to\\nthe underlying step parameter.\\n\",\"jsonldPredicate\":{\"refScope\":2,\"_type\":\"@id\",\"_id\":\"https://w3id.org/cwl/cwl#source\"},\"inherited_from\":\"https://w3id.org/cwl/cwl#Sink\"},{\"name\":\"linkMerge\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"LinkMergeMethod\",\"doc\":\"The input link merge method, described in [WorkflowStepInput](#WorkflowStepInput).\",\"symbols\":[\"merge_nested\",\"merge_flattened\"],\"docParent\":\"https://w3id.org/cwl/cwl#WorkflowStepInput\"}],\"doc\":\"The method to use to merge multiple inbound links into a single array.\\nIf not specified, the default method is \\\"merge_nested\\\".\\n\",\"jsonldPredicate\":\"cwl:linkMerge\",\"inherited_from\":\"https://w3id.org/cwl/cwl#Sink\"},{\"name\":\"id\",\"type\":\"string\",\"doc\":\"A unique identifier for this workflow input parameter.\",\"jsonldPredicate\":\"@id\"},{\"name\":\"default\",\"type\":[\"null\",{\"type\":\"enum\",\"name\":\"Object\",\"doc\":\"The **Object** type validates for any non-null value.\\n\",\"symbols\":[\"Object\"]}],\"doc\":\"The default value for this parameter if there is no `source`\\nfield.\\n\",\"jsonldPredicate\":\"cwl:default\"},{\"name\":\"valueFrom\",\"type\":[\"null\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"To use valueFrom, [StepInputExpressionRequirement](#StepInputExpressionRequirement) must\\nbe specified in the workflow or workflow step requirements.\\n\\nIf `valueFrom` is a constant string value, use this as the value for\\nthis input parameter.\\n\\nIf `valueFrom` is a parameter reference or expression, it must be\\nevaluated to yield the actual value to be assiged to the input field.\\n\\nThe `self` value of in the parameter reference or expression must be\\nthe value of the parameter(s) specified in the `source` field, or\\nnull if there is no `source` field.\\n\\nThe value of `inputs` in the parameter reference or expression must be\\nthe input object to the workflow step after assigning the `source`\\nvalues and then scattering.  The order of evaluating `valueFrom` among\\nstep input parameters is undefined and the result of evaluating\\n`valueFrom` on a parameter must not be visible to evaluation of\\n`valueFrom` on other parameters.\\n\",\"jsonldPredicate\":\"cwl:valueFrom\"}],\"docParent\":\"https://w3id.org/cwl/cwl#WorkflowStep\",\"extends\":\"https://w3id.org/cwl/cwl#Sink\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   /** Specifies one or more workflow parameters that will provide input to
 the underlying step parameter.
@@ -65,7 +65,7 @@ If not specified, the default method is "merge_nested".
   /** The default value for this parameter if there is no `source`
 field.
  */
-  @Deprecated public Any default$;
+  @Deprecated public Object default$;
   /** To use valueFrom, [StepInputExpressionRequirement](#StepInputExpressionRequirement) must
 be specified in the workflow or workflow step requirements.
 
@@ -128,7 +128,7 @@ step input parameters is undefined and the result of evaluating
 `valueFrom` on other parameters.
 
    */
-  public WorkflowStepInput(java.lang.Object source, LinkMergeMethod linkMerge, java.lang.CharSequence id, Any default$, java.lang.Object valueFrom) {
+  public WorkflowStepInput(java.lang.Object source, LinkMergeMethod linkMerge, java.lang.CharSequence id, Object default$, java.lang.Object valueFrom) {
     this.source = source;
     this.linkMerge = linkMerge;
     this.id = id;
@@ -156,7 +156,7 @@ step input parameters is undefined and the result of evaluating
     case 0: source = (java.lang.Object)value$; break;
     case 1: linkMerge = (LinkMergeMethod)value$; break;
     case 2: id = (java.lang.CharSequence)value$; break;
-    case 3: default$ = (Any)value$; break;
+    case 3: default$ = (Object)value$; break;
     case 4: valueFrom = (java.lang.Object)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -227,7 +227,7 @@ If not specified, the default method is "merge_nested".
 field.
 
    */
-  public Any getDefault$() {
+  public Object getDefault$() {
     return default$;
   }
 
@@ -238,7 +238,7 @@ field.
 
    * @param value the value to set.
    */
-  public void setDefault$(Any value) {
+  public void setDefault$(Object value) {
     this.default$ = value;
   }
 
@@ -342,7 +342,7 @@ If not specified, the default method is "merge_nested".
     /** The default value for this parameter if there is no `source`
 field.
  */
-    private Any default$;
+    private Object default$;
     /** To use valueFrom, [StepInputExpressionRequirement](#StepInputExpressionRequirement) must
 be specified in the workflow or workflow step requirements.
 
@@ -578,7 +578,7 @@ field.
 
       * @return The value.
       */
-    public Any getDefault$() {
+    public Object getDefault$() {
       return default$;
     }
 
@@ -590,7 +590,7 @@ field.
       * @param value The value of 'default$'.
       * @return This builder.
       */
-    public WorkflowStepInput.Builder setDefault$(Any value) {
+    public WorkflowStepInput.Builder setDefault$(Object value) {
       validate(fields()[3], value);
       this.default$ = value;
       fieldSetFlags()[3] = true;
@@ -748,7 +748,7 @@ step input parameters is undefined and the result of evaluating
         record.source = fieldSetFlags()[0] ? this.source : (java.lang.Object) defaultValue(fields()[0]);
         record.linkMerge = fieldSetFlags()[1] ? this.linkMerge : (LinkMergeMethod) defaultValue(fields()[1]);
         record.id = fieldSetFlags()[2] ? this.id : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.default$ = fieldSetFlags()[3] ? this.default$ : (Any) defaultValue(fields()[3]);
+        record.default$ = fieldSetFlags()[3] ? this.default$ : (Object) defaultValue(fields()[3]);
         record.valueFrom = fieldSetFlags()[4] ? this.valueFrom : (java.lang.Object) defaultValue(fields()[4]);
         return record;
       } catch (Exception e) {
