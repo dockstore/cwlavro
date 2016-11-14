@@ -49,6 +49,10 @@ public class CWLClientTest {
 
         final Gson gson = CWL.getTypeSafeCWLToolDocument();
         final Map<String, Object> runJson = cwl.extractRunJson(cwlJson);
+        // check that default values made it
+        assertTrue(runJson.get("mem_gb").equals(4));
+        assertTrue(((Map)runJson.get("bam_input")).get("path").equals("default_directory/default_bam_location.bam"));
+        assertTrue(((Map)runJson.get("bam_input")).containsKey("format"));
         final String s = gson.toJson(runJson);
         assertTrue(s.length() > 10);
     }
