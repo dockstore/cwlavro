@@ -160,15 +160,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>com.versioneye</groupId>
-                    <artifactId>versioneye-maven-plugin</artifactId>
-                    <version>3.10.0</version>
-                    <configuration>
-                        <updatePropertiesAfterCreate>false</updatePropertiesAfterCreate>
-                        <projectId>5786817bd74b4d000d0bfc44</projectId>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>4.2.0</version>
@@ -206,10 +197,6 @@
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.versioneye</groupId>
-                <artifactId>versioneye-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

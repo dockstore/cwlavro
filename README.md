@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
-[![Dependency Status](https://www.versioneye.com/user/projects/5786817bd74b4d000d0bfc44/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5786817bd74b4d000d0bfc44)
+[![Dependency Status](https://dependencyci.com/github/common-workflow-language/cwlavro/badge)](https://dependencyci.com/github/common-workflow-language/cwlavro)
 
 CWL Avro Project 
 ================
