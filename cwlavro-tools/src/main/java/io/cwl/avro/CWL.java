@@ -122,10 +122,15 @@ public class CWL {
             return stub;
         }
         final String strType = type.toString();
+        final Map<String, String> file = new HashMap<>();
         switch (strType) {
         case "File":
-            final Map<String, String> file = new HashMap<>();
             file.put("class", "File");
+            file.put("path", value != null ? value : "fill me in");
+            stub = file;
+            break;
+        case "Directory":
+            file.put("class", "Directory");
             file.put("path", value != null ? value : "fill me in");
             stub = file;
             break;
@@ -292,8 +297,7 @@ public class CWL {
             JsonLdOptions options = new JsonLdOptions();
             // Customise options...
             // Call whichever JSONLD function you want! (e.g. compact)
-            Map compact = (Map) JsonLdProcessor.compact(jsonObject, context, options);
-            return compact;
+            return (Map) JsonLdProcessor.compact(jsonObject, context, options);
         } catch (IOException | JsonLdError e) {
             throw new RuntimeException(e);
         }
