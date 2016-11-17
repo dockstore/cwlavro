@@ -62,6 +62,6 @@ Since this is kinda involved, a travis-CI build is provided which demos the proc
 
 ## Individual Contributors
 
-* Denis Yuen <denis.yuen@gmail.com>
+* Denis Yuen <denis.yuen@oicr.on.ca>
 * Peter Amstutz <peter.amstutz@curoverse.com>
 
