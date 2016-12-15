@@ -4,7 +4,7 @@
     <artifactId>cwlavro</artifactId>
     <name>CWL Avro</name>
     <groupId>io.cwl</groupId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.7</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -26,7 +26,7 @@
         <connection>${github.url}</connection>
         <developerConnection>${github.url}</developerConnection>
         <url>${github.url}</url>
-        <tag>v1.0.1</tag>
+        <tag>1.0.7</tag>
     </scm>
 
     <distributionManagement>
