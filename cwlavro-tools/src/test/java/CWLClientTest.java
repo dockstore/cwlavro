@@ -20,7 +20,11 @@ import com.google.gson.Gson;
 import io.cwl.avro.CWL;
 import io.cwl.avro.CommandLineTool;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.ExpectedSystemExit;
+import org.junit.contrib.java.lang.system.SystemErrRule;
+import org.junit.contrib.java.lang.system.SystemOutRule;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +39,15 @@ import static org.junit.Assert.assertTrue;
  * @author dyuen
  */
 public class CWLClientTest {
+
+    @Rule
+    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
+
+    @Rule
+    public final SystemErrRule systemErrRule = new SystemErrRule().enableLog();
+
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
     /**
      * This test demonstrates how to take a CWL document and generate a corresponding json parameters file for it.
@@ -68,6 +81,40 @@ public class CWLClientTest {
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
         assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
+    }
+
+    /**
+     * This test demonstrates how to parse a CWL document using CWL tool.
+     * @throws Exception
+     */
+    @Test
+    public void parseCWLActual() throws Exception{
+        final URL resource = Resources.getResource("valid.cwl");
+        final CWL cwl = new CWL();
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
+        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
+        assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
+    }
+
+    /**
+     * This test demonstrates a parse failure for a CWL document.
+     * @throws Exception
+     */
+    @Test
+    public void parseCWLInvalid() throws Exception{
+        final URL resource = Resources.getResource("invalid.cwl");
+        final CWL cwl = new CWL();
+
+        try {
+            final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
+            assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
+            assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
+        }catch (RuntimeException e){
+            assertTrue("output should include a validation error",systemErrRule.getLog().contains("Tool definition failed validation:") );
+            return;
+        }
+        // this should always exception
+        assertTrue(false);
     }
 
     /**

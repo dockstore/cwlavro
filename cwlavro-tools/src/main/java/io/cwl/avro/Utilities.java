@@ -5,12 +5,7 @@
 
 package io.cwl.avro;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-
+import com.google.common.base.Optional;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.apache.commons.exec.CommandLine;
@@ -24,7 +19,11 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -83,7 +82,13 @@ public class Utilities {
                 resultHandler.waitFor();
                 // not sure why commons-exec does not throw an exception
                 if (resultHandler.getExitValue() != 0) {
-                    resultHandler.getException().printStackTrace();
+                    System.err.println("problems running command: " + command);
+                    if (!stdoutStream.isPresent() && !localStdoutStream.toString().isEmpty()){
+                        System.err.println("stdout for command:\n\t" + localStdoutStream.toString(utf8).replaceAll("\n","\n\t"));
+                    }
+                    if (!stderrStream.isPresent() && !localStdErrStream.toString().isEmpty()){
+                        System.err.println("stderr for command:\n\t" + localStdErrStream.toString(utf8).replaceAll("\n","\n\t"));
+                    }
                     throw new ExecuteException("problems running command: " + command, resultHandler.getExitValue());
                 }
                 return new ImmutablePair<>(localStdoutStream.toString(utf8), localStdErrStream.toString(utf8));
