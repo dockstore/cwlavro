@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Helper class that performs utility functions relating to CWL parsing and manipulation.
@@ -103,6 +105,48 @@ public class CWL {
         return type;
     }
 
+    private static Object getStubForItem(String strType, Object stub, String value) {
+        final Map<String, String> file = new HashMap<>();
+
+        switch (strType) {
+            case "File":
+                file.put("class", "File");
+                file.put("path", value != null ? value : "/tmp/fill_me_in.txt");
+                stub = file;
+                break;
+            case "Directory":
+                file.put("class", "Directory");
+                file.put("path", value != null ? value : "/tmp/fill_directory_in");
+                stub = file;
+                break;
+            case "boolean":
+                stub = value != null? Boolean.parseBoolean(value) : Boolean.FALSE;
+                break;
+            case "int":
+                stub = value != null? Integer.parseInt(value) :0;
+                break;
+            case "long":
+                stub = value != null? Long.parseLong(value) :0L;
+                break;
+            case "float":
+                stub = value != null? Float.parseFloat(value) :0.0;
+                break;
+            case "double":
+                stub = value != null? Double.parseDouble(value) : Double.MAX_VALUE;
+                break;
+            default:
+                break;
+        }
+        return stub;
+    }
+
+    private static Object getStubForArray(String strType, Object stub, String value) {
+        final List<Object> list = new ArrayList<>();
+        stub = getStubForItem(strType, stub, value);
+        list.add(stub);
+        return list;
+    }
+
     /**
      * This is an ugly mapping between CWL's primitives and Java primitives
      * @param type the CWL type
@@ -122,37 +166,24 @@ public class CWL {
             return stub;
         }
         final String strType = type.toString();
-        final Map<String, String> file = new HashMap<>();
-        switch (strType) {
-        case "File":
-            file.put("class", "File");
-            file.put("path", value != null ? value : "fill me in");
-            stub = file;
-            break;
-        case "Directory":
-            file.put("class", "Directory");
-            file.put("path", value != null ? value : "fill me in");
-            stub = file;
-            break;
-        case "boolean":
-            stub = value != null? Boolean.parseBoolean(value) : Boolean.FALSE;
-            break;
-        case "int":
-            stub = value != null? Integer.parseInt(value) :0;
-            break;
-        case "long":
-            stub = value != null? Long.parseLong(value) :0L;
-            break;
-        case "float":
-            stub = value != null? Float.parseFloat(value) :0.0;
-            break;
-        case "double":
-            stub = value != null? Double.parseDouble(value) : Double.MAX_VALUE;
-            break;
-        default:
-            break;
+
+        if(strType.contains("type=array")) {
+            // expected strType format: {type=array, items=File} in some arbitrary order
+            Matcher insideBraces = Pattern.compile("\\{(.*?)\\}").matcher(strType);
+            if(insideBraces.find()) {
+                String[] properties = insideBraces.group(1).split(",");
+                for(String property : properties) {
+                    String itemsType = "";
+                    if(property.contains("items=")) {
+                        itemsType = property.split("=")[1];
+                    }
+                    return getStubForArray(itemsType, stub, value);
+                }
+            }
+            return stub;
+        } else {
+            return getStubForItem(strType, stub, value);
         }
-        return stub;
     }
 
     /**

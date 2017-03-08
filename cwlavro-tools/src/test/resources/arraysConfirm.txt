@@ -1,0 +1,15 @@
+{
+  "filesA": [
+    {
+      "path": "/tmp/fill_me_in.txt",
+      "class": "File"
+    }
+  ],
+  "filesB": [
+    {
+      "path": "/tmp/fill_directory_in",
+      "class": "Directory"
+    }
+  ],
+  "filesC": false
+}
