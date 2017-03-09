@@ -18,12 +18,20 @@ inputs:
       position: 2
 
   filesC:
-    type: boolean
+    type: boolean[]
     inputBinding:
       prefix: -C=
       itemSeparator: ","
       separate: false
       position: 4
+
+  filesD:
+      type: File
+      inputBinding:
+        prefix: -C=
+        itemSeparator: ","
+        separate: false
+        position: 4
 
 outputs: []
 baseCommand: echo

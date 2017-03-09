@@ -105,8 +105,16 @@ public class CWL {
         return type;
     }
 
-    private static Object getStubForItem(String strType, Object stub, String value) {
+    /**
+     * Returns a stub Object for one item
+     * @param strType the CWL type
+     * @param defaultStub a default value for stub, ex. "fill me in"
+     * @param value to be assigned to stub
+     * @return
+     */
+    private static Object getStubForItem(final String strType, final Object defaultStub, final String value) {
         final Map<String, String> file = new HashMap<>();
+        Object stub = defaultStub;
 
         switch (strType) {
             case "File":
@@ -140,10 +148,41 @@ public class CWL {
         return stub;
     }
 
-    private static Object getStubForArray(String strType, Object stub, String value) {
+    /**
+     * Returns the appropriate stub Object for arrays
+     * @param strType the CWL type
+     * @param defaultStub a default value for stub, ex. "fill me in"
+     * @param value to be assigned to stub
+     * @return
+     */
+    private static Object getStubForArray(final String strType, final Object defaultStub, final String value) {
         final List<Object> list = new ArrayList<>();
-        stub = getStubForItem(strType, stub, value);
-        list.add(stub);
+        Object itemStub;
+
+        switch(strType) {
+            case "File":
+                if(value == null) {
+                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_me_in_a.txt");
+                    list.add(itemStub);
+                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_me_in_b.txt");
+                    list.add(itemStub);
+                }
+                break;
+            case "Directory":
+                if(value == null) {
+                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_directory_in_a");
+                    list.add(itemStub);
+                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_directory_in_b");
+                    list.add(itemStub);
+                }
+                break;
+            default:
+                itemStub = getStubForItem(strType, defaultStub, value);
+                list.add(itemStub);
+                list.add(itemStub);
+                break;
+
+        }
         return list;
     }
 

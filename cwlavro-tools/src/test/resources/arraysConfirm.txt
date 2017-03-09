@@ -1,15 +1,30 @@
 {
   "filesA": [
     {
-      "path": "/tmp/fill_me_in.txt",
+      "path": "/tmp/fill_me_in_a.txt",
+      "class": "File"
+    },
+    {
+      "path": "/tmp/fill_me_in_b.txt",
       "class": "File"
     }
   ],
   "filesB": [
     {
-      "path": "/tmp/fill_directory_in",
+      "path": "/tmp/fill_directory_in_a",
+      "class": "Directory"
+    },
+    {
+      "path": "/tmp/fill_directory_in_b",
       "class": "Directory"
     }
   ],
-  "filesC": false
+  "filesC": [
+    false,
+    false
+  ],
+  "filesD": {
+    "path": "/tmp/fill_me_in.txt",
+    "class": "File"
+  }
 }
