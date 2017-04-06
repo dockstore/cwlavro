@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -161,4 +162,23 @@ public class CWLClientTest {
         assertTrue(Objects.equals(key,"Brian O'Connor"));
     }
 
+    /**
+     * This tests verifies json conversion from a cwl file with array types
+     * @throws Exception
+     */
+    @Test
+    public void stubArray() throws Exception {
+        final URL resource = Resources.getResource("arrays.cwl");
+
+        final URL confirm = Resources.getResource("arraysConfirm.txt");
+        final String jsonResult = Resources.toString(confirm, StandardCharsets.UTF_8);
+
+        final CWL cwl = new CWL();
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
+        final Map<String, Object> runJson = cwl.extractRunJson(output.getLeft());
+
+        final Gson gson = cwl.getTypeSafeCWLToolDocument();
+
+        assertEquals(jsonResult.trim(), gson.toJson(runJson).trim());
+    }
 }
