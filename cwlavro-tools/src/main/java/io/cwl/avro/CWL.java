@@ -211,13 +211,13 @@ public class CWL {
             Matcher insideBraces = Pattern.compile("\\{(.*?)\\}").matcher(strType);
             if(insideBraces.find()) {
                 String[] properties = insideBraces.group(1).split(",");
+                String itemsType = "";
                 for(String property : properties) {
-                    String itemsType = "";
                     if(property.contains("items=")) {
                         itemsType = property.split("=")[1];
                     }
-                    return getStubForArray(itemsType, stub, value);
                 }
+                return getStubForArray(itemsType, stub, value);
             }
             return stub;
         } else {
