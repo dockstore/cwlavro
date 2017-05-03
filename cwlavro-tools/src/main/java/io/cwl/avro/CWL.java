@@ -14,14 +14,22 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,11 +46,43 @@ import java.util.regex.Pattern;
  */
 public class CWL {
 
+    private static final String RABIX_VERSION = "1.0.0-rc5";
+    private static final String RABIX_GITHUB_LOCATION = "https://github.com/rabix/bunny/releases/download/v"+RABIX_VERSION+"/rabix-"+RABIX_VERSION+".tar.gz";
+    private static final String RABIX_EXEC_LOCATION = ".dockstore/libraries/rabix-"+RABIX_VERSION+"/rabix-backend-local-"+RABIX_VERSION+"/rabix";
+
     private final Gson gson;
     private static final Logger log = LoggerFactory.getLogger(CWL.class);
 
-    public CWL() throws GsonBuildException, JsonParseException {
+    public CWL() throws GsonBuildException, JsonParseException, ArchiveException {
         gson = getTypeSafeCWLToolDocument();
+
+        // grab rabix
+        String libraryLocation =
+                System.getProperty("user.home") + java.io.File.separator + ".dockstore" + java.io.File.separator + "libraries" + java.io.File.separator;
+        URL rabixURL;
+        String rabixFilename;
+        try {
+            rabixURL = new URL(RABIX_GITHUB_LOCATION);
+            rabixFilename = new java.io.File(rabixURL.toURI().getPath()).getName();
+        } catch (MalformedURLException | URISyntaxException e) {
+            throw new RuntimeException("Could not create rabix location", e);
+        }
+        String rabixTarget = libraryLocation + rabixFilename;
+        java.io.File rabixTargetFile = new java.io.File(rabixTarget);
+        if (!rabixTargetFile.exists()) {
+            try {
+                FileUtils.copyURLToFile(rabixURL, rabixTargetFile);
+                //TODO: version this path so it properly handles upgrade events
+
+                File tarFile = CompressionUtilities.unGzip(rabixTargetFile, rabixTargetFile.getParentFile());
+                File rabixDirectory = new File(FilenameUtils.removeExtension(tarFile.getAbsolutePath()));
+                FileUtils.forceMkdir(rabixDirectory);
+                CompressionUtilities.unTar(tarFile, rabixDirectory);
+
+            } catch (IOException e) {
+                throw new RuntimeException("Could not download or uncompress rabix bunny", e);
+            }
+        }
     }
 
     /**
@@ -203,10 +243,17 @@ public class CWL {
                 }
             }
             return stub;
+        } else if (type instanceof Map){
+            // TODO: this is pretty messy, find a better solution
+            String nestedItems = (String)((Map)type).get("items");
+            String nestedType = (String)((Map)type).get("type");
+            return getStub(nestedItems + (nestedType.equals("array") ? "[]" : ""),value);
         }
         final String strType = type.toString();
 
+
         if(strType.contains("type=array")) {
+            // this is how cwltool returns array types
             // expected strType format: {type=array, items=File} in some arbitrary order
             Matcher insideBraces = Pattern.compile("\\{(.*?)\\}").matcher(strType);
             if(insideBraces.find()) {
@@ -220,6 +267,10 @@ public class CWL {
                 return getStubForArray(itemsType, stub, value);
             }
             return stub;
+        } else if (strType.endsWith("[]")){
+            // this is one way how bunny handles array types
+            String itemsType = StringUtils.stripEnd(strType, "[]");
+            return getStubForArray(itemsType, stub, value);
         } else {
             return getStubForItem(strType, stub, value);
         }
@@ -349,6 +400,13 @@ public class CWL {
     }
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
+        if (true){
+            String libraryLocation = System.getProperty("user.home") + java.io.File.separator + RABIX_EXEC_LOCATION;
+            final String[] s = { libraryLocation, "--resolve-app", cwlFile };
+            final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
+                    .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
+            return execute;
+        }
         // update seems to just output the JSON version without checking file links
         final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
         final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
