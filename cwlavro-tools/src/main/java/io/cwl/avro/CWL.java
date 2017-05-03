@@ -6,6 +6,7 @@ import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.utils.JsonUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -30,10 +31,15 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,7 +59,7 @@ public class CWL {
     private final Gson gson;
     private static final Logger log = LoggerFactory.getLogger(CWL.class);
 
-    public CWL() throws GsonBuildException, JsonParseException, ArchiveException {
+    public CWL() throws GsonBuildException, JsonParseException, ArchiveException, IOException {
         gson = getTypeSafeCWLToolDocument();
 
         // grab rabix
@@ -78,11 +84,14 @@ public class CWL {
                 File rabixDirectory = new File(FilenameUtils.removeExtension(tarFile.getAbsolutePath()));
                 FileUtils.forceMkdir(rabixDirectory);
                 CompressionUtilities.unTar(tarFile, rabixDirectory);
-
             } catch (IOException e) {
                 throw new RuntimeException("Could not download or uncompress rabix bunny", e);
             }
         }
+        Path path = Paths.get(System.getProperty("user.home"), RABIX_EXEC_LOCATION);
+        HashSet<PosixFilePermission> posixFilePermissions = Sets
+                .newHashSet(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE);
+        Files.setPosixFilePermissions(path, posixFilePermissions);
     }
 
     /**
