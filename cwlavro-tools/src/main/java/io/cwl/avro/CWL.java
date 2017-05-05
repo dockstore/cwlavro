@@ -1,11 +1,35 @@
 package io.cwl.avro;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.utils.JsonUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -14,39 +38,84 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Helper class that performs utility functions relating to CWL parsing and manipulation.
+ *
  * @author dyuen
  */
 public class CWL {
 
+    public static final String RABIX_VERSION = "1.0.0-rc5";
+    public static final String RABIX_GITHUB_LOCATION =
+            "https://github.com/rabix/bunny/releases/download/v" + RABIX_VERSION + "/rabix-" + RABIX_VERSION + ".tar.gz";
+    public static final String RABIX_EXEC_LOCATION =
+            ".dockstore/libraries/rabix-" + RABIX_VERSION + "/rabix-backend-local-" + RABIX_VERSION + "/rabix";
+
     private final Gson gson;
     private static final Logger log = LoggerFactory.getLogger(CWL.class);
+    private final boolean useBunny;
 
-    public CWL() throws GsonBuildException, JsonParseException {
+    public CWL() {
+        this(false);
+    }
+
+    public CWL(boolean useBunny) throws GsonBuildException, JsonParseException {
         gson = getTypeSafeCWLToolDocument();
+
+        this.useBunny = useBunny;
+        if (useBunny) {
+            // grab rabix
+            String libraryLocation =
+                    System.getProperty("user.home") + java.io.File.separator + ".dockstore" + java.io.File.separator + "libraries"
+                            + java.io.File.separator;
+            URL rabixURL;
+            String rabixFilename;
+            try {
+                rabixURL = new URL(RABIX_GITHUB_LOCATION);
+                rabixFilename = new java.io.File(rabixURL.toURI().getPath()).getName();
+            } catch (MalformedURLException | URISyntaxException e) {
+                throw new RuntimeException("Could not create rabix location", e);
+            }
+            String rabixTarget = libraryLocation + rabixFilename;
+            java.io.File rabixTargetFile = new java.io.File(rabixTarget);
+            if (!rabixTargetFile.exists()) {
+                try {
+                    FileUtils.copyURLToFile(rabixURL, rabixTargetFile);
+                    //TODO: version this path so it properly handles upgrade events
+
+                    File tarFile = CompressionUtilities.unGzip(rabixTargetFile, rabixTargetFile.getParentFile());
+                    File rabixDirectory = new File(FilenameUtils.removeExtension(tarFile.getAbsolutePath()));
+                    FileUtils.forceMkdir(rabixDirectory);
+                    CompressionUtilities.unTar(tarFile, rabixDirectory);
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not download or uncompress rabix bunny", e);
+                } catch (ArchiveException e) {
+                    throw new RuntimeException("Could not uncompress rabix bunny", e);
+                }
+            }
+
+            try {
+                Path path = Paths.get(System.getProperty("user.home"), RABIX_EXEC_LOCATION);
+                HashSet<PosixFilePermission> posixFilePermissions = Sets
+                        .newHashSet(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE);
+                Files.setPosixFilePermissions(path, posixFilePermissions);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not set permissions on rabix bunny", e);
+            }
+        }
     }
 
     /**
      * Convert a String representation of a CWL file to a run json
+     *
      * @param output
      * @return
      */
@@ -54,16 +123,17 @@ public class CWL {
         final CommandLineTool commandLineTool = gson.fromJson(output, CommandLineTool.class);
         final Map<String, Object> runJson = new HashMap<>();
 
-        for(final CommandInputParameter inputParam : commandLineTool.getInputs()){
+        for (final CommandInputParameter inputParam : commandLineTool.getInputs()) {
             final String idString = inputParam.getId().toString();
-            final Object stub = getStub(inputParam.getType(), inputParam.getDefault$() != null ? inputParam.getDefault$().toString() : null);
+            final Object stub = getStub(inputParam.getType(),
+                    inputParam.getDefault$() != null ? inputParam.getDefault$().toString() : null);
             // transfer over a format value as well
-            if (inputParam.getFormat() != null){
+            if (inputParam.getFormat() != null) {
                 ((Map)stub).put("format", inputParam.getFormat());
             }
             runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
         }
-        for(final CommandOutputParameter outParam : commandLineTool.getOutputs()){
+        for (final CommandOutputParameter outParam : commandLineTool.getOutputs()) {
             final String idString = outParam.getId().toString();
             final Object stub = getStub(outParam.getType(), null);
             runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
@@ -71,16 +141,16 @@ public class CWL {
         return runJson;
     }
 
-    public Map<String, String> extractCWLTypes(final String output){
+    public Map<String, String> extractCWLTypes(final String output) {
         final CommandLineTool commandLineTool = gson.fromJson(output, CommandLineTool.class);
         final Map<String, String> typeJson = new HashMap<>();
 
-        for(final CommandInputParameter inputParam : commandLineTool.getInputs()){
+        for (final CommandInputParameter inputParam : commandLineTool.getInputs()) {
             final String idString = inputParam.getId().toString();
             String type = convertCWLType(inputParam.getType());
             typeJson.put(idString.substring(idString.lastIndexOf('#') + 1), type);
         }
-        for(final CommandOutputParameter outParam : commandLineTool.getOutputs()){
+        for (final CommandOutputParameter outParam : commandLineTool.getOutputs()) {
             final String idString = outParam.getId().toString();
             String type = convertCWLType(outParam.getType());
             typeJson.put(idString.substring(idString.lastIndexOf('#') + 1), outParam.getType().toString());
@@ -90,16 +160,16 @@ public class CWL {
 
     private String convertCWLType(Object cwlType) {
         String type = null;
-        if (cwlType instanceof List){
-            for(final Object entry : (Iterable) cwlType){
-                if (entry != null){
+        if (cwlType instanceof List) {
+            for (final Object entry : (Iterable)cwlType) {
+                if (entry != null) {
                     type = entry.toString();
                 }
             }
             if (type == null) {
                 throw new RuntimeException("CWL format unknown");
             }
-        } else{
+        } else {
             type = cwlType.toString();
         }
         return type;
@@ -107,9 +177,10 @@ public class CWL {
 
     /**
      * Returns a stub Object for one item
-     * @param strType the CWL type
+     *
+     * @param strType     the CWL type
      * @param defaultStub a default value for stub, ex. "fill me in"
-     * @param value to be assigned to stub
+     * @param value       to be assigned to stub
      * @return
      */
     private static Object getStubForItem(final String strType, final Object defaultStub, final String value) {
@@ -117,70 +188,71 @@ public class CWL {
         Object stub = defaultStub;
 
         switch (strType) {
-            case "File":
-                file.put("class", "File");
-                file.put("path", value != null ? value : "/tmp/fill_me_in.txt");
-                stub = file;
-                break;
-            case "Directory":
-                file.put("class", "Directory");
-                file.put("path", value != null ? value : "/tmp/fill_directory_in");
-                stub = file;
-                break;
-            case "boolean":
-                stub = value != null? Boolean.parseBoolean(value) : Boolean.FALSE;
-                break;
-            case "int":
-                stub = value != null? Integer.parseInt(value) :0;
-                break;
-            case "long":
-                stub = value != null? Long.parseLong(value) :0L;
-                break;
-            case "float":
-                stub = value != null? Float.parseFloat(value) :0.0;
-                break;
-            case "double":
-                stub = value != null? Double.parseDouble(value) : Double.MAX_VALUE;
-                break;
-            default:
-                break;
+        case "File":
+            file.put("class", "File");
+            file.put("path", value != null ? value : "/tmp/fill_me_in.txt");
+            stub = file;
+            break;
+        case "Directory":
+            file.put("class", "Directory");
+            file.put("path", value != null ? value : "/tmp/fill_directory_in");
+            stub = file;
+            break;
+        case "boolean":
+            stub = value != null ? Boolean.parseBoolean(value) : Boolean.FALSE;
+            break;
+        case "int":
+            stub = value != null ? Integer.parseInt(value) : 0;
+            break;
+        case "long":
+            stub = value != null ? Long.parseLong(value) : 0L;
+            break;
+        case "float":
+            stub = value != null ? Float.parseFloat(value) : 0.0;
+            break;
+        case "double":
+            stub = value != null ? Double.parseDouble(value) : Double.MAX_VALUE;
+            break;
+        default:
+            break;
         }
         return stub;
     }
 
     /**
      * Returns the appropriate stub Object for arrays
-     * @param strType the CWL type
+     *
+     * @param strType     the CWL type
      * @param defaultStub a default value for stub, ex. "fill me in"
-     * @param value to be assigned to stub
+     * @param value       to be assigned to stub
      * @return
      */
     private static Object getStubForArray(final String strType, final Object defaultStub, final String value) {
         final List<Object> list = new ArrayList<>();
         Object itemStub;
 
-        switch(strType) {
-            case "File":
-                if(value == null) {
-                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_me_in_a.txt");
-                    list.add(itemStub);
-                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_me_in_b.txt");
-                    list.add(itemStub);
-                }
-                break;
-            case "Directory":
-                if(value == null) {
-                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_directory_in_a");
-                    list.add(itemStub);
-                    itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_directory_in_b");
-                    list.add(itemStub);
-                }
-                break;
-            default:
-                itemStub = getStubForItem(strType, defaultStub, value);
+        switch (strType) {
+        case "File":
+            if (value == null) {
+                itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_me_in_a.txt");
                 list.add(itemStub);
+                itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_me_in_b.txt");
                 list.add(itemStub);
-                break;
+            }
+            break;
+        case "Directory":
+            if (value == null) {
+                itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_directory_in_a");
+                list.add(itemStub);
+                itemStub = getStubForItem(strType, defaultStub, "/tmp/fill_directory_in_b");
+                list.add(itemStub);
+            }
+            break;
+        default:
+            itemStub = getStubForItem(strType, defaultStub, value);
+            list.add(itemStub);
+            list.add(itemStub);
+            break;
 
         }
         return list;
@@ -188,38 +260,49 @@ public class CWL {
 
     /**
      * This is an ugly mapping between CWL's primitives and Java primitives
-     * @param type the CWL type
+     *
+     * @param type  the CWL type
      * @param value a default value
      * @return a stub Java object corresponding to type
      */
     public static Object getStub(final Object type, final String value) {
-        Object stub = value == null? "fill me in" : value;
-        if (type instanceof List){
+        Object stub = value == null ? "fill me in" : value;
+        if (type instanceof List) {
             // if its a list, call recursively and return first non-stub entry
-            for(final Object entry : (Iterable) type){
+            for (final Object entry : (Iterable)type) {
                 final Object arrayStub = getStub(entry, value);
-                if (!Objects.equals(arrayStub, stub)){
+                if (!Objects.equals(arrayStub, stub)) {
                     return arrayStub;
                 }
             }
             return stub;
+        } else if (type instanceof Map) {
+            // TODO: this is pretty messy, find a better solution
+            String nestedItems = (String)((Map)type).get("items");
+            String nestedType = (String)((Map)type).get("type");
+            return getStub(nestedItems + (nestedType.equals("array") ? "[]" : ""), value);
         }
         final String strType = type.toString();
 
-        if(strType.contains("type=array")) {
+        if (strType.contains("type=array")) {
+            // this is how cwltool returns array types
             // expected strType format: {type=array, items=File} in some arbitrary order
             Matcher insideBraces = Pattern.compile("\\{(.*?)\\}").matcher(strType);
-            if(insideBraces.find()) {
+            if (insideBraces.find()) {
                 String[] properties = insideBraces.group(1).split(",");
                 String itemsType = "";
-                for(String property : properties) {
-                    if(property.contains("items=")) {
+                for (String property : properties) {
+                    if (property.contains("items=")) {
                         itemsType = property.split("=")[1];
                     }
                 }
                 return getStubForArray(itemsType, stub, value);
             }
             return stub;
+        } else if (strType.endsWith("[]")) {
+            // this is one way how bunny handles array types
+            String itemsType = StringUtils.stripEnd(strType, "[]");
+            return getStubForArray(itemsType, stub, value);
         } else {
             return getStubForItem(strType, stub, value);
         }
@@ -229,19 +312,28 @@ public class CWL {
      * @return a gson instance that can properly convert CWL tools into a typesafe Java object
      */
     public static Gson getTypeSafeCWLToolDocument() throws GsonBuildException, JsonParseException {
-        final Type hintType = new TypeToken<List<Object>>() {}.getType();
-        final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {}.getType();
-        final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {}.getType();
-        final Type inputParameterType = new TypeToken<List<InputParameter>>() {}.getType();
-        final Type expressionToolOutputParameterType = new TypeToken<List<ExpressionToolOutputParameter>>() {}.getType();
-        final Type workflowOutputParameterType = new TypeToken<List<WorkflowOutputParameter>>() {}.getType();
-        final Type workflowStepInputType = new TypeToken<List<WorkflowStepInput>>() {}.getType();
+        final Type hintType = new TypeToken<List<Object>>() {
+        }.getType();
+        final Type commandInputParameterType = new TypeToken<List<CommandInputParameter>>() {
+        }.getType();
+        final Type commandOutputParameterType = new TypeToken<List<CommandOutputParameter>>() {
+        }.getType();
+        final Type inputParameterType = new TypeToken<List<InputParameter>>() {
+        }.getType();
+        final Type expressionToolOutputParameterType = new TypeToken<List<ExpressionToolOutputParameter>>() {
+        }.getType();
+        final Type workflowOutputParameterType = new TypeToken<List<WorkflowOutputParameter>>() {
+        }.getType();
+        final Type workflowStepInputType = new TypeToken<List<WorkflowStepInput>>() {
+        }.getType();
 
-        final Gson sequenceSafeGson = new GsonBuilder().registerTypeAdapter(CharSequence.class,
-                (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString()).create();
+        final Gson sequenceSafeGson = new GsonBuilder()
+                .registerTypeAdapter(CharSequence.class, (JsonDeserializer<CharSequence>)(json, typeOfT, context) -> json.getAsString())
+                .create();
 
-        return new GsonBuilder().registerTypeAdapter(CharSequence.class, (JsonDeserializer<CharSequence>) (json, typeOfT, context) -> json.getAsString())
-                .registerTypeAdapter(hintType, (JsonDeserializer) (json, typeOfT, context) -> {
+        return new GsonBuilder()
+                .registerTypeAdapter(CharSequence.class, (JsonDeserializer<CharSequence>)(json, typeOfT, context) -> json.getAsString())
+                .registerTypeAdapter(hintType, (JsonDeserializer)(json, typeOfT, context) -> {
                     Collection<Object> hints = new ArrayList<>();
                     for (final JsonElement jsonElement : json.getAsJsonArray()) {
                         final Object o = sequenceSafeGson.fromJson(jsonElement, Object.class);
@@ -250,17 +342,17 @@ public class CWL {
                     return hints;
 
                 }).enableComplexMapKeySerialization()
-                .registerTypeAdapter(commandInputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                .registerTypeAdapter(commandInputParameterType, (JsonDeserializer)(json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, CommandInputParameter.class, true);
-                }).registerTypeAdapter(commandOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                }).registerTypeAdapter(commandOutputParameterType, (JsonDeserializer)(json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, CommandOutputParameter.class, true);
-                }).registerTypeAdapter(inputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                }).registerTypeAdapter(inputParameterType, (JsonDeserializer)(json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, InputParameter.class, true);
-                }).registerTypeAdapter(expressionToolOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                }).registerTypeAdapter(expressionToolOutputParameterType, (JsonDeserializer)(json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, ExpressionToolOutputParameter.class, true);
-                }).registerTypeAdapter(workflowOutputParameterType, (JsonDeserializer) (json, typeOfT, context) -> {
+                }).registerTypeAdapter(workflowOutputParameterType, (JsonDeserializer)(json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, WorkflowOutputParameter.class, true);
-                }).registerTypeAdapter(workflowStepInputType, (JsonDeserializer) (json, typeOfT, context) -> {
+                }).registerTypeAdapter(workflowStepInputType, (JsonDeserializer)(json, typeOfT, context) -> {
                     return gsonBuilderHelper(json, sequenceSafeGson, WorkflowStepInput.class, false);
                 }).serializeNulls().setPrettyPrinting().create();
 
@@ -268,23 +360,24 @@ public class CWL {
 
     /**
      * Helper for storing CWL JSON elements into Collections of objects, as expected by CWL Avro classes
+     *
      * @param json
      * @param sequenceSafeGson
      * @param c
      * @param objectType
-         * @return Collection of objects of Class c
-         */
-    private static Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType) throws
-            GsonBuildException, JsonParseException {
+     * @return Collection of objects of Class c
+     */
+    private static Collection<Object> gsonBuilderHelper(JsonElement json, Gson sequenceSafeGson, Class c, boolean objectType)
+            throws GsonBuildException, JsonParseException {
         Collection<Object> objectCollection = new ArrayList<>();
         if (json.isJsonArray()) {
             for (final JsonElement jsonElement : json.getAsJsonArray()) {
                 final Object o = sequenceSafeGson.fromJson(jsonElement, c);
                 // hack to transfer over defaults
-                if (jsonElement instanceof JsonObject && ((JsonObject)jsonElement).has("default")){
-                    final JsonPrimitive defaultValue = ((JsonObject) jsonElement).getAsJsonPrimitive("default");
-                    if (o instanceof CommandInputParameter){
-                        String defaultVal= defaultValue.toString().replaceAll("^\"|\"$", "");
+                if (jsonElement instanceof JsonObject && ((JsonObject)jsonElement).has("default")) {
+                    final JsonPrimitive defaultValue = ((JsonObject)jsonElement).getAsJsonPrimitive("default");
+                    if (o instanceof CommandInputParameter) {
+                        String defaultVal = defaultValue.toString().replaceAll("^\"|\"$", "");
                         ((CommandInputParameter)o).setDefault$(defaultVal);
                     }
                 }
@@ -292,8 +385,9 @@ public class CWL {
                 objectCollection.add(o);
             }
             return objectCollection;
-        } else if (json.isJsonObject()){
-            Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String,Object>>() {}.getType());
+        } else if (json.isJsonObject()) {
+            Map<String, Object> map = sequenceSafeGson.fromJson(json.getAsJsonObject(), new TypeToken<Map<String, Object>>() {
+            }.getType());
 
             try {
                 Object item;
@@ -328,7 +422,8 @@ public class CWL {
                 log.error("The given class " + c.getName() + " could not be instantiated due to access privileges.", ex);
                 throw new GsonBuildException("Error casting to class " + c.getName());
             } catch (NoSuchMethodException ex) {
-                log.error("The given class " + c.getName() + " was expected to have the methods setId and one of setType and setSource, but no such method exists.", ex);
+                log.error("The given class " + c.getName()
+                        + " was expected to have the methods setId and one of setType and setSource, but no such method exists.", ex);
                 throw new GsonBuildException("No matching methods for class " + c.getName());
             } catch (InvocationTargetException ex) {
                 log.error("There was an exception during the running of a method for class " + c.getName() + ".", ex);
@@ -337,7 +432,7 @@ public class CWL {
 
             return objectCollection;
 
-        } else{
+        } else {
             throw new JsonParseException("Invalid JSON entry.");
         }
     }
@@ -349,17 +444,25 @@ public class CWL {
     }
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
-        // update seems to just output the JSON version without checking file links
-        final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
-        final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
-                .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
-        return execute;
+        if (useBunny) {
+            String libraryLocation = System.getProperty("user.home") + java.io.File.separator + RABIX_EXEC_LOCATION;
+            final String[] s = { libraryLocation, "--resolve-app", cwlFile };
+            final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
+                    .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
+            return execute;
+        } else {
+            // update seems to just output the JSON version without checking file links
+            final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
+            final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
+                    .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
+            return execute;
+        }
     }
 
     public Map cwlJson2Map(final String cwljson) {
         Map jsonObject;
         try {
-            jsonObject = (Map) JsonUtils.fromString(cwljson);
+            jsonObject = (Map)JsonUtils.fromString(cwljson);
             // Create a context JSON map containing prefixes and definitions
             Map context = new HashMap();
             // Customise context...
@@ -367,7 +470,7 @@ public class CWL {
             JsonLdOptions options = new JsonLdOptions();
             // Customise options...
             // Call whichever JSONLD function you want! (e.g. compact)
-            return (Map) JsonLdProcessor.compact(jsonObject, context, options);
+            return (Map)JsonLdProcessor.compact(jsonObject, context, options);
         } catch (IOException | JsonLdError e) {
             throw new RuntimeException(e);
         }

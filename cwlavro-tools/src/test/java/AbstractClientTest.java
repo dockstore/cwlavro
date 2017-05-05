@@ -39,7 +39,7 @@ import static org.junit.Assert.assertTrue;
  * and create Java Model objects from them.
  * @author dyuen
  */
-public class CWLClientTest {
+public abstract class AbstractClientTest {
 
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
@@ -50,6 +50,8 @@ public class CWLClientTest {
     @Rule
     public final ExpectedSystemExit exit = ExpectedSystemExit.none();
 
+    public abstract CWL getCWL();
+
     /**
      * This test demonstrates how to take a CWL document and generate a corresponding json parameters file for it.
      * @throws Exception
@@ -59,7 +61,7 @@ public class CWLClientTest {
         final URL resource = Resources.getResource("cwl.json");
         final String cwlJson = Resources.toString(resource, StandardCharsets.UTF_8);
 
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
 
         final Gson gson = CWL.getTypeSafeCWLToolDocument();
         final Map<String, Object> runJson = cwl.extractRunJson(cwlJson);
@@ -78,10 +80,10 @@ public class CWLClientTest {
     @Test
     public void parseCWL() throws Exception{
         final URL resource = Resources.getResource("cwl.json");
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
+        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
     }
 
     /**
@@ -91,10 +93,10 @@ public class CWLClientTest {
     @Test
     public void parseCWLActual() throws Exception{
         final URL resource = Resources.getResource("valid.cwl");
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
+        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
     }
 
     /**
@@ -104,14 +106,15 @@ public class CWLClientTest {
     @Test
     public void parseCWLInvalid() throws Exception{
         final URL resource = Resources.getResource("invalid.cwl");
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
 
         try {
             final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
             assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-            assertTrue(!output.getRight().isEmpty() && output.getRight().contains("cwltool"));
+            assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
         }catch (RuntimeException e){
-            assertTrue("output should include a validation error",systemErrRule.getLog().contains("Tool definition failed validation:") );
+            assertTrue("output should include a validation error",systemErrRule.getLog().contains("Tool definition failed validation:")
+            || systemErrRule.getLog().contains("is not a valid app"));
             return;
         }
         // this should always exception
@@ -125,7 +128,7 @@ public class CWLClientTest {
     @Test
     public void createToolJavaModel() throws Exception {
         final URL resource = Resources.getResource("cwl.json");
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
         Gson gson =  CWL.getTypeSafeCWLToolDocument();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final CommandLineTool commandLineTool = gson.fromJson(output.getLeft(), CommandLineTool.class);
@@ -139,7 +142,7 @@ public class CWLClientTest {
     @Test
     public void extractCWLTypes() throws Exception {
         final URL resource = Resources.getResource("cwl.json");
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map<String, String> typeMap = cwl.extractCWLTypes(output.getLeft());
         assertTrue(typeMap.size() == 3);
@@ -154,7 +157,7 @@ public class CWLClientTest {
     @Test
     public void extractMetadata() throws Exception {
         final URL resource = Resources.getResource("cwl.json");
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map map = cwl.cwlJson2Map(output.getLeft());
         assertTrue(map.size() == 1 && ((Map)map.get("http://purl.org/dc/terms/creator")).size() == 3);
@@ -173,7 +176,7 @@ public class CWLClientTest {
         final URL confirm = Resources.getResource("arraysConfirm.txt");
         final String jsonResult = Resources.toString(confirm, StandardCharsets.UTF_8);
 
-        final CWL cwl = new CWL();
+        final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map<String, Object> runJson = cwl.extractRunJson(output.getLeft());
 
