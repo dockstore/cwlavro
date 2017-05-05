@@ -52,46 +52,60 @@ import java.util.regex.Pattern;
  */
 public class CWL {
 
-    private static final String RABIX_VERSION = "1.0.0-rc5";
-    private static final String RABIX_GITHUB_LOCATION = "https://github.com/rabix/bunny/releases/download/v"+RABIX_VERSION+"/rabix-"+RABIX_VERSION+".tar.gz";
-    private static final String RABIX_EXEC_LOCATION = ".dockstore/libraries/rabix-"+RABIX_VERSION+"/rabix-backend-local-"+RABIX_VERSION+"/rabix";
+    public static final String RABIX_VERSION = "1.0.0-rc5";
+    public static final String RABIX_GITHUB_LOCATION = "https://github.com/rabix/bunny/releases/download/v"+RABIX_VERSION+"/rabix-"+RABIX_VERSION+".tar.gz";
+    public static final String RABIX_EXEC_LOCATION = ".dockstore/libraries/rabix-"+RABIX_VERSION+"/rabix-backend-local-"+RABIX_VERSION+"/rabix";
 
     private final Gson gson;
     private static final Logger log = LoggerFactory.getLogger(CWL.class);
+    private final boolean useBunny;
 
-    public CWL() throws GsonBuildException, JsonParseException, ArchiveException, IOException {
+    public CWL() {
+        this(false);
+    }
+
+    public CWL(boolean useBunny) throws GsonBuildException, JsonParseException {
         gson = getTypeSafeCWLToolDocument();
 
-        // grab rabix
-        String libraryLocation =
-                System.getProperty("user.home") + java.io.File.separator + ".dockstore" + java.io.File.separator + "libraries" + java.io.File.separator;
-        URL rabixURL;
-        String rabixFilename;
-        try {
-            rabixURL = new URL(RABIX_GITHUB_LOCATION);
-            rabixFilename = new java.io.File(rabixURL.toURI().getPath()).getName();
-        } catch (MalformedURLException | URISyntaxException e) {
-            throw new RuntimeException("Could not create rabix location", e);
-        }
-        String rabixTarget = libraryLocation + rabixFilename;
-        java.io.File rabixTargetFile = new java.io.File(rabixTarget);
-        if (!rabixTargetFile.exists()) {
+        this.useBunny = useBunny;
+        if (useBunny) {
+            // grab rabix
+            String libraryLocation =
+                    System.getProperty("user.home") + java.io.File.separator + ".dockstore" + java.io.File.separator + "libraries" + java.io.File.separator;
+            URL rabixURL;
+            String rabixFilename;
             try {
-                FileUtils.copyURLToFile(rabixURL, rabixTargetFile);
-                //TODO: version this path so it properly handles upgrade events
+                rabixURL = new URL(RABIX_GITHUB_LOCATION);
+                rabixFilename = new java.io.File(rabixURL.toURI().getPath()).getName();
+            } catch (MalformedURLException | URISyntaxException e) {
+                throw new RuntimeException("Could not create rabix location", e);
+            }
+            String rabixTarget = libraryLocation + rabixFilename;
+            java.io.File rabixTargetFile = new java.io.File(rabixTarget);
+            if (!rabixTargetFile.exists()) {
+                try {
+                    FileUtils.copyURLToFile(rabixURL, rabixTargetFile);
+                    //TODO: version this path so it properly handles upgrade events
 
-                File tarFile = CompressionUtilities.unGzip(rabixTargetFile, rabixTargetFile.getParentFile());
-                File rabixDirectory = new File(FilenameUtils.removeExtension(tarFile.getAbsolutePath()));
-                FileUtils.forceMkdir(rabixDirectory);
-                CompressionUtilities.unTar(tarFile, rabixDirectory);
+                    File tarFile = CompressionUtilities.unGzip(rabixTargetFile, rabixTargetFile.getParentFile());
+                    File rabixDirectory = new File(FilenameUtils.removeExtension(tarFile.getAbsolutePath()));
+                    FileUtils.forceMkdir(rabixDirectory);
+                    CompressionUtilities.unTar(tarFile, rabixDirectory);
+                } catch (IOException e) {
+                    throw new RuntimeException("Could not download or uncompress rabix bunny", e);
+                } catch (ArchiveException e) {
+                    throw new RuntimeException("Could not uncompress rabix bunny", e);
+                }
+            }
+
+            try {
+                Path path = Paths.get(System.getProperty("user.home"), RABIX_EXEC_LOCATION);
+                HashSet<PosixFilePermission> posixFilePermissions = Sets.newHashSet(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE);
+                Files.setPosixFilePermissions(path, posixFilePermissions);
             } catch (IOException e) {
-                throw new RuntimeException("Could not download or uncompress rabix bunny", e);
+                throw new RuntimeException("Could not set permissions on rabix bunny", e);
             }
         }
-        Path path = Paths.get(System.getProperty("user.home"), RABIX_EXEC_LOCATION);
-        HashSet<PosixFilePermission> posixFilePermissions = Sets
-                .newHashSet(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE);
-        Files.setPosixFilePermissions(path, posixFilePermissions);
     }
 
     /**
@@ -409,18 +423,19 @@ public class CWL {
     }
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
-        if (true){
+        if (useBunny){
             String libraryLocation = System.getProperty("user.home") + java.io.File.separator + RABIX_EXEC_LOCATION;
             final String[] s = { libraryLocation, "--resolve-app", cwlFile };
             final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
                     .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
             return execute;
+        } else {
+            // update seems to just output the JSON version without checking file links
+            final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
+            final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
+                    .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
+            return execute;
         }
-        // update seems to just output the JSON version without checking file links
-        final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
-        final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
-                .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false,  Optional.absent(), Optional.absent());
-        return execute;
     }
 
     public Map cwlJson2Map(final String cwljson) {
