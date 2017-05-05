@@ -11,15 +11,15 @@ Java here, but other languages are encouraged.
 All comments and recommendations are welcome.
 
 Releases starting with v1.0 support CWL v1.0 and require CWLtool as a dependency
-Releases starting with v2.0 will support CWL v1.0 and require Rabix as a dependency
+Releases starting with v2.0 will support CWL v1.0 and require Rabix bunny or cwltool as a dependency
 
 This depends on cwltool to parse CWL documents into avro (before this takes avro documents and transforms them 
 into Java objects). 
 
 Install it with the following commands (may differ depending on your distribution of Linux). 
 
-    pip install --user setuptools==24.0.3
-    pip install --user cwl-runner cwltool==1.0.20161114152756 schema-salad==1.18.20161005190847 avro==1.8.1
+    pip install --user setuptools==28.8.0
+    pip install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
 
 # CWL Java SDK
 
