@@ -63,9 +63,10 @@ public class CompressionUtilities {
                 } else {
                     LOG.info(String.format("Creating output file %s.", outputFile.getAbsolutePath()));
                     FileUtils.forceMkdirParent(outputFile);
-                    final OutputStream outputFileStream = new FileOutputStream(outputFile);
-                    IOUtils.copy(debInputStream, outputFileStream);
-                    outputFileStream.close();
+                    try(final OutputStream outputFileStream = new FileOutputStream(outputFile)) {
+                        IOUtils.copy(debInputStream, outputFileStream);
+                        outputFileStream.close();
+                    }
                 }
                 untaredFiles.add(outputFile);
             }
