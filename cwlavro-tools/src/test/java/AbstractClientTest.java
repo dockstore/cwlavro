@@ -17,6 +17,7 @@
 
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import io.cwl.avro.CWL;
 import io.cwl.avro.CommandLineTool;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -97,6 +98,28 @@ public abstract class AbstractClientTest {
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
         assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+    }
+
+    /**
+     * This tests if gson can parse a tool with an input parameter that has something like 'default: null'
+     * @throws Exception
+     */
+    @Test
+    public void testNullDefault() throws Exception {
+        final CWL cwl = getCWL();
+        Gson gson = CWL.getTypeSafeCWLToolDocument();
+        final URL resource = Resources.getResource("nullDefault.cwl");
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
+        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
+        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+        final String stringStringImmutablePair = output.getLeft();
+        Object cwlObject;
+        try {
+            cwlObject = gson.fromJson(stringStringImmutablePair, CommandLineTool.class);
+
+        } catch (JsonParseException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
