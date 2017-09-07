@@ -103,7 +103,7 @@ public abstract class AbstractClientTest {
         String right = output.getRight();
         assertTrue("Expected output.getLeft() to not be empty.", !left.isEmpty());
         assertTrue("Expected output.getLeft() to contain 'cwlVersion' but got " + left, left.contains("cwlVersion"));
-        assertTrue("Expected output.getRight() to be empty or contain 'cwltool' but got " + right, right.contains("cwltool") || right.isEmpty());
+        assertTrue("Expected output.getRight() to be empty or contain 'cwltool' or 'Picked up _JAVA_OPTIONS: -Xmx2048m -Xms512m' but got " + right, right.contains("cwltool") || right.isEmpty() || right.contains("Picked up"));
     }
 
     /**
