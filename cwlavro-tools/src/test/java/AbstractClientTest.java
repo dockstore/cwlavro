@@ -83,8 +83,7 @@ public abstract class AbstractClientTest {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+        checkOutput(output);
     }
 
     /**
@@ -96,8 +95,15 @@ public abstract class AbstractClientTest {
         final URL resource = Resources.getResource("valid.cwl");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+        checkOutput(output);
+    }
+
+    private void checkOutput(ImmutablePair<String, String> output) {
+        String left = output.getLeft();
+        String right = output.getRight();
+        assertTrue("Expected output.getLeft() to not be empty.", !left.isEmpty());
+        assertTrue("Expected output.getLeft() to contain 'cwlVersion' but got " + left, left.contains("cwlVersion"));
+        assertTrue("Expected output.getRight() to be empty or contain 'cwltool' but got " + right, right.contains("cwltool") || right.isEmpty());
     }
 
     /**
@@ -110,8 +116,7 @@ public abstract class AbstractClientTest {
         Gson gson = CWL.getTypeSafeCWLToolDocument();
         final URL resource = Resources.getResource("nullDefault.cwl");
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+        checkOutput(output);
         final String stringStringImmutablePair = output.getLeft();
         Object cwlObject;
         try {
