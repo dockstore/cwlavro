@@ -17,6 +17,7 @@
 
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import io.cwl.avro.CWL;
 import io.cwl.avro.CommandLineTool;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -82,8 +83,7 @@ public abstract class AbstractClientTest {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+        checkOutput(output);
     }
 
     /**
@@ -95,8 +95,36 @@ public abstract class AbstractClientTest {
         final URL resource = Resources.getResource("valid.cwl");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-        assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-        assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
+        checkOutput(output);
+    }
+
+    private void checkOutput(ImmutablePair<String, String> output) {
+        String left = output.getLeft();
+        String right = output.getRight();
+        assertTrue("Expected output.getLeft() to not be empty.", !left.isEmpty());
+        assertTrue("Expected output.getLeft() to contain 'cwlVersion' but got " + left, left.contains("cwlVersion"));
+        assertTrue("Expected output.getRight() to be empty or contain 'cwltool' or 'Picked up _JAVA_OPTIONS: -Xmx2048m -Xms512m' but got " + right, right.contains("cwltool") || right.isEmpty() || right.contains("Picked up"));
+    }
+
+    /**
+     * This tests if gson can parse a tool with an input parameter that has something like 'default: null'
+     * @throws Exception
+     */
+    @Test
+    public void testNullDefault() throws Exception {
+        final CWL cwl = getCWL();
+        Gson gson = CWL.getTypeSafeCWLToolDocument();
+        final URL resource = Resources.getResource("nullDefault.cwl");
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
+        checkOutput(output);
+        final String stringStringImmutablePair = output.getLeft();
+        Object cwlObject;
+        try {
+            cwlObject = gson.fromJson(stringStringImmutablePair, CommandLineTool.class);
+
+        } catch (JsonParseException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
