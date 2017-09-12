@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
@@ -282,10 +283,24 @@ public class CWL {
                 final Object o = sequenceSafeGson.fromJson(jsonElement, c);
                 // hack to transfer over defaults
                 if (jsonElement instanceof JsonObject && ((JsonObject)jsonElement).has("default")){
-                    final JsonPrimitive defaultValue = ((JsonObject) jsonElement).getAsJsonPrimitive("default");
-                    if (o instanceof CommandInputParameter){
-                        String defaultVal= defaultValue.toString().replaceAll("^\"|\"$", "");
-                        ((CommandInputParameter)o).setDefault$(defaultVal);
+                    JsonElement defaultJsonElement = ((JsonObject)jsonElement).get("default");
+                    if (defaultJsonElement instanceof JsonObject) {
+                        final JsonObject defaultValue = ((JsonObject) jsonElement).getAsJsonObject("default");
+                        if (o instanceof CommandInputParameter) {
+                            ((CommandInputParameter)o).setDefault$(defaultValue);
+                        }
+                    }
+                    if (defaultJsonElement instanceof JsonPrimitive) {
+                        final JsonPrimitive defaultValue = ((JsonObject) jsonElement).getAsJsonPrimitive("default");
+                        if (o instanceof CommandInputParameter){
+                            String defaultVal= defaultValue.toString().replaceAll("^\"|\"$", "");
+                            ((CommandInputParameter)o).setDefault$(defaultVal);
+                        }
+                    }
+                    if (defaultJsonElement instanceof JsonNull) {
+                        if (o instanceof CommandInputParameter){
+                            ((CommandInputParameter)o).setDefault$(null);
+                        }
                     }
                 }
 
