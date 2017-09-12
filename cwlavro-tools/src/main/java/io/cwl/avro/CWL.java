@@ -394,6 +394,12 @@ public class CWL {
                         if (o instanceof CommandInputParameter){
                             ((CommandInputParameter)o).setDefault$(null);
                         }
+                        }
+                    }
+                    if (defaultJsonElement instanceof JsonNull) {
+                        if (o instanceof CommandInputParameter){
+                            ((CommandInputParameter)o).setDefault$(null);
+                        }
                     }
                 }
 

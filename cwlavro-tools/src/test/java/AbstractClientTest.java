@@ -112,7 +112,7 @@ public abstract class AbstractClientTest {
      */
     @Test
     public void testNullDefault() throws Exception {
-        final CWL cwl = getCWL();
+        final CWL cwl = new CWL();
         Gson gson = CWL.getTypeSafeCWLToolDocument();
         final URL resource = Resources.getResource("nullDefault.cwl");
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
