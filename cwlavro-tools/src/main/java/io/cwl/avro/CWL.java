@@ -54,11 +54,11 @@ import org.slf4j.LoggerFactory;
  */
 public class CWL {
 
-    public static final String RABIX_VERSION = "1.0.0-rc5";
+    public static final String RABIX_VERSION = "1.0.1";
     public static final String RABIX_GITHUB_LOCATION =
             "https://github.com/rabix/bunny/releases/download/v" + RABIX_VERSION + "/rabix-" + RABIX_VERSION + ".tar.gz";
     public static final String RABIX_EXEC_LOCATION =
-            ".dockstore/libraries/rabix-" + RABIX_VERSION + "/rabix-backend-local-" + RABIX_VERSION + "/rabix";
+            ".dockstore/libraries/rabix-" + RABIX_VERSION + "/rabix-cli-" + RABIX_VERSION + "/rabix";
 
     private final Gson gson;
     private static final Logger log = LoggerFactory.getLogger(CWL.class);
