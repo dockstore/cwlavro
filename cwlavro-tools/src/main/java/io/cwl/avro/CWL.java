@@ -55,12 +55,13 @@ import org.slf4j.LoggerFactory;
  */
 public class CWL {
 
-    public static final String DEFAULT_BUNNY_VERSION = "1.0.3";
+    private static final String DEFAULT_BUNNY_VERSION = "1.0.3";
 
     private final Gson gson;
     private static final Logger LOG = LoggerFactory.getLogger(CWL.class);
     private final boolean useBunny;
-    private final String bunnyExecVersion;
+
+    private final String localBunnyPath;
 
     public CWL() {
         this(false, null);
@@ -79,7 +80,7 @@ public class CWL {
         String trimmedBunnyVersion = bunnyVersion.substring(0,5);
         String bunnyGithubVersion =
             "https://github.com/rabix/bunny/releases/download/v" + bunnyVersion + "/rabix-" + trimmedBunnyVersion + ".tar.gz";
-        this.bunnyExecVersion =
+        this.localBunnyPath =
             ".dockstore/libraries/rabix-" + trimmedBunnyVersion + "/rabix-cli-" + trimmedBunnyVersion + "/rabix";
 
 
@@ -116,7 +117,7 @@ public class CWL {
             }
 
             try {
-                Path path = Paths.get(System.getProperty("user.home"), bunnyExecVersion);
+                Path path = Paths.get(System.getProperty("user.home"), localBunnyPath);
                 HashSet<PosixFilePermission> posixFilePermissions = Sets
                         .newHashSet(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE);
                 Files.setPosixFilePermissions(path, posixFilePermissions);
@@ -469,6 +470,10 @@ public class CWL {
         }
     }
 
+    public String getLocalBunnyPath() {
+        return localBunnyPath;
+    }
+
     public static class GsonBuildException extends RuntimeException {
         public GsonBuildException(String message) {
             super(message);
@@ -477,7 +482,7 @@ public class CWL {
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
         if (useBunny) {
-            String libraryLocation = System.getProperty("user.home") + java.io.File.separator + bunnyExecVersion;
+            String libraryLocation = System.getProperty("user.home") + java.io.File.separator + localBunnyPath;
             final String[] s = { libraryLocation, "--resolve-app", cwlFile };
             final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
                     .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
