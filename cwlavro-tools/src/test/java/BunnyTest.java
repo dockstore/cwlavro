@@ -6,6 +6,6 @@ import io.cwl.avro.CWL;
 public class BunnyTest extends AbstractClientTest {
     @Override
     public CWL getCWL() {
-        return new CWL(true);
+        return new CWL(true, null);
     }
 }

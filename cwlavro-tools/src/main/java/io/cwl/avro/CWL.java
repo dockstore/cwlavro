@@ -40,6 +40,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.configuration2.INIConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -54,22 +55,33 @@ import org.slf4j.LoggerFactory;
  */
 public class CWL {
 
-    public static final String RABIX_VERSION = "1.0.2";
-    public static final String RABIX_GITHUB_LOCATION =
-            "https://github.com/rabix/bunny/releases/download/v" + RABIX_VERSION + "/rabix-cli-" + RABIX_VERSION + ".tar.gz";
-    public static final String RABIX_EXEC_LOCATION =
-            ".dockstore/libraries/rabix-cli-" + RABIX_VERSION + "/rabix-cli-" + RABIX_VERSION + "/rabix";
+    public static final String DEFAULT_BUNNY_VERSION = "1.0.3";
 
     private final Gson gson;
-    private static final Logger log = LoggerFactory.getLogger(CWL.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CWL.class);
     private final boolean useBunny;
+    private final String bunnyExecVersion;
 
     public CWL() {
-        this(false);
+        this(false, null);
     }
 
-    public CWL(boolean useBunny) throws GsonBuildException, JsonParseException {
+    public CWL(boolean useBunny, INIConfiguration configuration) throws GsonBuildException, JsonParseException {
         gson = getTypeSafeCWLToolDocument();
+
+        String bunnyVersion = DEFAULT_BUNNY_VERSION;
+        if (configuration != null) {
+            bunnyVersion = configuration.getString("bunny-version", DEFAULT_BUNNY_VERSION);
+            if (!Objects.equals(DEFAULT_BUNNY_VERSION, bunnyVersion)) {
+                LOG.warn("Running with Bunny " + bunnyVersion + " , Dockstore tests with " + DEFAULT_BUNNY_VERSION);
+            }
+        }
+        String trimmedBunnyVersion = bunnyVersion.substring(0,5);
+        String bunnyGithubVersion =
+            "https://github.com/rabix/bunny/releases/download/v" + bunnyVersion + "/rabix-" + trimmedBunnyVersion + ".tar.gz";
+        this.bunnyExecVersion =
+            ".dockstore/libraries/rabix-" + trimmedBunnyVersion + "/rabix-cli-" + trimmedBunnyVersion + "/rabix";
+
 
         this.useBunny = useBunny;
         if (useBunny) {
@@ -80,7 +92,7 @@ public class CWL {
             URL rabixURL;
             String rabixFilename;
             try {
-                rabixURL = new URL(RABIX_GITHUB_LOCATION);
+                rabixURL = new URL(bunnyGithubVersion);
                 rabixFilename = new java.io.File(rabixURL.toURI().getPath()).getName();
             } catch (MalformedURLException | URISyntaxException e) {
                 throw new RuntimeException("Could not create rabix location", e);
@@ -104,7 +116,7 @@ public class CWL {
             }
 
             try {
-                Path path = Paths.get(System.getProperty("user.home"), RABIX_EXEC_LOCATION);
+                Path path = Paths.get(System.getProperty("user.home"), bunnyExecVersion);
                 HashSet<PosixFilePermission> posixFilePermissions = Sets
                         .newHashSet(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE);
                 Files.setPosixFilePermissions(path, posixFilePermissions);
@@ -436,17 +448,17 @@ public class CWL {
                     objectCollection.add(item);
                 }
             } catch (InstantiationException ex) {
-                log.error("The given class " + c.getName() + " could not be instantiated.", ex);
+                LOG.error("The given class " + c.getName() + " could not be instantiated.", ex);
                 throw new GsonBuildException("Error casting to class " + c.getName());
             } catch (IllegalAccessException ex) {
-                log.error("The given class " + c.getName() + " could not be instantiated due to access privileges.", ex);
+                LOG.error("The given class " + c.getName() + " could not be instantiated due to access privileges.", ex);
                 throw new GsonBuildException("Error casting to class " + c.getName());
             } catch (NoSuchMethodException ex) {
-                log.error("The given class " + c.getName()
+                LOG.error("The given class " + c.getName()
                         + " was expected to have the methods setId and one of setType and setSource, but no such method exists.", ex);
                 throw new GsonBuildException("No matching methods for class " + c.getName());
             } catch (InvocationTargetException ex) {
-                log.error("There was an exception during the running of a method for class " + c.getName() + ".", ex);
+                LOG.error("There was an exception during the running of a method for class " + c.getName() + ".", ex);
                 throw new GsonBuildException("Error running method for class " + c.getName());
             }
 
@@ -465,7 +477,7 @@ public class CWL {
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
         if (useBunny) {
-            String libraryLocation = System.getProperty("user.home") + java.io.File.separator + RABIX_EXEC_LOCATION;
+            String libraryLocation = System.getProperty("user.home") + java.io.File.separator + bunnyExecVersion;
             final String[] s = { libraryLocation, "--resolve-app", cwlFile };
             final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
                     .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
