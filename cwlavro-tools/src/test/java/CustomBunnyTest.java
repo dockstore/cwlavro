@@ -11,7 +11,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.reloading.PeriodicReloadingTrigger;
 
 /**
- * Run tests using cwltool
+ * Run tests using custom version of bunny
  */
 public class CustomBunnyTest extends AbstractClientTest {
     @Override
