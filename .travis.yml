@@ -33,10 +33,18 @@ install:
    - rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
    - cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro    
    - echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
-   - git diff 
+   - git diff
 
-script: mvn -B clean install cobertura:cobertura
+jobs:
+  include:
+  - stage: regular
+    script: mvn -B clean install
+  # no point in running coverage if we don't pass integration tests
+  - stage: coverage
+    script: mvn -B clean install jacoco:report jacoco:report-aggregate coveralls:report -Pcoverage
+
+# build lifecycle is before_install, install, before_script, script, after_script
 
 after_success:
-- mvn -B coveralls:report
-- mvn -B versioneye:update || true
+  - bash <(curl -s https://codecov.io/bash) -F ${TESTING_PROFILE//-} || echo "Codecov did not collect coverage reports"
+  - mvn -B versioneye:update || true
