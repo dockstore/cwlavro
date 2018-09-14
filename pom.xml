@@ -243,6 +243,8 @@
                             <append>true</append>
                             <excludes>
                                 <exclude>**/*$*</exclude>
+				<!-- exclude generated classes -->
+				<exclude>io/cwl/avro/*</exclude>
                             </excludes>
                         </configuration>
                         <executions>
