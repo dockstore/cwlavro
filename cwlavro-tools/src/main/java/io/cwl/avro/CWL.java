@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +17,6 @@ import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.utils.JsonUtils;
-import com.google.common.base.Joiner;
-import com.google.common.base.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -29,7 +26,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
-import org.apache.commons.configuration2.INIConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.heterodon.ExecAndEval;
@@ -43,16 +39,10 @@ import org.slf4j.LoggerFactory;
  */
 public class CWL {
 
-    private static final String DEFAULT_BUNNY_VERSION = "1.0.3";
-
     private final Gson gson;
     private static final Logger LOG = LoggerFactory.getLogger(CWL.class);
 
-    public CWL() {
-        this(null);
-    }
-
-    public CWL(INIConfiguration configuration) throws GsonBuildException, JsonParseException {
+    public CWL() throws GsonBuildException, JsonParseException {
         gson = getTypeSafeCWLToolDocument();
     }
 
@@ -394,10 +384,7 @@ public class CWL {
     }
 
     public ImmutablePair<String, String> parseCWL(final String cwlFile) {
-        // update seems to just output the JSON version without checking file links
-        //final String[] s = { "cwltool", "--non-strict", "--print-pre", cwlFile };
-        //return Utilities
-        //    .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
+        // taken from https://github.com/broadinstitute/heterodon/blob/master/SaladFileTest.java
         String saladScript = String.join(
             System.getProperty("line.separator"),
             "import json",
@@ -418,7 +405,6 @@ public class CWL {
         );
         ExecAndEval execAndEval = new ExecAndEval();
         Object saladResult = execAndEval.apply(saladScript, "cwltool_salad('" + cwlFile + "')");
-        System.out.println(saladResult);
         return ImmutablePair.of(saladResult.toString(), "");
     }
 
