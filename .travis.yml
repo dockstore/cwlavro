@@ -46,5 +46,4 @@ jobs:
 # build lifecycle is before_install, install, before_script, script, after_script
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -F ${TESTING_PROFILE//-} || echo "Codecov did not collect coverage reports"
-  - mvn -B versioneye:update || true
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
