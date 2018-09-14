@@ -33,10 +33,18 @@
         <repository>
             <id>seqwaremaven.oicr.on.ca</id>
             <name>seqwaremaven.oicr.on.ca-releases</name>
-            <url>http://seqwaremaven.oicr.on.ca/artifactory/collab-release</url>
+            <url>http://artifacts.oicr.on.ca/artifactory/collab-release</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>seqwaremaven.oicr.on.ca</id>
+            <name>seqwaremaven.oicr.on.ca-releases</name>
+            <url>http://artifacts.oicr.on.ca/artifactory/collab-release</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -81,7 +89,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.10</version>
+                    <version>3.1.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -164,6 +172,11 @@
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>4.2.0</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -217,4 +230,39 @@
             </plugin>
         </plugins>
     </reporting>
+
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <configuration>
+                            <append>true</append>
+                            <excludes>
+                                <exclude>**/*$*</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>prepare-agent-integration</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

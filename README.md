@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
 [![Dependency Status](https://dependencyci.com/github/common-workflow-language/cwlavro/badge)](https://dependencyci.com/github/common-workflow-language/cwlavro)
+[![codecov](https://codecov.io/gh/common-workflow-language/cwlavro/branch/develop/graph/badge.svg)](https://codecov.io/gh/common-workflow-language/cwlavro)
+
 
 CWL Avro Project 
 ================
@@ -25,7 +27,7 @@ Install it with the following commands (may differ depending on your distributio
 
 This demonstrates how to auto-generate Java classes from the CWL specification.
 Dependencies are the schema-salad project (used to convert the CWL specification into a standard Avro schema)
-and the cwltool project (used to convert yml-based CWL documents into json). 
+and the cwltool project (used to convert yml-based CWL documents into json). These dependencies are used via [heterodon](https://github.com/broadinstitute/heterodon)
 
 ## Instantiate CWL documents as Java objects
 

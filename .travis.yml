@@ -8,8 +8,8 @@ install:
    # upgrade pip?
    - sudo pip install --upgrade pip
    # install a specific version of the cwl dependencies to test with
-   - pip2.7 install --user setuptools==24.0.3
-   - pip2.7 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
+   - pip2.7 install --user setuptools==36.5.0
+   - pip2.7 install --user cwl-runner cwltool==1.0.20170828135420 schema-salad==2.6.20170806163416 avro==1.8.1
    - git clone https://github.com/common-workflow-language/common-workflow-language 
    # convert CWL schema salad CWL to standard Avro json
    - python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
@@ -33,10 +33,17 @@ install:
    - rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
    - cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro    
    - echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
-   - git diff 
+   - git diff
 
-script: mvn -B clean install cobertura:cobertura
+jobs:
+  include:
+  - stage: regular
+    script: mvn -B clean install
+  # no point in running coverage if we don't pass integration tests
+  - stage: coverage
+    script: mvn -B clean install jacoco:report jacoco:report-aggregate coveralls:report -Pcoverage
+
+# build lifecycle is before_install, install, before_script, script, after_script
 
 after_success:
-- mvn -B coveralls:report
-- mvn -B versioneye:update || true
+  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
