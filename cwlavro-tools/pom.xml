@@ -42,6 +42,11 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.heterodon</groupId>
+            <artifactId>heterodon</artifactId>
+            <version>1.0.0b1</version>
+        </dependency>
     </dependencies>
 
     <build>

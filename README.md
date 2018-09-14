@@ -25,7 +25,7 @@ Install it with the following commands (may differ depending on your distributio
 
 This demonstrates how to auto-generate Java classes from the CWL specification.
 Dependencies are the schema-salad project (used to convert the CWL specification into a standard Avro schema)
-and the cwltool project (used to convert yml-based CWL documents into json). 
+and the cwltool project (used to convert yml-based CWL documents into json). These dependencies are used via [heterodon](https://github.com/broadinstitute/heterodon)
 
 ## Instantiate CWL documents as Java objects
 

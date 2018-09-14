@@ -33,10 +33,18 @@
         <repository>
             <id>seqwaremaven.oicr.on.ca</id>
             <name>seqwaremaven.oicr.on.ca-releases</name>
-            <url>http://seqwaremaven.oicr.on.ca/artifactory/collab-release</url>
+            <url>http://artifacts.oicr.on.ca/artifactory/collab-release</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>seqwaremaven.oicr.on.ca</id>
+            <name>seqwaremaven.oicr.on.ca-releases</name>
+            <url>http://artifacts.oicr.on.ca/artifactory/collab-release</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -81,7 +89,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.10</version>
+                    <version>3.1.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

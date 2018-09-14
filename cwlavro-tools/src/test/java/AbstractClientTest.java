@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 import org.junit.contrib.java.lang.system.SystemErrRule;
 import org.junit.contrib.java.lang.system.SystemOutRule;
+import org.python.core.PyException;
+import org.python.core.PyType;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +36,7 @@ import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * These tests demonstrate how to work with CWL documents(in JSON format) describing actual tools
@@ -67,8 +70,8 @@ public abstract class AbstractClientTest {
         final Gson gson = CWL.getTypeSafeCWLToolDocument();
         final Map<String, Object> runJson = cwl.extractRunJson(cwlJson);
         // check that default values made it
-        assertTrue(runJson.get("mem_gb").equals(4));
-        assertTrue(((Map)runJson.get("bam_input")).get("path").equals("default_directory/default_bam_location.bam"));
+        assertEquals(4, runJson.get("mem_gb"));
+        assertEquals("default_directory/default_bam_location.bam", ((Map)runJson.get("bam_input")).get("path"));
         assertTrue(((Map)runJson.get("bam_input")).containsKey("format"));
         final String s = gson.toJson(runJson);
         assertTrue(s.length() > 10);
@@ -76,10 +79,9 @@ public abstract class AbstractClientTest {
 
     /**
      * This test demonstrates how to parse a CWL document using CWL tool.
-     * @throws Exception
      */
     @Test
-    public void parseCWL() throws Exception{
+    public void parseCWL() {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
@@ -88,10 +90,9 @@ public abstract class AbstractClientTest {
 
     /**
      * This test demonstrates how to parse a CWL document using CWL tool.
-     * @throws Exception
      */
     @Test
-    public void parseCWLActual() throws Exception{
+    public void parseCWLActual() {
         final URL resource = Resources.getResource("valid.cwl");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
@@ -108,10 +109,9 @@ public abstract class AbstractClientTest {
 
     /**
      * This tests if gson can parse a tool with an input parameter that has something like 'default: null'
-     * @throws Exception
      */
     @Test
-    public void testNullDefault() throws Exception {
+    public void testNullDefault() {
         final CWL cwl = getCWL();
         Gson gson = CWL.getTypeSafeCWLToolDocument();
         final URL resource = Resources.getResource("nullDefault.cwl");
@@ -129,32 +129,27 @@ public abstract class AbstractClientTest {
 
     /**
      * This test demonstrates a parse failure for a CWL document.
-     * @throws Exception
      */
     @Test
-    public void parseCWLInvalid() throws Exception{
+    public void parseCWLInvalid() {
         final URL resource = Resources.getResource("invalid.cwl");
         final CWL cwl = getCWL();
 
         try {
             final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-            assertTrue(!output.getLeft().isEmpty() && output.getLeft().contains("cwlVersion"));
-            assertTrue(output.getRight().contains("cwltool") || output.getRight().isEmpty());
         }catch (RuntimeException e){
-            assertTrue("output should include a validation error",systemErrRule.getLog().contains("Tool definition failed validation:")
-            || systemErrRule.getLog().contains("is not a valid app"));
+            assertEquals("ValidationException", ((PyType)((PyException)e).type).getName());
             return;
         }
         // this should always exception
-        assertTrue(false);
+        fail();
     }
 
     /**
      * This test demonstrates how to parse a CWL document and populate a
-     * @throws Exception
      */
     @Test
-    public void createToolJavaModel() throws Exception {
+    public void createToolJavaModel() {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = getCWL();
         Gson gson =  CWL.getTypeSafeCWLToolDocument();
@@ -165,32 +160,30 @@ public abstract class AbstractClientTest {
 
     /**
      * This test demonstrates how to extract information from a CWL file.
-     * @throws Exception
      */
     @Test
-    public void extractCWLTypes() throws Exception {
+    public void extractCWLTypes() {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map<String, String> typeMap = cwl.extractCWLTypes(output.getLeft());
-        assertTrue(typeMap.size() == 3);
-        assertTrue("int".equals(typeMap.get("mem_gb")));
-        assertTrue("File".equals(typeMap.get("bam_input")));
+        assertEquals(3, typeMap.size());
+        assertEquals("int", typeMap.get("mem_gb"));
+        assertEquals("File", typeMap.get("bam_input"));
     }
 
     /**
      * This test demonstrates how to extract metadata from a CWL file.
-     * @throws Exception
      */
     @Test
-    public void extractMetadata() throws Exception {
+    public void extractMetadata() {
         final URL resource = Resources.getResource("cwl.json");
         final CWL cwl = getCWL();
         final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
         final Map map = cwl.cwlJson2Map(output.getLeft());
         assertTrue(map.size() == 1 && ((Map)map.get("http://purl.org/dc/terms/creator")).size() == 3);
         String key = (String)((Map) map.get("http://purl.org/dc/terms/creator")).get("http://xmlns.com/foaf/0.1/name");
-        assertTrue(Objects.equals(key,"Brian O'Connor"));
+        assertEquals("Brian O'Connor", key);
     }
 
     /**
