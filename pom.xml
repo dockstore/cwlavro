@@ -40,6 +40,17 @@
 
     <repositories>
         <repository>
+            <id>artifactory.broadinstitute.org</id>
+            <name>artifactory.broadinstitute.org</name>
+            <url>https://artifactory.broadinstitute.org/artifactory/libs-release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>seqwaremaven.oicr.on.ca</id>
             <name>seqwaremaven.oicr.on.ca-releases</name>
             <url>http://artifacts.oicr.on.ca/artifactory/collab-release</url>

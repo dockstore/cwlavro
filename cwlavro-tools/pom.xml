@@ -43,9 +43,10 @@
             <version>1.9.3</version>
         </dependency>
         <dependency>
-            <groupId>io.heterodon</groupId>
+            <groupId>org.broadinstitute</groupId>
             <artifactId>heterodon</artifactId>
-            <version>1.0.0b1</version>
+            <version>1.0.0-beta1</version>
+            <classifier>single</classifier>
         </dependency>
     </dependencies>
 
