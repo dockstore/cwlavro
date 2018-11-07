@@ -179,21 +179,6 @@ public abstract class AbstractClientTest {
     }
 
     /**
-     * This test demonstrates how to extract metadata from a CWL file.
-     * @throws Exception
-     */
-    @Test
-    public void extractMetadata() throws Exception {
-        final URL resource = Resources.getResource("cwl.json");
-        final CWL cwl = getCWL();
-        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
-        final Map map = cwl.cwlJson2Map(output.getLeft());
-        assertTrue(map.size() == 1 && ((Map)map.get("http://purl.org/dc/terms/creator")).size() == 3);
-        String key = (String)((Map) map.get("http://purl.org/dc/terms/creator")).get("http://xmlns.com/foaf/0.1/name");
-        assertTrue(Objects.equals(key,"Brian O'Connor"));
-    }
-
-    /**
      * This tests verifies json conversion from a cwl file with array types
      * @throws Exception
      */
