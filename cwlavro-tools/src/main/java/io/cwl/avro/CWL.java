@@ -23,10 +23,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.jsonldjava.core.JsonLdError;
-import com.github.jsonldjava.core.JsonLdOptions;
-import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.utils.JsonUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
@@ -493,23 +489,6 @@ public class CWL {
             final ImmutablePair<String, String> execute = io.cwl.avro.Utilities
                     .executeCommand(Joiner.on(" ").join(Arrays.asList(s)), false, Optional.absent(), Optional.absent());
             return execute;
-        }
-    }
-
-    public Map cwlJson2Map(final String cwljson) {
-        Map jsonObject;
-        try {
-            jsonObject = (Map)JsonUtils.fromString(cwljson);
-            // Create a context JSON map containing prefixes and definitions
-            Map context = new HashMap();
-            // Customise context...
-            // Create an instance of JsonLdOptions with the standard JSON-LD options
-            JsonLdOptions options = new JsonLdOptions();
-            // Customise options...
-            // Call whichever JSONLD function you want! (e.g. compact)
-            return (Map)JsonLdProcessor.compact(jsonObject, context, options);
-        } catch (IOException | JsonLdError e) {
-            throw new RuntimeException(e);
         }
     }
 }
