@@ -134,7 +134,6 @@ public class CWL {
         final Map<String, Object> runJson = new HashMap<>();
 
         final String fullToolId = commandLineTool.getId().toString();
-        final String toolId = fullToolId.substring(fullToolId.lastIndexOf('#') + 1);
 
         for (final CommandInputParameter inputParam : commandLineTool.getInputs()) {
             final String idString = inputParam.getId().toString();
@@ -144,14 +143,16 @@ public class CWL {
             if (inputParam.getFormat() != null) {
                 ((Map)stub).put("format", inputParam.getFormat());
             }
-            final String partialIdString = idString.substring(idString.lastIndexOf('#') + 1);
-            runJson.put(partialIdString.replaceFirst(toolId, ""), stub);
+            String filteredId = idString.replaceFirst(fullToolId + "/", "");
+            filteredId = filteredId.replaceFirst(fullToolId + "#", "");
+            runJson.put(filteredId, stub);
         }
         for (final CommandOutputParameter outParam : commandLineTool.getOutputs()) {
             final String idString = outParam.getId().toString();
             final Object stub = getStub(outParam.getType(), null);
-            final String partialIdString = idString.substring(idString.lastIndexOf('#') + 1);
-            runJson.put(partialIdString.replaceFirst(toolId, ""), stub);
+            String filteredId = idString.replaceFirst(fullToolId + "/", "");
+            filteredId = filteredId.replaceFirst(fullToolId + "#", "");
+            runJson.put(filteredId, stub);
         }
         return runJson;
     }
