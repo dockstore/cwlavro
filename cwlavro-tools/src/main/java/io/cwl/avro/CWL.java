@@ -52,6 +52,9 @@ public class CWL {
         final CommandLineTool commandLineTool = gson.fromJson(output, CommandLineTool.class);
         final Map<String, Object> runJson = new HashMap<>();
 
+        final String fullToolId = commandLineTool.getId().toString();
+        final String toolId = fullToolId.substring(fullToolId.lastIndexOf('#') + 1);
+
         for (final CommandInputParameter inputParam : commandLineTool.getInputs()) {
             final String idString = inputParam.getId().toString();
             final Object stub = getStub(inputParam.getType(),
@@ -60,12 +63,14 @@ public class CWL {
             if (inputParam.getFormat() != null) {
                 ((Map)stub).put("format", inputParam.getFormat());
             }
-            runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
+            final String partialIdString = idString.substring(idString.lastIndexOf('#') + 1);
+            runJson.put(partialIdString.replaceFirst(toolId, ""), stub);
         }
         for (final CommandOutputParameter outParam : commandLineTool.getOutputs()) {
             final String idString = outParam.getId().toString();
             final Object stub = getStub(outParam.getType(), null);
-            runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
+            final String partialIdString = idString.substring(idString.lastIndexOf('#') + 1);
+            runJson.put(partialIdString.replaceFirst(toolId, ""), stub);
         }
         return runJson;
     }
