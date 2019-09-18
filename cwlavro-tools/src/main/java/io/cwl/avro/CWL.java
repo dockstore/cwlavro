@@ -164,7 +164,6 @@ public class CWL {
                 runJson.put(idString, stub);
             }
         }
-        System.out.println(runJson);
         return runJson;
     }
 

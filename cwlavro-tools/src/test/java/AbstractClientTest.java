@@ -214,9 +214,8 @@ public abstract class AbstractClientTest {
         final Map<String, Object> runJson = cwl.extractRunJson(output.getLeft());
 
         final Gson gson = cwl.getTypeSafeCWLToolDocument();
-        System.out.println(runJson);
 
-        assertTrue("Should not include the tool id", gson.toJson(runJson).trim().contains("foobar"));
+        assertTrue("Should not include the tool id", !gson.toJson(runJson).trim().contains("foobar"));
 
         assertEquals(jsonResult.trim(), gson.toJson(runJson).trim());
     }
