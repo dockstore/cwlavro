@@ -132,9 +132,7 @@ public class CWL {
     public Map<String, Object> extractRunJson(final String output) {
         final CommandLineTool commandLineTool = gson.fromJson(output, CommandLineTool.class);
         final Map<String, Object> runJson = new HashMap<>();
-
-        final String fullToolId = commandLineTool.getId().toString();
-
+        final CharSequence fullToolIdChar = commandLineTool.getId();
         for (final CommandInputParameter inputParam : commandLineTool.getInputs()) {
             final String idString = inputParam.getId().toString();
             final Object stub = getStub(inputParam.getType(),
@@ -143,17 +141,30 @@ public class CWL {
             if (inputParam.getFormat() != null) {
                 ((Map)stub).put("format", inputParam.getFormat());
             }
-            String filteredId = idString.replaceFirst(fullToolId + "/", "");
-            filteredId = filteredId.replaceFirst(fullToolId + "#", "");
-            runJson.put(filteredId, stub);
+            if (fullToolIdChar != null) {
+                // Remove the tool id prefix on the input id (only for cwltool)
+                String filteredId = idString.replaceFirst(fullToolIdChar + "/", "");
+                filteredId = filteredId.replaceFirst(fullToolIdChar + "#", "");
+                runJson.put(filteredId, stub);
+            } else {
+                // Handle bunny null case
+                runJson.put(idString, stub);
+            }
         }
         for (final CommandOutputParameter outParam : commandLineTool.getOutputs()) {
             final String idString = outParam.getId().toString();
             final Object stub = getStub(outParam.getType(), null);
-            String filteredId = idString.replaceFirst(fullToolId + "/", "");
-            filteredId = filteredId.replaceFirst(fullToolId + "#", "");
-            runJson.put(filteredId, stub);
+            if (fullToolIdChar != null) {
+                // Remove the tool id prefix on the output id (only for cwltool)
+                String filteredId = idString.replaceFirst(fullToolIdChar + "/", "");
+                filteredId = filteredId.replaceFirst(fullToolIdChar + "#", "");
+                runJson.put(filteredId, stub);
+            } else {
+                // Handle bunny null case
+                runJson.put(idString, stub);
+            }
         }
+        System.out.println(runJson);
         return runJson;
     }
 
