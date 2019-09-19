@@ -183,7 +183,7 @@ public abstract class AbstractClientTest {
      * @throws Exception
      */
     @Test
-    public void stubArray() throws Exception {
+    public void stubArrayWithoutId() throws Exception {
         final URL resource = Resources.getResource("arrays.cwl");
 
         final URL confirm = Resources.getResource("arraysConfirm.txt");
@@ -194,6 +194,28 @@ public abstract class AbstractClientTest {
         final Map<String, Object> runJson = cwl.extractRunJson(output.getLeft());
 
         final Gson gson = cwl.getTypeSafeCWLToolDocument();
+
+        assertEquals(jsonResult.trim(), gson.toJson(runJson).trim());
+    }
+
+    /**
+     * This tests verifies json conversion from a cwl file with array types when the tool has an id set
+     * @throws Exception
+     */
+    @Test
+    public void stubArrayWithId() throws Exception {
+        final URL resource = Resources.getResource("arrays-with-id.cwl");
+
+        final URL confirm = Resources.getResource("arraysConfirm.txt");
+        final String jsonResult = Resources.toString(confirm, StandardCharsets.UTF_8);
+
+        final CWL cwl = getCWL();
+        final ImmutablePair<String, String> output = cwl.parseCWL(resource.getFile());
+        final Map<String, Object> runJson = cwl.extractRunJson(output.getLeft());
+
+        final Gson gson = cwl.getTypeSafeCWLToolDocument();
+
+        assertTrue("Should not include the tool id", !gson.toJson(runJson).trim().contains("foobar"));
 
         assertEquals(jsonResult.trim(), gson.toJson(runJson).trim());
     }
