@@ -1,6 +1,6 @@
 language: java
 jdk: 
-  - openjdk8
+  - openjdk11
 
 sudo: required
 
@@ -35,8 +35,4 @@ install:
    - echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
    - git diff 
 
-script: mvn -B clean install cobertura:cobertura
-
-after_success:
-- mvn -B coveralls:report
-- mvn -B versioneye:update || true
+script: mvn -B clean install
