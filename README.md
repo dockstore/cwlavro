@@ -7,6 +7,8 @@ This project demonstrates how to take advantage of the Avro schema for CWL in or
 auto-generate classes to work in other languages. Due to familiarity, we're starting with
 Java here, but other languages are encouraged.  
 
+For CWL v1.2 support, new users are suggested to use https://github.com/common-workflow-lab/cwljava
+
 All comments and recommendations are welcome.
 
 Releases starting with v1.0 support CWL v1.0 and require CWLtool as a dependency
