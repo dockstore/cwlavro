@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
-[![Dependency Status](https://dependencyci.com/github/common-workflow-language/cwlavro/badge)](https://dependencyci.com/github/common-workflow-language/cwlavro)
 [![codecov](https://codecov.io/gh/common-workflow-language/cwlavro/branch/develop/graph/badge.svg)](https://codecov.io/gh/common-workflow-language/cwlavro)
 
 
@@ -9,6 +8,8 @@ CWL Avro Project
 This project demonstrates how to take advantage of the Avro schema for CWL in order to
 auto-generate classes to work in other languages. Due to familiarity, we're starting with
 Java here, but other languages are encouraged.  
+
+For CWL v1.2 support, new users are suggested to use https://github.com/common-workflow-lab/cwljava
 
 All comments and recommendations are welcome.
 

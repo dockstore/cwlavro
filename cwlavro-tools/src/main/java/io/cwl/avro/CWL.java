@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
+import org.apache.commons.configuration2.INIConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.heterodon.ExecAndEval;
@@ -51,7 +52,7 @@ public class CWL {
     public Map<String, Object> extractRunJson(final String output) {
         final CommandLineTool commandLineTool = gson.fromJson(output, CommandLineTool.class);
         final Map<String, Object> runJson = new HashMap<>();
-
+        final CharSequence fullToolIdChar = commandLineTool.getId();
         for (final CommandInputParameter inputParam : commandLineTool.getInputs()) {
             final String idString = inputParam.getId().toString();
             final Object stub = getStub(inputParam.getType(),
@@ -60,12 +61,28 @@ public class CWL {
             if (inputParam.getFormat() != null) {
                 ((Map)stub).put("format", inputParam.getFormat());
             }
-            runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
+            if (fullToolIdChar != null) {
+                // Remove the tool id prefix on the input id (only for cwltool)
+                String filteredId = idString.replaceFirst(fullToolIdChar + "/", "");
+                filteredId = filteredId.replaceFirst(fullToolIdChar + "#", "");
+                runJson.put(filteredId, stub);
+            } else {
+                // Handle bunny null case
+                runJson.put(idString, stub);
+            }
         }
         for (final CommandOutputParameter outParam : commandLineTool.getOutputs()) {
             final String idString = outParam.getId().toString();
             final Object stub = getStub(outParam.getType(), null);
-            runJson.put(idString.substring(idString.lastIndexOf('#') + 1), stub);
+            if (fullToolIdChar != null) {
+                // Remove the tool id prefix on the output id (only for cwltool)
+                String filteredId = idString.replaceFirst(fullToolIdChar + "/", "");
+                filteredId = filteredId.replaceFirst(fullToolIdChar + "#", "");
+                runJson.put(filteredId, stub);
+            } else {
+                // Handle bunny null case
+                runJson.put(idString, stub);
+            }
         }
         return runJson;
     }

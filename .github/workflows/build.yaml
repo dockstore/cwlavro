@@ -1,0 +1,44 @@
+name: CWL Avro Testing
+on: [push]
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Set up Python 2.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+          architecture: 'x64'
+   # upgrade pip?
+      - run: sudo pip install --upgrade pip
+   # install a specific version of the cwl dependencies to test with
+      - run: pip2.7 install --user setuptools==24.0.3
+      - run: pip2.7 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
+      - run: git clone https://github.com/common-workflow-language/common-workflow-language
+   # convert CWL schema salad CWL to standard Avro json
+      - run: python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
+   # get rid of invalid avro symbols
+      - run: sed '/draft-3/d' cwl.avsc > cwl.edited.avsc
+      - run: sed -i '/draft-2/d' cwl.edited.avsc
+      - run: sed -i '/draft-4/d' cwl.edited.avsc
+      - run: sed -i '/dev4/d' cwl.edited.avsc
+      - run: sed -i '/v1.0/d' cwl.edited.avsc
+   # get rid of symbols that screw up javadoc (not sure if invalid avro schema)
+      - run: sed -i 's/<A>/A/g' cwl.edited.avsc
+      - run: sed -i 's/<B>/B/g' cwl.edited.avsc
+      - run: sed -i 's/<C>/C/g' cwl.edited.avsc
+      - run: wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.8.1/avro-tools-1.8.1.jar
+   # generate Java model classes
+      - run: java -jar avro-tools-1.8.1.jar compile schema cwl.edited.avsc cwl-temp
+   # create packages for the classes
+      - run: sed -i '1i package io.cwl.avro;' cwl-temp/*
+      - run: sed -i 's/Any/Object/g' cwl-temp/*
+      - run: rm  cwl-temp/Any.java
+      - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
+      - run: cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro
+      - run: echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
+      - run: git diff
+      - run: mvn -B clean install
+

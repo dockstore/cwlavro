@@ -12,6 +12,13 @@
         <module>cwlavro-tools</module>
     </modules>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
     <prerequisites>
         <maven>3.1</maven>
     </prerequisites>
@@ -20,6 +27,7 @@
         <github.url>scm:git:git@github.com:common-workflow-language/cwlavro.git</github.url>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jackson.version>2.10.1</jackson.version>
     </properties>
 
     <scm>
@@ -31,10 +39,9 @@
 
     <distributionManagement>
         <repository>
-            <id>seqwaremaven.oicr.on.ca</id>
-            <name>seqwaremaven.oicr.on.ca-releases</name>
+            <id>central</id>
+            <name>artifacts.oicr.on.ca-releases</name>
             <url>http://artifacts.oicr.on.ca/artifactory/collab-release</url>
-            <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
 
@@ -43,7 +50,15 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
-                <version>1.18</version>
+                <version>1.21</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson/jackson-bom -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -67,15 +82,6 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>net.sourceforge.cobertura</groupId>
-            <artifactId>cobertura</artifactId>
-            <version>2.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -87,11 +93,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.8.1</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <release>11</release>
                         <showDeprecation>true</showDeprecation>
+                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -162,11 +168,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>2.7</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
                     <version>3.0.4</version>
                 </plugin>
@@ -189,11 +190,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.eluder.coveralls</groupId>
-                    <artifactId>coveralls-maven-plugin</artifactId>
-                    <version>4.2.0</version>
-                </plugin>
-                <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.8.1</version>
@@ -209,48 +205,8 @@
                     <aggregate>true</aggregate>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <configuration>
-                    <check />
-                    <formats>
-                        <format>xml</format>
-                        <format>html</format>
-                    </formats>
-                    <aggregate>true</aggregate>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.sourceforge.cobertura</groupId>
-                        <artifactId>cobertura</artifactId>
-                        <version>2.1.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-            </plugin>
         </plugins>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <configuration>
-                    <check />
-                    <formats>
-                        <format>xml</format>
-                        <format>html</format>
-                    </formats>
-                    <aggregate>true</aggregate>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
 
     <profiles>
         <profile>
