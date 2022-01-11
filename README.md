@@ -12,9 +12,12 @@ For CWL v1.2 support, new users are suggested to use https://github.com/common-w
 All comments and recommendations are welcome.
 
 Releases starting with v1.0 support CWL v1.0 and require CWLtool as a dependency
-Releases starting with v2.0 will support CWL v1.0 and require Rabix bunny or cwltool as a dependency
+Releases starting with v2.0.5 supported CWL v1.0 and required [Rabix bunny](https://github.com/rabix/bunny) or [Heterodon](https://github.com/broadinstitute/heterodon)
+However, with their legacy status Dockstore mostly relied on v2.0.4.x releases. 
+To simplify the branch structure, releases starting with v2.1 (based on 2.0.4.X) will be considered maintenance mode for Dockstore support with new users suggested to use cwljava as noted above. 
+The repo will also use a standard hubflow branch structure. 
 
-This depends on cwltool to parse CWL documents into avro (before this takes avro documents and transforms them 
+During the build process, cwlavro depends on cwltool to parse CWL documents into avro (before this takes avro documents and transforms them 
 into Java objects). 
 
 Install it with the following commands (may differ depending on your distribution of Linux). 

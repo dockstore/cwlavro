@@ -6,6 +6,6 @@ import io.cwl.avro.CWL;
 public class CWLToolTest extends AbstractClientTest {
     @Override
     public CWL getCWL() {
-        return new CWL(false, null);
+        return new CWL(null);
     }
 }
