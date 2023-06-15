@@ -15,7 +15,7 @@
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
 
@@ -25,10 +25,9 @@
 
     <properties>
         <github.url>scm:git:git@github.com:common-workflow-language/cwlavro.git</github.url>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jackson.version>2.10.1</jackson.version>
-	<dockstore-core.version>1.14.0-alpha.1</dockstore-core.version>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	    <dockstore-core.version>1.15.0-prealpha.1</dockstore-core.version>
     </properties>
 
     <scm>
@@ -78,19 +77,6 @@
                 <version>${dockstore-core.version}</version>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-compress</artifactId>
-                <version>1.21</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson/jackson-bom -->
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -107,7 +93,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
-                        <release>11</release>
+                        <release>17</release>
                         <showDeprecation>true</showDeprecation>
                         <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     </configuration>
@@ -128,7 +114,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.10</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
