@@ -6,8 +6,6 @@
 package io.cwl.avro;
 
 import com.google.common.base.Optional;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
@@ -32,19 +30,6 @@ import java.nio.charset.StandardCharsets;
 public class Utilities {
 
     private static final Logger LOG = LoggerFactory.getLogger(Utilities.class);
-
-
-    public static HierarchicalINIConfiguration parseConfig(String path) {
-        try {
-            return new HierarchicalINIConfiguration(path);
-        } catch (ConfigurationException ex) {
-            throw new RuntimeException("Could not read ~/.dockstore/config");
-        }
-    }
-
-    public static ImmutablePair<String, String> executeCommand(String command, Optional<OutputStream> stdoutStream, Optional<OutputStream> stderrStream) {
-        return executeCommand(command, true, stdoutStream, stderrStream);
-    }
 
     /**
      * Execute a command and return stdout and stderr
