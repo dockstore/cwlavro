@@ -29,9 +29,9 @@ jobs:
       - run: sed -i 's/<A>/A/g' cwl.edited.avsc
       - run: sed -i 's/<B>/B/g' cwl.edited.avsc
       - run: sed -i 's/<C>/C/g' cwl.edited.avsc
-      - run: wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.8.1/avro-tools-1.8.1.jar
+      - run: wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.11.3/avro-tools-1.11.3.jar
    # generate Java model classes
-      - run: java -jar avro-tools-1.8.1.jar compile schema cwl.edited.avsc cwl-temp
+      - run: java -jar avro-tools-1.11.3.jar compile schema cwl.edited.avsc cwl-temp
    # create packages for the classes
       - run: sed -i '1i package io.cwl.avro;' cwl-temp/*
       - run: sed -i 's/Any/Object/g' cwl-temp/*
