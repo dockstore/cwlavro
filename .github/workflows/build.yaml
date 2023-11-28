@@ -32,7 +32,7 @@ jobs:
       - run: wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.11.3/avro-tools-1.11.3.jar
    # generate Java model classes
       - run: java -jar avro-tools-1.11.3.jar compile schema cwl.edited.avsc cwl-temp
-      - run: ls cwl-temp # TODO: remove this
+      - run: ls cwl-temp/org # TODO: remove this
    # create packages for the classes
       - run: sed -i '1i package io.cwl.avro;' cwl-temp/*
       - run: sed -i 's/Any/Object/g' cwl-temp/*
