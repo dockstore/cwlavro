@@ -34,8 +34,8 @@ jobs:
       - run: java -jar avro-tools-1.11.3.jar compile schema cwl.edited.avsc cwl-temp
       - run: ls cwl-temp/org # TODO: remove this
    # create packages for the classes
-      - run: sed -i '1i package io.cwl.avro;' cwl-temp/*
-      - run: sed -i 's/Any/Object/g' cwl-temp/*
+      - run: find cwl-temp/ -type f -exec sed -i '1i package io.cwl.avro;' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/Any/Object/g' {} \;
       - run: rm  cwl-temp/Any.java
       - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
       - run: cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro
