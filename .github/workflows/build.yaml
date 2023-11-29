@@ -6,16 +6,16 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Set up Python 2.x
+      - name: Set up Python 3.x
         uses: actions/setup-python@v4
         with:
-          python-version: '2.7'
+          python-version: '3.10'
           architecture: 'x64'
    # upgrade pip?
       - run: sudo pip install --upgrade pip
    # install a specific version of the cwl dependencies to test with
-      - run: pip2.7 install --user setuptools==24.0.3
-      - run: pip2.7 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
+      - run: pip3.10 install --user setuptools==24.0.3
+      - run: pip3.10 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
       - run: git clone https://github.com/common-workflow-language/common-workflow-language
    # convert CWL schema salad CWL to standard Avro json
       - run: python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
