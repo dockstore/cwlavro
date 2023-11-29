@@ -20,7 +20,7 @@ jobs:
       - run: pip2.7 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
       - run: git clone https://github.com/common-workflow-language/common-workflow-language
    # convert CWL schema salad CWL to standard Avro json
-      - run: python -mschema_salad --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
+      - run: schema-salad-tool --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
    # get rid of invalid avro symbols
       - run: sed '/draft-3/d' cwl.avsc > cwl.edited.avsc
       - run: sed -i '/draft-2/d' cwl.edited.avsc
