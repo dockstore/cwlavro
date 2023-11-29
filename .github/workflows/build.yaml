@@ -14,7 +14,7 @@ jobs:
 #          python-version: '2.7'
 #          architecture: 'x64'
    # upgrade pip?
-      - run: sudo pip install --upgrade pip
+      #- run: sudo pip install --upgrade pip
    # install a specific version of the cwl dependencies to test with
       - run: pip2.7 install --user setuptools==24.0.3
       - run: pip2.7 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
