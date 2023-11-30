@@ -16,7 +16,7 @@ jobs:
       #- run: sudo apt-get install python3.7-distutils python3.7-dev
    # install a specific version of the cwl dependencies to test with
       - run: pip3.7 install --user setuptools==67.0.0
-      - run: pip3.7 install --user cwl-runner cwltool==3.0.20200317203547 schema-salad==5.0.20200126033820
+      - run: pip3.7 install --user cwl-runner cwltool==3.0.20200317203547 schema-salad==5.0.20200126033820 wheel
       - run: git clone https://github.com/common-workflow-language/common-workflow-language
    # convert CWL schema salad CWL to standard Avro json
       - run: schema-salad-tool --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
