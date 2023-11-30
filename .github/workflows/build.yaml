@@ -3,27 +3,19 @@ on: [push]
 jobs:
   Build:
     runs-on: ubuntu-latest
-    container:
-      image: python:2.7.18-buster
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-#      - name: Set up Python 2.x
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: '2.7'
-#          architecture: 'x64'
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
         with:
-          java-version: '17.0.4+8'
-          distribution: 'adopt'
-      - run: echo "$HOME" && echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python-version: '3.7'
+          architecture: 'x64'
    # upgrade pip?
-      - run: pip2.7 install --upgrade pip
+      - run: pip3.7 install --upgrade pip
    # install a specific version of the cwl dependencies to test with
-      - run: pip2.7 install --user setuptools==24.0.3
-      - run: pip2.7 install --user cwl-runner cwltool==2.0.20200107113851 schema-salad==5.0.20200105154004 avro==1.8.1
+      - run: pip3.7 install --user setuptools==24.0.3
+      - run: pip3.7 install --user cwl-runner cwltool==2.0.20200107113851 schema-salad==5.0.20200105154004 avro==1.8.1
       - run: git clone https://github.com/common-workflow-language/common-workflow-language
    # convert CWL schema salad CWL to standard Avro json
       - run: schema-salad-tool --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
