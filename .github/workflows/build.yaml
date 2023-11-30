@@ -13,7 +13,7 @@ jobs:
           architecture: 'x64'
    # upgrade pip?
       - run: pip3.7 install --upgrade pip
-      - run: sudo apt-get install python3-dev
+      - run: sudo apt-get install python3-distutils python3-dev
    # install a specific version of the cwl dependencies to test with
       - run: pip3.7 install --user setuptools==68.0.0
       - run: pip3.7 install --user cwl-runner cwltool==2.0.20200107113851 schema-salad==5.0.20200105154004
