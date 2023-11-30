@@ -22,6 +22,7 @@ jobs:
       - run: git clone https://github.com/common-workflow-language/common-workflow-language
    # convert CWL schema salad CWL to standard Avro json
       - run: schema-salad-tool --print-avro common-workflow-language/v1.0/CommonWorkflowLanguage.yml  > cwl.avsc
+      - run: cat cwl.avsc # TODO: remove after debugging
    # get rid of invalid avro symbols
       - run: sed '/draft-3/d' cwl.avsc > cwl.edited.avsc
       - run: sed -i '/draft-2/d' cwl.edited.avsc
