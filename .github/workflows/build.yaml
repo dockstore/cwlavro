@@ -2,7 +2,7 @@ name: CWL Avro Testing
 on: [push]
 jobs:
   Build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container:
       image: python:2.7.18-buster
     steps:
