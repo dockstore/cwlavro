@@ -13,6 +13,11 @@ jobs:
 #        with:
 #          python-version: '2.7'
 #          architecture: 'x64'
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17.0.4+8'
+          distribution: 'adopt'
       - run: echo "$HOME" && echo "$HOME/.local/bin" >> $GITHUB_PATH
    # upgrade pip?
       - run: pip2.7 install --upgrade pip
