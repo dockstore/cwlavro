@@ -42,6 +42,7 @@ jobs:
    # generate Java model classes
       - run: java -jar avro-tools-1.8.1.jar compile schema cwl.edited.avsc cwl-temp
    # create packages for the classes
+      - run: ls cwl-temp # TODO: remove after debugging
       - run: sed -i '1i package io.cwl.avro;' cwl-temp/*
       - run: sed -i 's/Any/Object/g' cwl-temp/*
       - run: rm  cwl-temp/Any.java
