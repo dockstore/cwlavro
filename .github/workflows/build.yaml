@@ -14,7 +14,7 @@ jobs:
    # upgrade pip?
       - run: pip3.7 install --upgrade pip
    # install a specific version of the cwl dependencies to test with
-      - run: pip3.7 install --user setuptools==24.0.3
+      - run: pip3.7 install --user setuptools==69.0.2
       - run: pip3.7 install --user cwl-runner cwltool==2.0.20200107113851 schema-salad==5.0.20200105154004 avro==1.8.1
       - run: git clone https://github.com/common-workflow-language/common-workflow-language
    # convert CWL schema salad CWL to standard Avro json
