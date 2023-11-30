@@ -13,6 +13,7 @@ jobs:
 #        with:
 #          python-version: '2.7'
 #          architecture: 'x64'
+      - run: echo "$HOME" && echo "$HOME/.local/bin" >> $GITHUB_PATH
    # upgrade pip?
       - run: pip2.7 install --upgrade pip
    # install a specific version of the cwl dependencies to test with
