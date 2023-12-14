@@ -36,8 +36,8 @@ jobs:
       - run: wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.11.3/avro-tools-1.11.3.jar
    # generate Java model classes.
       - run: java -jar avro-tools-1.11.3.jar compile schema cwl.edited.avsc cwl-temp
-      - run: find cwl-temp/ -type f -exec sed -i 's/Any/Object/g' {} \;
-      - run: mv cwl-temp/io/cwl/avro/Any.java cwl-temp/io/cwl/avro/Object.java 
+      - run: find cwl-temp/ -type f -exec sed -i 's/Any/FunkyObject/g' {} \;
+      - run: mv cwl-temp/io/cwl/avro/Any.java cwl-temp/io/cwl/avro/FunkyObject.java 
     # There are 5 subdirectories in cwl-temp/io/cwl/avro that have the same name as a file
     # Fix ArraySchema conflict
       - run: mv cwl-temp/io/cwl/avro/ArraySchema cwl-temp/io/cwl/avro/ArraySchemaPackage

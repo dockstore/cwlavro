@@ -405,14 +405,16 @@ public class CWL {
                     if (defaultJsonElement instanceof JsonObject) {
                         final JsonObject defaultValue = ((JsonObject) jsonElement).getAsJsonObject("default");
                         if (o instanceof CommandInputParameter) {
-                            ((CommandInputParameter)o).setDefault$(defaultValue);
+                            // TODO: fixme
+                            // ((CommandInputParameter)o).setDefault$(defaultValue);
                         }
                     }
                     if (defaultJsonElement instanceof JsonPrimitive) {
                         final JsonPrimitive defaultValue = ((JsonObject) jsonElement).getAsJsonPrimitive("default");
                         if (o instanceof CommandInputParameter){
                             String defaultVal= defaultValue.toString().replaceAll("^\"|\"$", "");
-                            ((CommandInputParameter)o).setDefault$(defaultVal);
+                            // TODO: fixme
+                            // ((CommandInputParameter)o).setDefault$(defaultVal);
                         }
                     }
                     if (defaultJsonElement instanceof JsonNull) {
