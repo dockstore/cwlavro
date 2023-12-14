@@ -41,22 +41,22 @@ jobs:
     # There are 5 subdirectories in cwl-temp/io/cwl/avro that have the same name as a file
     # Fix ArraySchema conflict
       - run: mv cwl-temp/io/cwl/avro/ArraySchema cwl-temp/io/cwl/avro/ArraySchemaPackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.ArraySchema/io.cwl.avro.ArraySchemaPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.ArraySchema.type/io.cwl.avro.ArraySchemaPackage.type/g' {} \;
     # Fix Directory conflict
       - run: mv cwl-temp/io/cwl/avro/Directory cwl-temp/io/cwl/avro/DirectoryPackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.Directory/io.cwl.avro.DirectoryPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.Directory.class$/io.cwl.avro.DirectoryPackage.class$/g' {} \;
     # Fix EnumSchema conflict
       - run: mv cwl-temp/io/cwl/avro/EnumSchema cwl-temp/io/cwl/avro/EnumSchemaPackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.EnumSchema/io.cwl.avro.EnumSchemaPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.EnumSchema.type/io.cwl.avro.EnumSchemaPackage.type/g' {} \;
     # Fix File conflict
       - run: mv cwl-temp/io/cwl/avro/File cwl-temp/io/cwl/avro/FilePackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.File/io.cwl.avro.FilePackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.File.class$/io.cwl.avro.FilePackage.class$/g' {} \;
     # Fix RecordSchema conflict
       - run: mv cwl-temp/io/cwl/avro/RecordSchema cwl-temp/io/cwl/avro/RecordSchemaPackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.RecordSchema/io.cwl.avro.RecordSchemaPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.RecordSchema.type/io.cwl.avro.RecordSchemaPackage.type/g' {} \;
     # Copy generated java classes
       - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro/*
-      - run: cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro
+      - run: cp -R cwl-temp/io/cwl/avro cwlavro-generated/src/main/java/io/cwl/avro
       - run: echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
       - run: git diff
 
