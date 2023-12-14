@@ -38,7 +38,7 @@ jobs:
       - run: find cwl-temp/ -type f -exec sed -i 's/Any/Object/g' {} \;
       - run: mv cwl-temp/io/cwl/avro/Any.java cwl-temp/io/cwl/avro/Object.java 
       - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro
-      - run: mkdir -p cwlavro-generated/src/main/java/io/cwl/avro/
+      - run: mkdir -p cwlavro-generated/src/main/java/io/cwl/avro/ && ls cwlavro-generated/src/main/java/io/cwl/avro/
       # Copy files one level deep, excluding sub directories
       - run: cd cwl-temp && find io/cwl/avro/ -maxdepth 1 -type f -exec cp {} cwlavro-generated/src/main/java/{} \;
       - run: echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
