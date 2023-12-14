@@ -44,13 +44,13 @@ jobs:
       - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.ArraySchema.type/io.cwl.avro.ArraySchemaPackage.type/g' {} \;
     # Fix Directory conflict
       - run: mv cwl-temp/io/cwl/avro/Directory cwl-temp/io/cwl/avro/DirectoryPackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.Directory.class$/io.cwl.avro.DirectoryPackage.class$/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.Directory.class\$/io.cwl.avro.DirectoryPackage.class$/g' {} \;
     # Fix EnumSchema conflict
       - run: mv cwl-temp/io/cwl/avro/EnumSchema cwl-temp/io/cwl/avro/EnumSchemaPackage
       - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.EnumSchema.type/io.cwl.avro.EnumSchemaPackage.type/g' {} \;
     # Fix File conflict
       - run: mv cwl-temp/io/cwl/avro/File cwl-temp/io/cwl/avro/FilePackage
-      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.File.class$/io.cwl.avro.FilePackage.class$/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.File.class\$/io.cwl.avro.FilePackage.class$/g' {} \;
     # Fix RecordSchema conflict
       - run: mv cwl-temp/io/cwl/avro/RecordSchema cwl-temp/io/cwl/avro/RecordSchemaPackage
       - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.RecordSchema.type/io.cwl.avro.RecordSchemaPackage.type/g' {} \;
