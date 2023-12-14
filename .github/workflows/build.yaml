@@ -53,7 +53,7 @@ jobs:
       - run: find cwl-temp/io/cwl/avro/FilePackage/ -type f -exec sed -i 's/File/FilePackage/g' {} \;
     # Fix RecordSchema conflict
       - run: mv cwl-temp/io/cwl/avro/RecordSchema cwl-temp/io/cwl/avro/RecordSchemaPackage
-      - run: find RecordSchemaPackage/ -type f -exec sed -i 's/RecordSchema/RecordSchemaPackage/g' {} \;
+      - run: find cwl-temp/io/cwl/avro/RecordSchemaPackage/ -type f -exec sed -i 's/RecordSchema/RecordSchemaPackage/g' {} \;
       - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro/*
       - run: cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro
       - run: echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
