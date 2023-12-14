@@ -41,19 +41,19 @@ jobs:
     # There are 5 subdirectories in cwl-temp/io/cwl/avro that have the same name as a file
     # Fix ArraySchema conflict
       - run: mv cwl-temp/io/cwl/avro/ArraySchema cwl-temp/io/cwl/avro/ArraySchemaPackage
-      - run: find cwl-temp/io/cwl/avro/ArraySchemaPackage/ -type f -exec sed -i 's/io.cwl.avro.ArraySchema/io.cwl.avro.ArraySchemaPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.ArraySchema/io.cwl.avro.ArraySchemaPackage/g' {} \;
     # Fix Directory conflict
       - run: mv cwl-temp/io/cwl/avro/Directory cwl-temp/io/cwl/avro/DirectoryPackage
-      - run: find cwl-temp/io/cwl/avro/DirectoryPackage/ -type f -exec sed -i 's/io.cwl.avro.Directory/io.cwl.avro.DirectoryPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.Directory/io.cwl.avro.DirectoryPackage/g' {} \;
     # Fix EnumSchema conflict
       - run: mv cwl-temp/io/cwl/avro/EnumSchema cwl-temp/io/cwl/avro/EnumSchemaPackage
-      - run: find cwl-temp/io/cwl/avro/EnumSchemaPackage/ -type f -exec sed -i 's/io.cwl.avro.EnumSchema/io.cwl.avro.EnumSchemaPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.EnumSchema/io.cwl.avro.EnumSchemaPackage/g' {} \;
     # Fix File conflict
       - run: mv cwl-temp/io/cwl/avro/File cwl-temp/io/cwl/avro/FilePackage
-      - run: find cwl-temp/io/cwl/avro/FilePackage/ -type f -exec sed -i 's/io.cwl.avro.File/io.cwl.avro.FilePackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.File/io.cwl.avro.FilePackage/g' {} \;
     # Fix RecordSchema conflict
       - run: mv cwl-temp/io/cwl/avro/RecordSchema cwl-temp/io/cwl/avro/RecordSchemaPackage
-      - run: find cwl-temp/io/cwl/avro/RecordSchemaPackage/ -type f -exec sed -i 's/io.cwl.avro.RecordSchema/io.cwl.avro.RecordSchemaPackage/g' {} \;
+      - run: find cwl-temp/ -type f -exec sed -i 's/io.cwl.avro.RecordSchema/io.cwl.avro.RecordSchemaPackage/g' {} \;
     # Copy generated java classes
       - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro/*
       - run: cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro
