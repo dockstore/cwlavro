@@ -35,10 +35,25 @@ jobs:
       - run: sed -i 's/<C>/C/g' cwl.edited.avsc
       - run: wget https://repo1.maven.org/maven2/org/apache/avro/avro-tools/1.11.3/avro-tools-1.11.3.jar
    # generate Java model classes.
-   # is the same as the one in cwlavro-generated/src/main/
       - run: java -jar avro-tools-1.11.3.jar compile schema cwl.edited.avsc cwl-temp
       - run: find cwl-temp/ -type f -exec sed -i 's/Any/Object/g' {} \;
       - run: mv cwl-temp/io/cwl/avro/Any.java cwl-temp/io/cwl/avro/Object.java 
+    # There are 5 subdirectories in cwl-temp/io/cwl/avro that have the same name as a file
+    # Fix ArraySchema conflict
+      - run: mv cwl-temp/io/cwl/avro/ArraySchema cwl-temp/io/cwl/avro/ArraySchemaPackage
+      - run: find ArraySchemaPackage/ -type f -exec sed -i 's/ArraySchema/ArraySchemaPackage/g' {} \;
+    # Fix Directory conflict
+      - run: mv cwl-temp/io/cwl/avro/Directory cwl-temp/io/cwl/avro/DirectoryPackage
+      - run: find DirectoryPackage/ -type f -exec sed -i 's/Directory/DirectoryPackage/g' {} \;
+    # Fix EnumSchema conflict
+      - run: mv cwl-temp/io/cwl/avro/EnumSchema cwl-temp/io/cwl/avro/EnumSchemaPackage
+      - run: find EnumSchemaPackage/ -type f -exec sed -i 's/EnumSchema/EnumSchemaPackage/g' {} \;
+    # Fix File conflict
+      - run: mv cwl-temp/io/cwl/avro/File cwl-temp/io/cwl/avro/FilePackage
+      - run: find FilePackage/ -type f -exec sed -i 's/File/FilePackage/g' {} \;
+    # Fix RecordSchema conflict
+      - run: mv cwl-temp/io/cwl/avro/RecordSchema cwl-temp/io/cwl/avro/RecordSchemaPackage
+      - run: find RecordSchemaPackage/ -type f -exec sed -i 's/RecordSchema/RecordSchemaPackage/g' {} \;
       - run: rm -Rf cwlavro-generated/src/main/java/io/cwl/avro/*
       - run: cp -R cwl-temp cwlavro-generated/src/main/java/io/cwl/avro
       - run: echo "the output below should show that the generated API more-or-less matches the checked-in API for convenience"
