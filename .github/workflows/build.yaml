@@ -50,7 +50,7 @@ jobs:
       - run: find cwl-temp/io/cwl/avro/EnumSchemaPackage/ -type f -exec sed -i 's/io.cwl.avro.EnumSchema/io.cwl.avro.EnumSchemaPackage/g' {} \;
     # Fix File conflict
       - run: mv cwl-temp/io/cwl/avro/File cwl-temp/io/cwl/avro/FilePackage
-      - run: find cwl-temp/io/cwl/avro/FilePackage/ -type f -exec sed -i 's/File/FilePackage/g' {} \;
+      - run: find cwl-temp/io/cwl/avro/FilePackage/ -type f -exec sed -i 's/io.cwl.avro.File/io.cwl.avro.FilePackage/g' {} \;
     # Fix RecordSchema conflict
       - run: mv cwl-temp/io/cwl/avro/RecordSchema cwl-temp/io/cwl/avro/RecordSchemaPackage
       - run: find cwl-temp/io/cwl/avro/RecordSchemaPackage/ -type f -exec sed -i 's/io.cwl.avro.RecordSchema/io.cwl.avro.RecordSchemaPackage/g' {} \;
