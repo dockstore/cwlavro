@@ -9,7 +9,5 @@ public enum File_class implements org.apache.avro.generic.GenericEnumSymbol<File
   File  ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"File_class\",\"namespace\":\"io.cwl.avro.File.class\",\"symbols\":[\"File\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

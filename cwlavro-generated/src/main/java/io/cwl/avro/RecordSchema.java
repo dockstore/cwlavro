@@ -15,18 +15,16 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 8232259561394905168L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RecordSchema\",\"namespace\":\"io.cwl.avro\",\"fields\":[{\"name\":\"fields\",\"type\":[\"null\",{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"RecordField\",\"doc\":\"A field of a record.\",\"fields\":[{\"name\":\"name\",\"type\":\"string\",\"doc\":\"The name of the field\\n\",\"jsonldPredicate\":\"@id\"},{\"name\":\"doc\",\"type\":[\"null\",\"string\"],\"doc\":\"A documentation string for this field\\n\",\"jsonldPredicate\":\"rdfs:comment\"},{\"name\":\"type\",\"type\":[{\"type\":\"enum\",\"name\":\"PrimitiveType\",\"symbols\":[\"null\",\"boolean\",\"int\",\"long\",\"float\",\"double\",\"string\"]},\"RecordSchema\",{\"type\":\"record\",\"name\":\"EnumSchema\",\"doc\":\"Define an enumerated type.\\n\",\"fields\":[{\"name\":\"symbols\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"_type\":\"@id\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"namespace\":\"io.cwl.avro.EnumSchemaPackage.type\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#type\",\"_type\":\"@vocab\",\"typeDSL\":true,\"refScope\":2},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"}]},{\"type\":\"record\",\"name\":\"ArraySchema\",\"fields\":[{\"name\":\"items\",\"type\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\"]}],\"doc\":\"Defines the type of the array elements.\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#items\",\"_type\":\"@vocab\",\"refScope\":2}},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Array_symbol\",\"namespace\":\"io.cwl.avro.ArraySchemaPackage.type\",\"symbols\":[\"array\"]},\"doc\":\"Must be `array`\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#type\",\"_type\":\"@vocab\",\"typeDSL\":true,\"refScope\":2}}]},\"string\",{\"type\":\"array\",\"items\":[\"PrimitiveType\",\"RecordSchema\",\"EnumSchema\",\"ArraySchema\",\"string\"]}],\"doc\":\"The field type\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#type\",\"_type\":\"@vocab\",\"typeDSL\":true,\"refScope\":2}}]}}],\"doc\":\"Defines the fields of the record.\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#fields\",\"mapSubject\":\"name\",\"mapPredicate\":\"type\"}},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Record_symbol\",\"namespace\":\"io.cwl.avro.RecordSchemaPackage.type\",\"symbols\":[\"record\"]},\"doc\":\"Must be `record`\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#type\",\"_type\":\"@vocab\",\"typeDSL\":true,\"refScope\":2}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<RecordSchema> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<RecordSchema>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<RecordSchema> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<RecordSchema>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +48,7 @@ public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase im
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<RecordSchema> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<RecordSchema>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -74,9 +72,9 @@ public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   /** Defines the fields of the record. */
-  private java.util.List<io.cwl.avro.RecordField> fields;
+   private java.util.List<io.cwl.avro.RecordField> fields;
   /** Must be `record` */
-  private io.cwl.avro.RecordSchemaPackage.type.Record_symbol type;
+   private io.cwl.avro.RecordSchemaPackage.type.Record_symbol type;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -95,14 +93,9 @@ public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase im
     this.type = type;
   }
 
-  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return fields;
@@ -112,7 +105,6 @@ public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -206,7 +198,7 @@ public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase im
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -230,7 +222,7 @@ public class RecordSchema extends org.apache.avro.specific.SpecificRecordBase im
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.RecordSchema other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.fields)) {
         this.fields = data().deepCopy(fields()[0].schema(), other.fields);
         fieldSetFlags()[0] = true;

@@ -51,7 +51,5 @@ public enum stdout implements org.apache.avro.generic.GenericEnumSymbol<stdout> 
   stdout  ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"stdout\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Only valid as a `type` for a `CommandLineTool` output with no\\n`outputBinding` set.\\n\\nThe following\\n```\\noutputs:\\n  an_output_name:\\n    type: stdout\\n\\nstdout: a_stdout_file\\n```\\nis equivalent to\\n```\\noutputs:\\n  an_output_name:\\n    type: File\\n    streamable: true\\n    outputBinding:\\n      glob: a_stdout_file\\n\\nstdout: a_stdout_file\\n```\\n\\nIf there is no `stdout` name provided, a random filename will be created.\\nFor example, the following\\n```\\noutputs:\\n  an_output_name:\\n    type: stdout\\n```\\nis equivalent to\\n```\\noutputs:\\n  an_output_name:\\n    type: File\\n    streamable: true\\n    outputBinding:\\n      glob: random_stdout_filenameABCDEFG\\n\\nstdout: random_stdout_filenameABCDEFG\\n```\\n\",\"symbols\":[\"stdout\"],\"docParent\":\"https://w3id.org/cwl/cwl#CommandOutputParameter\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

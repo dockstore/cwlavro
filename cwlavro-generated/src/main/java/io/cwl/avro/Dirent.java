@@ -20,18 +20,16 @@ template.
 @org.apache.avro.specific.AvroGenerated
 public class Dirent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -5499099540509567238L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Dirent\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Define a file or subdirectory that must be placed in the designated output\\ndirectory prior to executing the command line tool.  May be the result of\\nexecuting an expression, such as building a configuration file from a\\ntemplate.\\n\",\"fields\":[{\"name\":\"entryname\",\"type\":[\"null\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"The name of the file or subdirectory to create in the output directory.\\nIf `entry` is a File or Directory, the `entryname` field overrides the value\\nof `basename` of the File or Directory object.  Optional.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#entryname\"}},{\"name\":\"entry\",\"type\":[\"string\",\"Expression\"],\"doc\":\"If the value is a string literal or an expression which evaluates to a\\nstring, a new file must be created with the string as the file contents.\\n\\nIf the value is an expression that evaluates to a `File` object, this\\nindicates the referenced file should be added to the designated output\\ndirectory prior to executing the tool.\\n\\nIf the value is an expression that evaluates to a `Dirent` object, this\\nindicates that the File or Directory in `entry` should be added to the\\ndesignated output directory with the name in `entryname`.\\n\\nIf `writable` is false, the file may be made available using a bind\\nmount or file system link to avoid unnecessary copying of the input\\nfile.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#entry\"}},{\"name\":\"writable\",\"type\":[\"null\",\"boolean\"],\"doc\":\"If true, the file or directory must be writable by the tool.  Changes\\nto the file or directory must be isolated and not visible by any other\\nCommandLineTool process.  This may be implemented by making a copy of\\nthe original file or directory.  Default false (files and directories\\nread-only by default).\\n\\nA directory marked as `writable: true` implies that all files and\\nsubdirectories are recursively writable as well.\\n\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<Dirent> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<Dirent>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<Dirent> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<Dirent>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -55,7 +53,7 @@ public class Dirent extends org.apache.avro.specific.SpecificRecordBase implemen
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Dirent> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<Dirent>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -82,7 +80,7 @@ public class Dirent extends org.apache.avro.specific.SpecificRecordBase implemen
 If `entry` is a File or Directory, the `entryname` field overrides the value
 of `basename` of the File or Directory object.  Optional.
  */
-  private java.lang.Object entryname;
+   private java.lang.Object entryname;
   /** If the value is a string literal or an expression which evaluates to a
 string, a new file must be created with the string as the file contents.
 
@@ -98,7 +96,7 @@ If `writable` is false, the file may be made available using a bind
 mount or file system link to avoid unnecessary copying of the input
 file.
  */
-  private java.lang.Object entry;
+   private java.lang.Object entry;
   /** If true, the file or directory must be writable by the tool.  Changes
 to the file or directory must be isolated and not visible by any other
 CommandLineTool process.  This may be implemented by making a copy of
@@ -108,7 +106,7 @@ read-only by default).
 A directory marked as `writable: true` implies that all files and
 subdirectories are recursively writable as well.
  */
-  private java.lang.Boolean writable;
+   private java.lang.Boolean writable;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -154,14 +152,9 @@ subdirectories are recursively writable as well.
     this.writable = writable;
   }
 
-  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return entryname;
@@ -172,7 +165,6 @@ subdirectories are recursively writable as well.
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -362,7 +354,7 @@ subdirectories are recursively writable as well.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -390,7 +382,7 @@ subdirectories are recursively writable as well.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.Dirent other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.entryname)) {
         this.entryname = data().deepCopy(fields()[0].schema(), other.entryname);
         fieldSetFlags()[0] = true;

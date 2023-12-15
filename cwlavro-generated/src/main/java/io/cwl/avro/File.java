@@ -82,18 +82,16 @@ the same value for `location`.
 @org.apache.avro.specific.AvroGenerated
 public class File extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 5908835625715528230L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"File\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Represents a file (or group of files when `secondaryFiles` is provided) that\\nwill be accessible by tools using standard POSIX file system call API such as\\nopen(2) and read(2).\\n\\nFiles are represented as objects with `class` of `File`.  File objects have\\na number of properties that provide metadata about the file.\\n\\nThe `location` property of a File is a URI that uniquely identifies the\\nfile.  Implementations must support the file:// URI scheme and may support\\nother schemes such as http://.  The value of `location` may also be a\\nrelative reference, in which case it must be resolved relative to the URI\\nof the document it appears in.  Alternately to `location`, implementations\\nmust also accept the `path` property on File, which must be a filesystem\\npath available on the same host as the CWL runner (for inputs) or the\\nruntime environment of a command line tool execution (for command line tool\\noutputs).\\n\\nIf no `location` or `path` is specified, a file object must specify\\n`contents` with the UTF-8 text content of the file.  This is a \\\"file\\nliteral\\\".  File literals do not correspond to external resources, but are\\ncreated on disk with `contents` with when needed for a executing a tool.\\nWhere appropriate, expressions can return file literals to define new files\\non a runtime.  The maximum size of `contents` is 64 kilobytes.\\n\\nThe `basename` property defines the filename on disk where the file is\\nstaged.  This may differ from the resource name.  If not provided,\\n`basename` must be computed from the last path part of `location` and made\\navailable to expressions.\\n\\nThe `secondaryFiles` property is a list of File or Directory objects that\\nmust be staged in the same directory as the primary file.  It is an error\\nfor file names to be duplicated in `secondaryFiles`.\\n\\nThe `size` property is the size in bytes of the File.  It must be computed\\nfrom the resource and made available to expressions.  The `checksum` field\\ncontains a cryptographic hash of the file content for use it verifying file\\ncontents.  Implementations may, at user option, enable or disable\\ncomputation of the `checksum` field for performance or other reasons.\\nHowever, the ability to compute output checksums is required to pass the\\nCWL conformance test suite.\\n\\nWhen executing a CommandLineTool, the files and secondary files may be\\nstaged to an arbitrary directory, but must use the value of `basename` for\\nthe filename.  The `path` property must be file path in the context of the\\ntool execution runtime (local to the compute node, or within the executing\\ncontainer).  All computed properties should be available to expressions.\\nFile literals also must be staged and `path` must be set.\\n\\nWhen collecting CommandLineTool outputs, `glob` matching returns file paths\\n(with the `path` property) and the derived properties. This can all be\\nmodified by `outputEval`.  Alternately, if the file `cwl.output.json` is\\npresent in the output, `outputBinding` is ignored.\\n\\nFile objects in the output must provide either a `location` URI or a `path`\\nproperty in the context of the tool execution runtime (local to the compute\\nnode, or within the executing container).\\n\\nWhen evaluating an ExpressionTool, file objects must be referenced via\\n`location` (the expression tool does not have access to files on disk so\\n`path` is meaningless) or as file literals.  It is legal to return a file\\nobject with an existing `location` but a different `basename`.  The\\n`loadContents` field of ExpressionTool inputs behaves the same as on\\nCommandLineTool inputs, however it is not meaningful on the outputs.\\n\\nAn ExpressionTool may forward file references from input to output by using\\nthe same value for `location`.\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"File_class\",\"namespace\":\"io.cwl.avro.File.class\",\"symbols\":[\"File\"]},\"doc\":\"Must be `File` to indicate this object describes a file.\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}},{\"name\":\"location\",\"type\":[\"null\",\"string\"],\"doc\":\"An IRI that identifies the file resource.  This may be a relative\\nreference, in which case it must be resolved using the base IRI of the\\ndocument.  The location may refer to a local or remote resource; the\\nimplementation must use the IRI to retrieve file content.  If an\\nimplementation is unable to retrieve the file content stored at a\\nremote resource (due to unsupported protocol, access denied, or other\\nissue) it must signal an error.\\n\\nIf the `location` field is not provided, the `contents` field must be\\nprovided.  The implementation must assign a unique identifier for\\nthe `location` field.\\n\\nIf the `path` field is provided but the `location` field is not, an\\nimplementation may assign the value of the `path` field to `location`,\\nthen follow the rules above.\\n\",\"jsonldPredicate\":{\"_id\":\"@id\",\"_type\":\"@id\"}},{\"name\":\"path\",\"type\":[\"null\",\"string\"],\"doc\":\"The local host path where the File is available when a CommandLineTool is\\nexecuted.  This field must be set by the implementation.  The final\\npath component must match the value of `basename`.  This field\\nmust not be used in any other context.  The command line tool being\\nexecuted must be able to to access the file at `path` using the POSIX\\n`open(2)` syscall.\\n\\nAs a special case, if the `path` field is provided but the `location`\\nfield is not, an implementation may assign the value of the `path`\\nfield to `location`, and remove the `path` field.\\n\\nIf the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)\\n(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\\\\`, `\\\"`, `'`,\\n`<space>`, `<tab>`, and `<newline>`) or characters\\n[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)\\nfor [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)\\nthen implementations may terminate the process with a\\n`permanentFailure`.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#path\",\"_type\":\"@id\"}},{\"name\":\"basename\",\"type\":[\"null\",\"string\"],\"doc\":\"The base name of the file, that is, the name of the file without any\\nleading directory path.  The base name must not contain a slash `/`.\\n\\nIf not provided, the implementation must set this field based on the\\n`location` field by taking the final path component after parsing\\n`location` as an IRI.  If `basename` is provided, it is not required to\\nmatch the value from `location`.\\n\\nWhen this file is made available to a CommandLineTool, it must be named\\nwith `basename`, i.e. the final component of the `path` field must match\\n`basename`.\\n\",\"jsonldPredicate\":\"cwl:basename\"},{\"name\":\"dirname\",\"type\":[\"null\",\"string\"],\"doc\":\"The name of the directory containing file, that is, the path leading up\\nto the final slash in the path such that `dirname + '/' + basename ==\\npath`.\\n\\nThe implementation must set this field based on the value of `path`\\nprior to evaluating parameter references or expressions in a\\nCommandLineTool document.  This field must not be used in any other\\ncontext.\\n\"},{\"name\":\"nameroot\",\"type\":[\"null\",\"string\"],\"doc\":\"The basename root such that `nameroot + nameext == basename`, and\\n`nameext` is empty or begins with a period and contains at most one\\nperiod.  For the purposess of path splitting leading periods on the\\nbasename are ignored; a basename of `.cshrc` will have a nameroot of\\n`.cshrc`.\\n\\nThe implementation must set this field automatically based on the value\\nof `basename` prior to evaluating parameter references or expressions.\\n\"},{\"name\":\"nameext\",\"type\":[\"null\",\"string\"],\"doc\":\"The basename extension such that `nameroot + nameext == basename`, and\\n`nameext` is empty or begins with a period and contains at most one\\nperiod.  Leading periods on the basename are ignored; a basename of\\n`.cshrc` will have an empty `nameext`.\\n\\nThe implementation must set this field automatically based on the value\\nof `basename` prior to evaluating parameter references or expressions.\\n\"},{\"name\":\"checksum\",\"type\":[\"null\",\"string\"],\"doc\":\"Optional hash code for validat","ing file integrity.  Currently must be in the form\\n\\\"sha1$ + hexadecimal string\\\" using the SHA-1 algorithm.\\n\"},{\"name\":\"size\",\"type\":[\"null\",\"long\"],\"doc\":\"Optional file size\"},{\"name\":\"secondaryFiles\",\"type\":[\"null\",{\"type\":\"array\",\"items\":[\"File\",{\"type\":\"record\",\"name\":\"Directory\",\"doc\":\"Represents a directory to present to a command line tool.\\n\\nDirectories are represented as objects with `class` of `Directory`.  Directory objects have\\na number of properties that provide metadata about the directory.\\n\\nThe `location` property of a Directory is a URI that uniquely identifies\\nthe directory.  Implementations must support the file:// URI scheme and may\\nsupport other schemes such as http://.  Alternately to `location`,\\nimplementations must also accept the `path` property on Directory, which\\nmust be a filesystem path available on the same host as the CWL runner (for\\ninputs) or the runtime environment of a command line tool execution (for\\ncommand line tool outputs).\\n\\nA Directory object may have a `listing` field.  This is a list of File and\\nDirectory objects that are contained in the Directory.  For each entry in\\n`listing`, the `basename` property defines the name of the File or\\nSubdirectory when staged to disk.  If `listing` is not provided, the\\nimplementation must have some way of fetching the Directory listing at\\nruntime based on the `location` field.\\n\\nIf a Directory does not have `location`, it is a Directory literal.  A\\nDirectory literal must provide `listing`.  Directory literals must be\\ncreated on disk at runtime as needed.\\n\\nThe resources in a Directory literal do not need to have any implied\\nrelationship in their `location`.  For example, a Directory listing may\\ncontain two files located on different hosts.  It is the responsibility of\\nthe runtime to ensure that those files are staged to disk appropriately.\\nSecondary files associated with files in `listing` must also be staged to\\nthe same Directory.\\n\\nWhen executing a CommandLineTool, Directories must be recursively staged\\nfirst and have local values of `path` assigend.\\n\\nDirectory objects in CommandLineTool output must provide either a\\n`location` URI or a `path` property in the context of the tool execution\\nruntime (local to the compute node, or within the executing container).\\n\\nAn ExpressionTool may forward file references from input to output by using\\nthe same value for `location`.\\n\\nName conflicts (the same `basename` appearing multiple times in `listing`\\nor in any entry in `secondaryFiles` in the listing) is a fatal error.\\n\",\"fields\":[{\"name\":\"class\",\"type\":{\"type\":\"enum\",\"name\":\"Directory_class\",\"namespace\":\"io.cwl.avro.Directory.class\",\"symbols\":[\"Directory\"]},\"doc\":\"Must be `Directory` to indicate this object describes a Directory.\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}},{\"name\":\"location\",\"type\":[\"null\",\"string\"],\"doc\":\"An IRI that identifies the directory resource.  This may be a relative\\nreference, in which case it must be resolved using the base IRI of the\\ndocument.  The location may refer to a local or remote resource.  If\\nthe `listing` field is not set, the implementation must use the\\nlocation IRI to retrieve directory listing.  If an implementation is\\nunable to retrieve the directory listing stored at a remote resource (due to\\nunsupported protocol, access denied, or other issue) it must signal an\\nerror.\\n\\nIf the `location` field is not provided, the `listing` field must be\\nprovided.  The implementation must assign a unique identifier for\\nthe `location` field.\\n\\nIf the `path` field is provided but the `location` field is not, an\\nimplementation may assign the value of the `path` field to `location`,\\nthen follow the rules above.\\n\",\"jsonldPredicate\":{\"_id\":\"@id\",\"_type\":\"@id\"}},{\"name\":\"path\",\"type\":[\"null\",\"string\"],\"doc\":\"The local path where the Directory is made available prior to executing a\\nCommandLineTool.  This must be set by the implementation.  This field\\nmust not be used in any other context.  The command line tool being\\nexecuted must be able to to access the directory at `path` using the POSIX\\n`opendir(2)` syscall.\\n\\nIf the `path` contains [POSIX shell metacharacters](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_02)\\n(`|`,`&`, `;`, `<`, `>`, `(`,`)`, `$`,`` ` ``, `\\\\`, `\\\"`, `'`,\\n`<space>`, `<tab>`, and `<newline>`) or characters\\n[not allowed](http://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.xhtml)\\nfor [Internationalized Domain Names for Applications](https://tools.ietf.org/html/rfc6452)\\nthen implementations may terminate the process with a\\n`permanentFailure`.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#path\",\"_type\":\"@id\"}},{\"name\":\"basename\",\"type\":[\"null\",\"string\"],\"doc\":\"The base name of the directory, that is, the name of the file without any\\nleading directory path.  The base name must not contain a slash `/`.\\n\\nIf not provided, the implementation must set this field based on the\\n`location` field by taking the final path component after parsing\\n`location` as an IRI.  If `basename` is provided, it is not required to\\nmatch the value from `location`.\\n\\nWhen this file is made available to a CommandLineTool, it must be named\\nwith `basename`, i.e. the final component of the `path` field must match\\n`basename`.\\n\",\"jsonldPredicate\":\"cwl:basename\"},{\"name\":\"listing\",\"type\":[\"null\",{\"type\":\"array\",\"items\":[\"File\",\"Directory\"]}],\"doc\":\"List of files or subdirectories contained in this directory.  The name\\nof each file or subdirectory is determined by the `basename` field of\\neach `File` or `Directory` object.  It is an error if a `File` shares a\\n`basename` with any other entry in `listing`.  If two or more\\n`Directory` object share the same `basename`, this must be treated as\\nequivalent to a single subdirectory with the listings recursively\\nmerged.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#listing\"}}],\"docAfter\":\"https://w3id.org/cwl/cwl#File\"}]}],\"doc\":\"A list of additional files or directories that are associated with the\\nprimary file and must be transferred alongside the primary file.\\nExamples include indexes of the primary file, or external references\\nwhich must be included when loading primary document.  A file object\\nlisted in `secondaryFiles` may itself include `secondaryFiles` for\\nwhich the same rules apply.\\n\",\"jsonldPredicate\":\"cwl:secondaryFiles\"},{\"name\":\"format\",\"type\":[\"null\",\"string\"],\"doc\":\"The format of the file: this must be an IRI of a concept node that\\nrepresents the file format, preferrably defined within an ontology.\\nIf no ontology is available, file formats may be tested by exact match.\\n\\nReasoning about format compatability must be done by checking that an\\ninput file format is the same, `owl:equivalentClass` or\\n`rdfs:subClassOf` the format required by the input parameter.\\n`owl:equivalentClass` is transitive with `rdfs:subClassOf`, e.g. if\\n`B owl:equivalentClass C` and `B owl:subclassOf A` then infer\\n`C owl:subclassOf A`.\\n\\nFile format ontologies may be provided in the \\\"$schemas\\\" metadata at the\\nroot of the document.  If no ontologies are specified in `$schemas`, the\\nruntime may perform exact file format matches.\\n\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/cwl#format\",\"_type\":\"@id\",\"identity\":true}},{\"name\":\"contents\",\"type\":[\"null\",\"string\"],\"doc\":\"File contents literal.  Maximum of 64 KiB.\\n\\nIf neither `location` nor `path` is provided, `contents` must be\\nnon-null.  The implementation must assign a unique identifier for the\\n`location` field.  When the file is staged as input to CommandLineTool,\\nthe value of `contents` must be written to a file.\\n\\nIf `loadContents` of `inputBinding` or `outputBinding` is true and\\n`location` is valid, the implementation must read up to the first 64\\nKiB of text from the file and place it in the \\\"contents\\\" field.\\n\"}],\"docParent\":\"https://w3id.org/cwl/cwl#CWLType\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<File> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<File>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<File> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<File>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -117,7 +115,7 @@ public class File extends org.apache.avro.specific.SpecificRecordBase implements
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<File> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<File>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -141,7 +139,7 @@ public class File extends org.apache.avro.specific.SpecificRecordBase implements
   }
 
   /** Must be `File` to indicate this object describes a file. */
-  private io.cwl.avro.FilePackage.class$.File_class class$;
+   private io.cwl.avro.FilePackage.class$.File_class class$;
   /** An IRI that identifies the file resource.  This may be a relative
 reference, in which case it must be resolved using the base IRI of the
 document.  The location may refer to a local or remote resource; the
@@ -158,7 +156,7 @@ If the `path` field is provided but the `location` field is not, an
 implementation may assign the value of the `path` field to `location`,
 then follow the rules above.
  */
-  private java.lang.CharSequence location;
+   private java.lang.CharSequence location;
   /** The local host path where the File is available when a CommandLineTool is
 executed.  This field must be set by the implementation.  The final
 path component must match the value of `basename`.  This field
@@ -178,7 +176,7 @@ for [Internationalized Domain Names for Applications](https://tools.ietf.org/htm
 then implementations may terminate the process with a
 `permanentFailure`.
  */
-  private java.lang.CharSequence path;
+   private java.lang.CharSequence path;
   /** The base name of the file, that is, the name of the file without any
 leading directory path.  The base name must not contain a slash `/`.
 
@@ -191,7 +189,7 @@ When this file is made available to a CommandLineTool, it must be named
 with `basename`, i.e. the final component of the `path` field must match
 `basename`.
  */
-  private java.lang.CharSequence basename;
+   private java.lang.CharSequence basename;
   /** The name of the directory containing file, that is, the path leading up
 to the final slash in the path such that `dirname + '/' + basename ==
 path`.
@@ -201,7 +199,7 @@ prior to evaluating parameter references or expressions in a
 CommandLineTool document.  This field must not be used in any other
 context.
  */
-  private java.lang.CharSequence dirname;
+   private java.lang.CharSequence dirname;
   /** The basename root such that `nameroot + nameext == basename`, and
 `nameext` is empty or begins with a period and contains at most one
 period.  For the purposess of path splitting leading periods on the
@@ -211,7 +209,7 @@ basename are ignored; a basename of `.cshrc` will have a nameroot of
 The implementation must set this field automatically based on the value
 of `basename` prior to evaluating parameter references or expressions.
  */
-  private java.lang.CharSequence nameroot;
+   private java.lang.CharSequence nameroot;
   /** The basename extension such that `nameroot + nameext == basename`, and
 `nameext` is empty or begins with a period and contains at most one
 period.  Leading periods on the basename are ignored; a basename of
@@ -220,13 +218,13 @@ period.  Leading periods on the basename are ignored; a basename of
 The implementation must set this field automatically based on the value
 of `basename` prior to evaluating parameter references or expressions.
  */
-  private java.lang.CharSequence nameext;
+   private java.lang.CharSequence nameext;
   /** Optional hash code for validating file integrity.  Currently must be in the form
 "sha1$ + hexadecimal string" using the SHA-1 algorithm.
  */
-  private java.lang.CharSequence checksum;
+   private java.lang.CharSequence checksum;
   /** Optional file size */
-  private java.lang.Long size;
+   private java.lang.Long size;
   /** A list of additional files or directories that are associated with the
 primary file and must be transferred alongside the primary file.
 Examples include indexes of the primary file, or external references
@@ -234,7 +232,7 @@ which must be included when loading primary document.  A file object
 listed in `secondaryFiles` may itself include `secondaryFiles` for
 which the same rules apply.
  */
-  private java.util.List<java.lang.Object> secondaryFiles;
+   private java.util.List<java.lang.Object> secondaryFiles;
   /** The format of the file: this must be an IRI of a concept node that
 represents the file format, preferrably defined within an ontology.
 If no ontology is available, file formats may be tested by exact match.
@@ -250,7 +248,7 @@ File format ontologies may be provided in the "$schemas" metadata at the
 root of the document.  If no ontologies are specified in `$schemas`, the
 runtime may perform exact file format matches.
  */
-  private java.lang.CharSequence format;
+   private java.lang.CharSequence format;
   /** File contents literal.  Maximum of 64 KiB.
 
 If neither `location` nor `path` is provided, `contents` must be
@@ -262,7 +260,7 @@ If `loadContents` of `inputBinding` or `outputBinding` is true and
 `location` is valid, the implementation must read up to the first 64
 KiB of text from the file and place it in the "contents" field.
  */
-  private java.lang.CharSequence contents;
+   private java.lang.CharSequence contents;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -400,14 +398,9 @@ KiB of text from the file and place it in the "contents" field.
     this.contents = contents;
   }
 
-  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -427,7 +420,6 @@ KiB of text from the file and place it in the "contents" field.
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -1028,7 +1020,7 @@ KiB of text from the file and place it in the "contents" field.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -1092,7 +1084,7 @@ KiB of text from the file and place it in the "contents" field.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.File other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;

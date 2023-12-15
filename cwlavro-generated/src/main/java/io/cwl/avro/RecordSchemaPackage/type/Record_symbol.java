@@ -9,7 +9,5 @@ public enum Record_symbol implements org.apache.avro.generic.GenericEnumSymbol<R
   record  ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Record_symbol\",\"namespace\":\"io.cwl.avro.RecordSchemaPackage.type\",\"symbols\":[\"record\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

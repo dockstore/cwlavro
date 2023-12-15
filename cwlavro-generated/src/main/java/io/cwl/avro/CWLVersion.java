@@ -10,7 +10,5 @@ public enum CWLVersion implements org.apache.avro.generic.GenericEnumSymbol<CWLV
     ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"CWLVersion\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Version symbols for published CWL document versions.\",\"symbols\":[]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

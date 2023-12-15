@@ -18,18 +18,16 @@ the `run` field of [WorkflowStep](#WorkflowStep).
 @org.apache.avro.specific.AvroGenerated
 public class SubworkflowFeatureRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 1075161412693437876L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SubworkflowFeatureRequirement\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Indicates that the workflow platform must support nested workflows in\\nthe `run` field of [WorkflowStep](#WorkflowStep).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'SubworkflowFeatureRequirement'\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<SubworkflowFeatureRequirement> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<SubworkflowFeatureRequirement>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<SubworkflowFeatureRequirement> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<SubworkflowFeatureRequirement>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -53,7 +51,7 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<SubworkflowFeatureRequirement> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<SubworkflowFeatureRequirement>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -77,7 +75,7 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
   }
 
   /** Always 'SubworkflowFeatureRequirement' */
-  private java.lang.CharSequence class$;
+   private java.lang.CharSequence class$;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -94,14 +92,9 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
     this.class$ = class$;
   }
 
-  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -110,7 +103,6 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -183,7 +175,7 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -203,7 +195,7 @@ public class SubworkflowFeatureRequirement extends org.apache.avro.specific.Spec
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.SubworkflowFeatureRequirement other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;

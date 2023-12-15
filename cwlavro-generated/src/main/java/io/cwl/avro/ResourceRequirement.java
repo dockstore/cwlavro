@@ -36,18 +36,16 @@ If neither "min" nor "max" is specified for a resource, an implementation may pr
 @org.apache.avro.specific.AvroGenerated
 public class ResourceRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -7736034166448298098L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"ResourceRequirement\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Specify basic hardware resource requirements.\\n\\n\\\"min\\\" is the minimum amount of a resource that must be reserved to schedule\\na job. If \\\"min\\\" cannot be satisfied, the job should not be run.\\n\\n\\\"max\\\" is the maximum amount of a resource that the job shall be permitted\\nto use. If a node has sufficient resources, multiple jobs may be scheduled\\non a single node provided each job's \\\"max\\\" resource requirements are\\nmet. If a job attempts to exceed its \\\"max\\\" resource allocation, an\\nimplementation may deny additional resources, which may result in job\\nfailure.\\n\\nIf \\\"min\\\" is specified but \\\"max\\\" is not, then \\\"max\\\" == \\\"min\\\"\\nIf \\\"max\\\" is specified by \\\"min\\\" is not, then \\\"min\\\" == \\\"max\\\".\\n\\nIt is an error if max < min.\\n\\nIt is an error if the value of any of these fields is negative.\\n\\nIf neither \\\"min\\\" nor \\\"max\\\" is specified for a resource, an implementation may provide a default.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'ResourceRequirement'\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}},{\"name\":\"coresMin\",\"type\":[\"null\",\"long\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"Minimum reserved number of CPU cores\"},{\"name\":\"coresMax\",\"type\":[\"null\",\"int\",\"string\",\"Expression\"],\"doc\":\"Maximum reserved number of CPU cores\"},{\"name\":\"ramMin\",\"type\":[\"null\",\"long\",\"string\",\"Expression\"],\"doc\":\"Minimum reserved RAM in mebibytes (2**20)\"},{\"name\":\"ramMax\",\"type\":[\"null\",\"long\",\"string\",\"Expression\"],\"doc\":\"Maximum reserved RAM in mebibytes (2**20)\"},{\"name\":\"tmpdirMin\",\"type\":[\"null\",\"long\",\"string\",\"Expression\"],\"doc\":\"Minimum reserved filesystem based storage for the designated temporary directory, in mebibytes (2**20)\"},{\"name\":\"tmpdirMax\",\"type\":[\"null\",\"long\",\"string\",\"Expression\"],\"doc\":\"Maximum reserved filesystem based storage for the designated temporary directory, in mebibytes (2**20)\"},{\"name\":\"outdirMin\",\"type\":[\"null\",\"long\",\"string\",\"Expression\"],\"doc\":\"Minimum reserved filesystem based storage for the designated output directory, in mebibytes (2**20)\"},{\"name\":\"outdirMax\",\"type\":[\"null\",\"long\",\"string\",\"Expression\"],\"doc\":\"Maximum reserved filesystem based storage for the designated output directory, in mebibytes (2**20)\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<ResourceRequirement> ENCODER =
-      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<ResourceRequirement>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<ResourceRequirement> DECODER =
-      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<ResourceRequirement>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -71,7 +69,7 @@ public class ResourceRequirement extends org.apache.avro.specific.SpecificRecord
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<ResourceRequirement> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<ResourceRequirement>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -95,23 +93,23 @@ public class ResourceRequirement extends org.apache.avro.specific.SpecificRecord
   }
 
   /** Always 'ResourceRequirement' */
-  private java.lang.CharSequence class$;
+   private java.lang.CharSequence class$;
   /** Minimum reserved number of CPU cores */
-  private java.lang.Object coresMin;
+   private java.lang.Object coresMin;
   /** Maximum reserved number of CPU cores */
-  private java.lang.Object coresMax;
+   private java.lang.Object coresMax;
   /** Minimum reserved RAM in mebibytes (2**20) */
-  private java.lang.Object ramMin;
+   private java.lang.Object ramMin;
   /** Maximum reserved RAM in mebibytes (2**20) */
-  private java.lang.Object ramMax;
+   private java.lang.Object ramMax;
   /** Minimum reserved filesystem based storage for the designated temporary directory, in mebibytes (2**20) */
-  private java.lang.Object tmpdirMin;
+   private java.lang.Object tmpdirMin;
   /** Maximum reserved filesystem based storage for the designated temporary directory, in mebibytes (2**20) */
-  private java.lang.Object tmpdirMax;
+   private java.lang.Object tmpdirMax;
   /** Minimum reserved filesystem based storage for the designated output directory, in mebibytes (2**20) */
-  private java.lang.Object outdirMin;
+   private java.lang.Object outdirMin;
   /** Maximum reserved filesystem based storage for the designated output directory, in mebibytes (2**20) */
-  private java.lang.Object outdirMax;
+   private java.lang.Object outdirMax;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -144,14 +142,9 @@ public class ResourceRequirement extends org.apache.avro.specific.SpecificRecord
     this.outdirMax = outdirMax;
   }
 
-  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
-
-  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
-
   // Used by DatumWriter.  Applications should not call.
-  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -168,7 +161,6 @@ public class ResourceRequirement extends org.apache.avro.specific.SpecificRecord
   }
 
   // Used by DatumReader.  Applications should not call.
-  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -409,7 +401,7 @@ public class ResourceRequirement extends org.apache.avro.specific.SpecificRecord
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -461,7 +453,7 @@ public class ResourceRequirement extends org.apache.avro.specific.SpecificRecord
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.ResourceRequirement other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;
