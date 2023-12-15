@@ -49,16 +49,18 @@ environment as defined by Docker.
 @org.apache.avro.specific.AvroGenerated
 public class DockerRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 6096552737949539564L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DockerRequirement\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Indicates that a workflow component should be run in a\\n[Docker](http://docker.com) container, and specifies how to fetch or build\\nthe image.\\n\\nIf a CommandLineTool lists `DockerRequirement` under\\n`hints` (or `requirements`), it may (or must) be run in the specified Docker\\ncontainer.\\n\\nThe platform must first acquire or install the correct Docker image as\\nspecified by `dockerPull`, `dockerImport`, `dockerLoad` or `dockerFile`.\\n\\nThe platform must execute the tool in the container using `docker run` with\\nthe appropriate Docker image and tool command line.\\n\\nThe workflow platform may provide input files and the designated output\\ndirectory through the use of volume bind mounts.  The platform should rewrite\\nfile paths in the input object to correspond to the Docker bind mounted\\nlocations. That is, the platform should rewrite values in the parameter context\\nsuch as `runtime.outdir`, `runtime.tmpdir` and others to be valid paths\\nwithin the container.\\n\\nWhen running a tool contained in Docker, the workflow platform must not\\nassume anything about the contents of the Docker container, such as the\\npresence or absence of specific software, except to assume that the\\ngenerated command line represents a valid command within the runtime\\nenvironment of the container.\\n\\n## Interaction with other requirements\\n\\nIf [EnvVarRequirement](#EnvVarRequirement) is specified alongside a\\nDockerRequirement, the environment variables must be provided to Docker\\nusing `--env` or `--env-file` and interact with the container's preexisting\\nenvironment as defined by Docker.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'DockerRequirement'\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}},{\"name\":\"dockerPull\",\"type\":[\"null\",\"string\"],\"doc\":\"Specify a Docker image to retrieve using `docker pull`.\"},{\"name\":\"dockerLoad\",\"type\":[\"null\",\"string\"],\"doc\":\"Specify a HTTP URL from which to download a Docker image using `docker load`.\"},{\"name\":\"dockerFile\",\"type\":[\"null\",\"string\"],\"doc\":\"Supply the contents of a Dockerfile which will be built using `docker build`.\"},{\"name\":\"dockerImport\",\"type\":[\"null\",\"string\"],\"doc\":\"Provide HTTP URL to download and gunzip a Docker images using `docker import.\"},{\"name\":\"dockerImageId\",\"type\":[\"null\",\"string\"],\"doc\":\"The image id that will be used for `docker run`.  May be a\\nhuman-readable image name or the image identifier hash.  May be skipped\\nif `dockerPull` is specified, in which case the `dockerPull` image id\\nmust be used.\\n\"},{\"name\":\"dockerOutputDirectory\",\"type\":[\"null\",\"string\"],\"doc\":\"Set the designated output directory to a specific location inside the\\nDocker container.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<DockerRequirement> ENCODER =
-      new BinaryMessageEncoder<DockerRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<DockerRequirement> DECODER =
-      new BinaryMessageDecoder<DockerRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -82,7 +84,7 @@ public class DockerRequirement extends org.apache.avro.specific.SpecificRecordBa
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<DockerRequirement> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<DockerRequirement>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -106,25 +108,25 @@ public class DockerRequirement extends org.apache.avro.specific.SpecificRecordBa
   }
 
   /** Always 'DockerRequirement' */
-   private java.lang.CharSequence class$;
+  public java.lang.CharSequence class$;
   /** Specify a Docker image to retrieve using `docker pull`. */
-   private java.lang.CharSequence dockerPull;
+  public java.lang.CharSequence dockerPull;
   /** Specify a HTTP URL from which to download a Docker image using `docker load`. */
-   private java.lang.CharSequence dockerLoad;
+  public java.lang.CharSequence dockerLoad;
   /** Supply the contents of a Dockerfile which will be built using `docker build`. */
-   private java.lang.CharSequence dockerFile;
+  public java.lang.CharSequence dockerFile;
   /** Provide HTTP URL to download and gunzip a Docker images using `docker import. */
-   private java.lang.CharSequence dockerImport;
+  public java.lang.CharSequence dockerImport;
   /** The image id that will be used for `docker run`.  May be a
 human-readable image name or the image identifier hash.  May be skipped
 if `dockerPull` is specified, in which case the `dockerPull` image id
 must be used.
  */
-   private java.lang.CharSequence dockerImageId;
+  public java.lang.CharSequence dockerImageId;
   /** Set the designated output directory to a specific location inside the
 Docker container.
  */
-   private java.lang.CharSequence dockerOutputDirectory;
+  public java.lang.CharSequence dockerOutputDirectory;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -159,9 +161,14 @@ Docker container.
     this.dockerOutputDirectory = dockerOutputDirectory;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -176,6 +183,7 @@ Docker container.
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -392,7 +400,7 @@ Docker container.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -436,7 +444,7 @@ Docker container.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.DockerRequirement other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;

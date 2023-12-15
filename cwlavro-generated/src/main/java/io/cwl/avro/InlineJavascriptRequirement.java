@@ -19,16 +19,18 @@ interpolatation.
 @org.apache.avro.specific.AvroGenerated
 public class InlineJavascriptRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -8975452497586869038L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InlineJavascriptRequirement\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Indicates that the workflow platform must support inline Javascript expressions.\\nIf this requirement is not present, the workflow platform must not perform expression\\ninterpolatation.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'InlineJavascriptRequirement'\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}},{\"name\":\"expressionLib\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"Additional code fragments that will also be inserted\\nbefore executing the expression code.  Allows for function definitions that may\\nbe called from CWL expressions.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<InlineJavascriptRequirement> ENCODER =
-      new BinaryMessageEncoder<InlineJavascriptRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<InlineJavascriptRequirement> DECODER =
-      new BinaryMessageDecoder<InlineJavascriptRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -52,7 +54,7 @@ public class InlineJavascriptRequirement extends org.apache.avro.specific.Specif
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<InlineJavascriptRequirement> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<InlineJavascriptRequirement>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -76,12 +78,12 @@ public class InlineJavascriptRequirement extends org.apache.avro.specific.Specif
   }
 
   /** Always 'InlineJavascriptRequirement' */
-   private java.lang.CharSequence class$;
+  public java.lang.CharSequence class$;
   /** Additional code fragments that will also be inserted
 before executing the expression code.  Allows for function definitions that may
 be called from CWL expressions.
  */
-   private java.util.List<java.lang.CharSequence> expressionLib;
+  public java.util.List<java.lang.CharSequence> expressionLib;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -103,9 +105,14 @@ be called from CWL expressions.
     this.expressionLib = expressionLib;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -115,6 +122,7 @@ be called from CWL expressions.
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -217,7 +225,7 @@ be called from CWL expressions.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -241,7 +249,7 @@ be called from CWL expressions.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.InlineJavascriptRequirement other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;

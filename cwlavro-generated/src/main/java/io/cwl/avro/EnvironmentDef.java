@@ -19,16 +19,18 @@ result of executing an expression, such as getting a parameter from input.
 @org.apache.avro.specific.AvroGenerated
 public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 5705672796807569383L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EnvironmentDef\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Define an environment variable that will be set in the runtime environment\\nby the workflow platform when executing the command line tool.  May be the\\nresult of executing an expression, such as getting a parameter from input.\\n\",\"fields\":[{\"name\":\"envName\",\"type\":\"string\",\"doc\":\"The environment variable name\"},{\"name\":\"envValue\",\"type\":[\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"The environment variable value\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<EnvironmentDef> ENCODER =
-      new BinaryMessageEncoder<EnvironmentDef>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<EnvironmentDef> DECODER =
-      new BinaryMessageDecoder<EnvironmentDef>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -52,7 +54,7 @@ public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase 
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<EnvironmentDef> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<EnvironmentDef>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -76,9 +78,9 @@ public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   /** The environment variable name */
-   private java.lang.CharSequence envName;
+  public java.lang.CharSequence envName;
   /** The environment variable value */
-   private java.lang.Object envValue;
+  public java.lang.Object envValue;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -97,9 +99,14 @@ public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase 
     this.envValue = envValue;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return envName;
@@ -109,6 +116,7 @@ public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -202,7 +210,7 @@ public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase 
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -226,7 +234,7 @@ public class EnvironmentDef extends org.apache.avro.specific.SpecificRecordBase 
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.EnvironmentDef other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.envName)) {
         this.envName = data().deepCopy(fields()[0].schema(), other.envName);
         fieldSetFlags()[0] = true;

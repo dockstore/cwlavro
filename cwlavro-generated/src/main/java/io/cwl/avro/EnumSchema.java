@@ -17,16 +17,18 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -8842608702682104080L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"EnumSchema\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Define an enumerated type.\\n\",\"fields\":[{\"name\":\"symbols\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Defines the set of valid symbols.\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#symbols\",\"_type\":\"@id\",\"identity\":true},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"},{\"name\":\"type\",\"type\":{\"type\":\"enum\",\"name\":\"Enum_symbol\",\"namespace\":\"io.cwl.avro.EnumSchemaPackage.type\",\"symbols\":[\"enum\"]},\"doc\":\"Must be `enum`\",\"jsonldPredicate\":{\"_id\":\"https://w3id.org/cwl/salad#type\",\"_type\":\"@vocab\",\"typeDSL\":true,\"refScope\":2},\"inherited_from\":\"https://w3id.org/cwl/salad#EnumSchema\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<EnumSchema> ENCODER =
-      new BinaryMessageEncoder<EnumSchema>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<EnumSchema> DECODER =
-      new BinaryMessageDecoder<EnumSchema>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +52,7 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<EnumSchema> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<EnumSchema>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -74,9 +76,9 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
   }
 
   /** Defines the set of valid symbols. */
-   private java.util.List<java.lang.CharSequence> symbols;
+  public java.util.List<java.lang.CharSequence> symbols;
   /** Must be `enum` */
-   private io.cwl.avro.EnumSchemaPackage.type.Enum_symbol type;
+  public io.cwl.avro.EnumSchemaPackage.type.Enum_symbol type;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -95,9 +97,14 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
     this.type = type;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return symbols;
@@ -107,6 +114,7 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -200,7 +208,7 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -224,7 +232,7 @@ public class EnumSchema extends org.apache.avro.specific.SpecificRecordBase impl
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.EnumSchema other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.symbols)) {
         this.symbols = data().deepCopy(fields()[0].schema(), other.symbols);
         fieldSetFlags()[0] = true;

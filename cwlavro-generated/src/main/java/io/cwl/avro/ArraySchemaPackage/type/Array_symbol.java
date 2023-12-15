@@ -9,5 +9,7 @@ public enum Array_symbol implements org.apache.avro.generic.GenericEnumSymbol<Ar
   array  ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"Array_symbol\",\"namespace\":\"io.cwl.avro.ArraySchemaPackage.type\",\"symbols\":[\"array\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

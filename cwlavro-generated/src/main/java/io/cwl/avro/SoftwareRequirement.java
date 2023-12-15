@@ -18,16 +18,18 @@ the defined process.
 @org.apache.avro.specific.AvroGenerated
 public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 8398450624765514796L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SoftwareRequirement\",\"namespace\":\"io.cwl.avro\",\"doc\":\"A list of software packages that should be configured in the environment of\\nthe defined process.\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'SoftwareRequirement'\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}},{\"name\":\"packages\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"SoftwarePackage\",\"fields\":[{\"name\":\"package\",\"type\":\"string\",\"doc\":\"The name of the software to be made available. If the name is\\ncommon, inconsistent, or otherwise ambiguous it should be combined with\\none or more identifiers in the `specs` field.\\n\"},{\"name\":\"version\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"The (optional) versions of the software that are known to be\\ncompatible.\\n\"},{\"name\":\"specs\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"One or more [IRI](https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier)s\\nidentifying resources for installing or enabling the software named in\\nthe `package` field. Implementations may provide resolvers which map\\nthese software identifer IRIs to some configuration action; or they can\\nuse only the name from the `package` field on a best effort basis.\\n\\nFor example, the IRI https://packages.debian.org/bowtie could\\nbe resolved with `apt-get install bowtie`. The IRI\\nhttps://anaconda.org/bioconda/bowtie could be resolved with `conda\\ninstall -c bioconda bowtie`.\\n\\nIRIs can also be system independent and used to map to a specific\\nsoftware installation or selection mechanism.\\nUsing [RRID](https://www.identifiers.org/rrid/) as an example:\\nhttps://identifiers.org/rrid/RRID:SCR_005476\\ncould be fulfilled using the above mentioned Debian or bioconda\\npackage, a local installation managed by [Environement Modules](http://modules.sourceforge.net/),\\nor any other mechanism the platform chooses. IRIs can also be from\\nidentifer sources that are discipline specific yet still system\\nindependent. As an example, the equivalent [ELIXIR Tools and Data\\nService Registry](https://bio.tools) IRI to the previous RRID example is\\nhttps://bio.tools/tool/bowtie2/version/2.2.8.\\nIf supported by a given registry, implementations are encouraged to\\nquery these system independent sofware identifier IRIs directly for\\nlinks to packaging systems.\\n\\nA site specific IRI can be listed as well. For example, an academic\\ncomputing cluster using Environement Modules could list the IRI\\n`https://hpc.example.edu/modules/bowtie-tbb/1.22` to indicate that\\n`module load bowtie-tbb/1.1.2` should be executed to make available\\n`bowtie` version 1.1.2 compiled with the TBB library prior to running\\nthe accompanying Workflow or CommandLineTool. Note that the example IRI\\nis specific to a particular institution and computing environment as\\nthe Environment Modules system does not have a common namespace or\\nstandardized naming convention.\\n\\nThis last example is the least portable and should only be used if\\nmechanisms based off of the `package` field or more generic IRIs are\\nunavailable or unsuitable. While harmless to other sites, site specific\\nsoftware IRIs should be left out of shared CWL descriptions to avoid\\nclutter.\\n\"}]}},\"doc\":\"The list of software to be configured.\",\"jsonldPredicate\":{\"mapSubject\":\"package\",\"mapPredicate\":\"specs\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<SoftwareRequirement> ENCODER =
-      new BinaryMessageEncoder<SoftwareRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<SoftwareRequirement> DECODER =
-      new BinaryMessageDecoder<SoftwareRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -51,7 +53,7 @@ public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecord
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<SoftwareRequirement> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<SoftwareRequirement>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -75,9 +77,9 @@ public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecord
   }
 
   /** Always 'SoftwareRequirement' */
-   private java.lang.CharSequence class$;
+  public java.lang.CharSequence class$;
   /** The list of software to be configured. */
-   private java.util.List<io.cwl.avro.SoftwarePackage> packages;
+  public java.util.List<io.cwl.avro.SoftwarePackage> packages;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -96,9 +98,14 @@ public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecord
     this.packages = packages;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -108,6 +115,7 @@ public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecord
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -201,7 +209,7 @@ public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecord
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -225,7 +233,7 @@ public class SoftwareRequirement extends org.apache.avro.specific.SpecificRecord
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.SoftwareRequirement other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;

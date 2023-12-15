@@ -15,16 +15,18 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class SoftwarePackage extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 6563819772765853153L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SoftwarePackage\",\"namespace\":\"io.cwl.avro\",\"fields\":[{\"name\":\"package\",\"type\":\"string\",\"doc\":\"The name of the software to be made available. If the name is\\ncommon, inconsistent, or otherwise ambiguous it should be combined with\\none or more identifiers in the `specs` field.\\n\"},{\"name\":\"version\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"The (optional) versions of the software that are known to be\\ncompatible.\\n\"},{\"name\":\"specs\",\"type\":[\"null\",{\"type\":\"array\",\"items\":\"string\"}],\"doc\":\"One or more [IRI](https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier)s\\nidentifying resources for installing or enabling the software named in\\nthe `package` field. Implementations may provide resolvers which map\\nthese software identifer IRIs to some configuration action; or they can\\nuse only the name from the `package` field on a best effort basis.\\n\\nFor example, the IRI https://packages.debian.org/bowtie could\\nbe resolved with `apt-get install bowtie`. The IRI\\nhttps://anaconda.org/bioconda/bowtie could be resolved with `conda\\ninstall -c bioconda bowtie`.\\n\\nIRIs can also be system independent and used to map to a specific\\nsoftware installation or selection mechanism.\\nUsing [RRID](https://www.identifiers.org/rrid/) as an example:\\nhttps://identifiers.org/rrid/RRID:SCR_005476\\ncould be fulfilled using the above mentioned Debian or bioconda\\npackage, a local installation managed by [Environement Modules](http://modules.sourceforge.net/),\\nor any other mechanism the platform chooses. IRIs can also be from\\nidentifer sources that are discipline specific yet still system\\nindependent. As an example, the equivalent [ELIXIR Tools and Data\\nService Registry](https://bio.tools) IRI to the previous RRID example is\\nhttps://bio.tools/tool/bowtie2/version/2.2.8.\\nIf supported by a given registry, implementations are encouraged to\\nquery these system independent sofware identifier IRIs directly for\\nlinks to packaging systems.\\n\\nA site specific IRI can be listed as well. For example, an academic\\ncomputing cluster using Environement Modules could list the IRI\\n`https://hpc.example.edu/modules/bowtie-tbb/1.22` to indicate that\\n`module load bowtie-tbb/1.1.2` should be executed to make available\\n`bowtie` version 1.1.2 compiled with the TBB library prior to running\\nthe accompanying Workflow or CommandLineTool. Note that the example IRI\\nis specific to a particular institution and computing environment as\\nthe Environment Modules system does not have a common namespace or\\nstandardized naming convention.\\n\\nThis last example is the least portable and should only be used if\\nmechanisms based off of the `package` field or more generic IRIs are\\nunavailable or unsuitable. While harmless to other sites, site specific\\nsoftware IRIs should be left out of shared CWL descriptions to avoid\\nclutter.\\n\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<SoftwarePackage> ENCODER =
-      new BinaryMessageEncoder<SoftwarePackage>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<SoftwarePackage> DECODER =
-      new BinaryMessageDecoder<SoftwarePackage>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -48,7 +50,7 @@ public class SoftwarePackage extends org.apache.avro.specific.SpecificRecordBase
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<SoftwarePackage> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<SoftwarePackage>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -75,11 +77,11 @@ public class SoftwarePackage extends org.apache.avro.specific.SpecificRecordBase
 common, inconsistent, or otherwise ambiguous it should be combined with
 one or more identifiers in the `specs` field.
  */
-   private java.lang.CharSequence package$;
+  public java.lang.CharSequence package$;
   /** The (optional) versions of the software that are known to be
 compatible.
  */
-   private java.util.List<java.lang.CharSequence> version;
+  public java.util.List<java.lang.CharSequence> version;
   /** One or more [IRI](https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier)s
 identifying resources for installing or enabling the software named in
 the `package` field. Implementations may provide resolvers which map
@@ -122,7 +124,7 @@ unavailable or unsuitable. While harmless to other sites, site specific
 software IRIs should be left out of shared CWL descriptions to avoid
 clutter.
  */
-   private java.util.List<java.lang.CharSequence> specs;
+  public java.util.List<java.lang.CharSequence> specs;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -189,9 +191,14 @@ clutter.
     this.specs = specs;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return package$;
@@ -202,6 +209,7 @@ clutter.
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -454,7 +462,7 @@ clutter.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -482,7 +490,7 @@ clutter.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.SoftwarePackage other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.package$)) {
         this.package$ = data().deepCopy(fields()[0].schema(), other.package$);
         fieldSetFlags()[0] = true;

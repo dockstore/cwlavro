@@ -10,5 +10,7 @@ public enum LinkMergeMethod implements org.apache.avro.generic.GenericEnumSymbol
   merge_nested, merge_flattened  ;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"LinkMergeMethod\",\"namespace\":\"io.cwl.avro\",\"doc\":\"The input link merge method, described in [WorkflowStepInput](#WorkflowStepInput).\",\"symbols\":[\"merge_nested\",\"merge_flattened\"],\"docParent\":\"https://w3id.org/cwl/cwl#WorkflowStepInput\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

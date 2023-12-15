@@ -20,16 +20,18 @@ with an output parameter of the process.
 @org.apache.avro.specific.AvroGenerated
 public class WorkflowStepOutput extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -7694812703366937612L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"WorkflowStepOutput\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Associate an output parameter of the underlying process with a workflow\\nparameter.  The workflow parameter (given in the `id` field) be may be used\\nas a `source` to connect with input parameters of other workflow steps, or\\nwith an output parameter of the process.\\n\",\"fields\":[{\"name\":\"id\",\"type\":\"string\",\"doc\":\"A unique identifier for this workflow output parameter.  This is the\\nidentifier to use in the `source` field of `WorkflowStepInput` to\\nconnect the output value to downstream parameters.\\n\",\"jsonldPredicate\":\"@id\"}],\"docParent\":\"https://w3id.org/cwl/cwl#WorkflowStep\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<WorkflowStepOutput> ENCODER =
-      new BinaryMessageEncoder<WorkflowStepOutput>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<WorkflowStepOutput> DECODER =
-      new BinaryMessageDecoder<WorkflowStepOutput>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -53,7 +55,7 @@ public class WorkflowStepOutput extends org.apache.avro.specific.SpecificRecordB
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<WorkflowStepOutput> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<WorkflowStepOutput>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -80,7 +82,7 @@ public class WorkflowStepOutput extends org.apache.avro.specific.SpecificRecordB
 identifier to use in the `source` field of `WorkflowStepInput` to
 connect the output value to downstream parameters.
  */
-   private java.lang.CharSequence id;
+  public java.lang.CharSequence id;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -100,9 +102,14 @@ connect the output value to downstream parameters.
     this.id = id;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return id;
@@ -111,6 +118,7 @@ connect the output value to downstream parameters.
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -192,7 +200,7 @@ connect the output value to downstream parameters.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -212,7 +220,7 @@ connect the output value to downstream parameters.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.WorkflowStepOutput other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;

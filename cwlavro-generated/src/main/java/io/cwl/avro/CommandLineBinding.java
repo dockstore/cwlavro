@@ -51,16 +51,18 @@ effective value.
 @org.apache.avro.specific.AvroGenerated
 public class CommandLineBinding extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -6314974120753167026L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"CommandLineBinding\",\"namespace\":\"io.cwl.avro\",\"doc\":\"\\nWhen listed under `inputBinding` in the input schema, the term\\n\\\"value\\\" refers to the the corresponding value in the input object.  For\\nbinding objects listed in `CommandLineTool.arguments`, the term \\\"value\\\"\\nrefers to the effective value after evaluating `valueFrom`.\\n\\nThe binding behavior when building the command line depends on the data\\ntype of the value.  If there is a mismatch between the type described by\\nthe input schema and the effective value, such as resulting from an\\nexpression evaluation, an implementation must use the data type of the\\neffective value.\\n\\n  - **string**: Add `prefix` and the string to the command line.\\n\\n  - **number**: Add `prefix` and decimal representation to command line.\\n\\n  - **boolean**: If true, add `prefix` to the command line.  If false, add\\n      nothing.\\n\\n  - **File**: Add `prefix` and the value of\\n    [`File.path`](#File) to the command line.\\n\\n  - **Directory**: Add `prefix` and the value of\\n    [`Directory.path`](#Directory) to the command line.\\n\\n  - **array**: If `itemSeparator` is specified, add `prefix` and the join\\n      the array into a single string with `itemSeparator` separating the\\n      items.  Otherwise first add `prefix`, then recursively process\\n      individual elements.\\n      If the array is empty, it does not add anything to command line.\\n\\n  - **object**: Add `prefix` only, and recursively add object fields for\\n      which `inputBinding` is specified.\\n\\n  - **null**: Add nothing.\\n\",\"fields\":[{\"name\":\"loadContents\",\"type\":[\"null\",\"boolean\"],\"doc\":\"Only valid when `type: File` or is an array of `items: File`.\\n\\nRead up to the first 64 KiB of text from the file and place it in the\\n\\\"contents\\\" field of the file object for use by expressions.\\n\",\"jsonldPredicate\":\"cwl:loadContents\",\"inherited_from\":\"https://w3id.org/cwl/cwl#InputBinding\"},{\"name\":\"position\",\"type\":[\"null\",\"int\"],\"doc\":\"The sorting key.  Default position is 0.\"},{\"name\":\"prefix\",\"type\":[\"null\",\"string\"],\"doc\":\"Command line prefix to add before the value.\"},{\"name\":\"separate\",\"type\":[\"null\",\"boolean\"],\"doc\":\"If true (default), then the prefix and value must be added as separate\\ncommand line arguments; if false, prefix and value must be concatenated\\ninto a single command line argument.\\n\"},{\"name\":\"itemSeparator\",\"type\":[\"null\",\"string\"],\"doc\":\"Join the array elements into a single string with the elements\\nseparated by by `itemSeparator`.\\n\"},{\"name\":\"valueFrom\",\"type\":[\"null\",\"string\",{\"type\":\"enum\",\"name\":\"Expression\",\"doc\":\"'Expression' is not a real type.  It indicates that a field must allow\\nruntime parameter references.  If [InlineJavascriptRequirement](#InlineJavascriptRequirement)\\nis declared and supported by the platform, the field must also allow\\nJavascript expressions.\\n\",\"symbols\":[\"ExpressionPlaceholder\"]}],\"doc\":\"If `valueFrom` is a constant string value, use this as the value and\\napply the binding rules above.\\n\\nIf `valueFrom` is an expression, evaluate the expression to yield the\\nactual value to use to build the command line and apply the binding\\nrules above.  If the inputBinding is associated with an input\\nparameter, the value of `self` in the expression will be the value of\\nthe input parameter.  Input parameter defaults (as specified by the\\n`InputParameter.default` field) must be applied before evaluating the\\nexpression.\\n\\nWhen a binding is part of the `CommandLineTool.arguments` field,\\nthe `valueFrom` field is required.\\n\",\"jsonldPredicate\":\"cwl:valueFrom\"},{\"name\":\"shellQuote\",\"type\":[\"null\",\"boolean\"],\"doc\":\"If `ShellCommandRequirement` is in the requirements for the current command,\\nthis controls whether the value is quoted on the command line (default is true).\\nUse `shellQuote: false` to inject metacharacters for operations such as pipes.\\n\\nIf `shellQuote` is true or not provided, the implementation must not\\npermit interpretation of any shell metacharacters or directives.\\n\"}],\"extends\":\"https://w3id.org/cwl/cwl#InputBinding\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<CommandLineBinding> ENCODER =
-      new BinaryMessageEncoder<CommandLineBinding>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<CommandLineBinding> DECODER =
-      new BinaryMessageDecoder<CommandLineBinding>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -84,7 +86,7 @@ public class CommandLineBinding extends org.apache.avro.specific.SpecificRecordB
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<CommandLineBinding> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<CommandLineBinding>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -112,20 +114,20 @@ public class CommandLineBinding extends org.apache.avro.specific.SpecificRecordB
 Read up to the first 64 KiB of text from the file and place it in the
 "contents" field of the file object for use by expressions.
  */
-   private java.lang.Boolean loadContents;
+  public java.lang.Boolean loadContents;
   /** The sorting key.  Default position is 0. */
-   private java.lang.Integer position;
+  public java.lang.Integer position;
   /** Command line prefix to add before the value. */
-   private java.lang.CharSequence prefix;
+  public java.lang.CharSequence prefix;
   /** If true (default), then the prefix and value must be added as separate
 command line arguments; if false, prefix and value must be concatenated
 into a single command line argument.
  */
-   private java.lang.Boolean separate;
+  public java.lang.Boolean separate;
   /** Join the array elements into a single string with the elements
 separated by by `itemSeparator`.
  */
-   private java.lang.CharSequence itemSeparator;
+  public java.lang.CharSequence itemSeparator;
   /** If `valueFrom` is a constant string value, use this as the value and
 apply the binding rules above.
 
@@ -140,7 +142,7 @@ expression.
 When a binding is part of the `CommandLineTool.arguments` field,
 the `valueFrom` field is required.
  */
-   private java.lang.Object valueFrom;
+  public java.lang.Object valueFrom;
   /** If `ShellCommandRequirement` is in the requirements for the current command,
 this controls whether the value is quoted on the command line (default is true).
 Use `shellQuote: false` to inject metacharacters for operations such as pipes.
@@ -148,7 +150,7 @@ Use `shellQuote: false` to inject metacharacters for operations such as pipes.
 If `shellQuote` is true or not provided, the implementation must not
 permit interpretation of any shell metacharacters or directives.
  */
-   private java.lang.Boolean shellQuote;
+  public java.lang.Boolean shellQuote;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -205,9 +207,14 @@ permit interpretation of any shell metacharacters or directives.
     this.shellQuote = shellQuote;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return loadContents;
@@ -222,6 +229,7 @@ permit interpretation of any shell metacharacters or directives.
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -504,7 +512,7 @@ permit interpretation of any shell metacharacters or directives.
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -548,7 +556,7 @@ permit interpretation of any shell metacharacters or directives.
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.CommandLineBinding other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.loadContents)) {
         this.loadContents = data().deepCopy(fields()[0].schema(), other.loadContents);
         fieldSetFlags()[0] = true;

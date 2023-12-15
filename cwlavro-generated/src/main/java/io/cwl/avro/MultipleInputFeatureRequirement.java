@@ -18,16 +18,18 @@ listed in the `source` field of [WorkflowStepInput](#WorkflowStepInput).
 @org.apache.avro.specific.AvroGenerated
 public class MultipleInputFeatureRequirement extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 4405232228079378159L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MultipleInputFeatureRequirement\",\"namespace\":\"io.cwl.avro\",\"doc\":\"Indicates that the workflow platform must support multiple inbound data links\\nlisted in the `source` field of [WorkflowStepInput](#WorkflowStepInput).\\n\",\"fields\":[{\"name\":\"class\",\"type\":\"string\",\"doc\":\"Always 'MultipleInputFeatureRequirement'\",\"jsonldPredicate\":{\"_id\":\"@type\",\"_type\":\"@vocab\"}}],\"extends\":\"https://w3id.org/cwl/cwl#ProcessRequirement\"}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<MultipleInputFeatureRequirement> ENCODER =
-      new BinaryMessageEncoder<MultipleInputFeatureRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<MultipleInputFeatureRequirement> DECODER =
-      new BinaryMessageDecoder<MultipleInputFeatureRequirement>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -51,7 +53,7 @@ public class MultipleInputFeatureRequirement extends org.apache.avro.specific.Sp
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<MultipleInputFeatureRequirement> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<MultipleInputFeatureRequirement>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -75,7 +77,7 @@ public class MultipleInputFeatureRequirement extends org.apache.avro.specific.Sp
   }
 
   /** Always 'MultipleInputFeatureRequirement' */
-   private java.lang.CharSequence class$;
+  public java.lang.CharSequence class$;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -92,9 +94,14 @@ public class MultipleInputFeatureRequirement extends org.apache.avro.specific.Sp
     this.class$ = class$;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return class$;
@@ -103,6 +110,7 @@ public class MultipleInputFeatureRequirement extends org.apache.avro.specific.Sp
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
@@ -175,7 +183,7 @@ public class MultipleInputFeatureRequirement extends org.apache.avro.specific.Sp
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -195,7 +203,7 @@ public class MultipleInputFeatureRequirement extends org.apache.avro.specific.Sp
      * @param other The existing instance to copy.
      */
     private Builder(io.cwl.avro.MultipleInputFeatureRequirement other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.class$)) {
         this.class$ = data().deepCopy(fields()[0].schema(), other.class$);
         fieldSetFlags()[0] = true;
