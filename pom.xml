@@ -27,7 +27,7 @@
         <github.url>scm:git:git@github.com:common-workflow-language/cwlavro.git</github.url>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	    <dockstore-core.version>1.15.0-prealpha.1</dockstore-core.version>
+	    <dockstore-core.version>1.15.0-beta.0</dockstore-core.version>
     </properties>
 
     <scm>
