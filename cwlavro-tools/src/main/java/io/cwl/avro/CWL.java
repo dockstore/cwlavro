@@ -28,6 +28,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -405,16 +406,14 @@ public class CWL {
                     if (defaultJsonElement instanceof JsonObject) {
                         final JsonObject defaultValue = ((JsonObject) jsonElement).getAsJsonObject("default");
                         if (o instanceof CommandInputParameter) {
-                            // TODO: fixme
-                            // ((CommandInputParameter)o).setDefault$(defaultValue);
+                            ((CommandInputParameter)o).setDefault$(defaultValue);
                         }
                     }
                     if (defaultJsonElement instanceof JsonPrimitive) {
                         final JsonPrimitive defaultValue = ((JsonObject) jsonElement).getAsJsonPrimitive("default");
                         if (o instanceof CommandInputParameter){
                             String defaultVal= defaultValue.toString().replaceAll("^\"|\"$", "");
-                            // TODO: fixme
-                            // ((CommandInputParameter)o).setDefault$(defaultVal);
+                            ((CommandInputParameter)o).setDefault$(defaultVal);
                         }
                     }
                     if (defaultJsonElement instanceof JsonNull) {
