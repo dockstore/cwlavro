@@ -67,7 +67,8 @@ jobs:
           java-version: '17.0.4+8'
           distribution: 'adopt'
 
-      - name: Initialize CodeQL
+      - if: "!contains(github.ref, 'dependabot')"
+        name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: java   
@@ -75,5 +76,6 @@ jobs:
       - run: mvn -B clean install
 
 
-      - name: Perform CodeQL Analysis
+      - if: "!contains(github.ref, 'dependabot')"
+        name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
