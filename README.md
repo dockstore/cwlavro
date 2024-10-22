@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/common-workflow-language/cwlavro.svg)](https://travis-ci.org/common-workflow-language/cwlavro)
-
 CWL Avro Project 
 ================
 
