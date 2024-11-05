@@ -1,6 +1,6 @@
 
 Lists of 26 third-party dependencies.
-     (Apache-2.0) Apache Avro (org.apache.avro:avro:1.11.3 - https://avro.apache.org)
+     (Apache-2.0) Apache Avro (org.apache.avro:avro:1.11.4 - https://avro.apache.org)
      (Apache License, Version 2.0) Apache Commons BeanUtils (commons-beanutils:commons-beanutils:1.9.4 - https://commons.apache.org/proper/commons-beanutils/)
      (Apache License, Version 2.0) Apache Commons Collections (commons-collections:commons-collections:3.2.2 - http://commons.apache.org/collections/)
      (Apache License, Version 2.0) Apache Commons Compress (org.apache.commons:commons-compress:1.21 - https://commons.apache.org/proper/commons-compress/)
@@ -11,7 +11,7 @@ Lists of 26 third-party dependencies.
      (The Apache Software License, Version 2.0) Apache Commons Logging (commons-logging:commons-logging:1.2 - http://commons.apache.org/proper/commons-logging/)
      (Apache License, Version 2.0) Apache Commons Text (org.apache.commons:commons-text:1.10.0 - https://commons.apache.org/proper/commons-text)
      (The MIT License) Checker Qual (org.checkerframework:checker-qual:3.38.0 - https://checkerframework.org/)
-     (Apache License, Version 2.0) cwlavro-generated (io.cwl:cwlavro-generated:2.0.4.9-SNAPSHOT - no url defined)
+     (Apache License, Version 2.0) cwlavro-generated (io.cwl:cwlavro-generated:2.0.4.10-SNAPSHOT - no url defined)
      (Apache 2.0) error-prone annotations (com.google.errorprone:error_prone_annotations:2.22.0 - https://errorprone.info/error_prone_annotations)
      (The Apache Software License, Version 2.0) FindBugs-jsr305 (com.google.code.findbugs:jsr305:3.0.2 - http://findbugs.sourceforge.net/)
      (Apache-2.0) Gson (com.google.code.gson:gson:2.9.0 - https://github.com/google/gson/gson)
