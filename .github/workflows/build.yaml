@@ -5,14 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Python 3.x
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
           architecture: 'x64'
-   # upgrade pip?
-      - run: sudo pip install --upgrade pip
    # install a specific version of the cwl dependencies to test with
       - run: pip3.10 install --user importlib-resources==6.1.1
       - run: pip3.10 install --user setuptools==69.0.2
