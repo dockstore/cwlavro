@@ -62,8 +62,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v6
         with:
-          java-version: '17.0.4+8'
-          distribution: 'adopt'
+          java-version: '21.0.10+7.0.LTS'
+          distribution: 'temurin'
 
       - if: "!contains(github.ref, 'dependabot')"
         name: Initialize CodeQL
