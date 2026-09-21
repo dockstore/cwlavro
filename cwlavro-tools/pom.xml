@@ -54,6 +54,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- system-rules' ExpectedSystemExit installs a SecurityManager, which JDK 18+
+                         rejects by default unless explicitly allowed. -->
+                    <argLine>-Djava.security.manager=allow</argLine>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
